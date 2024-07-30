@@ -8,12 +8,10 @@ from libc.stdio cimport printf
   
 from mycyrk.cy.cysolverNew cimport cysolve_ivp, DiffeqFuncType, WrapCySolverResult, CySolveOutput, PreEvalFunc, RK45_METHOD_INT
 
-cdef double m = 1.0
-cdef double hbar = 1.0
-cdef double c = 1.0
+cdef double m = 1.0               # mass in multiples of m_e
 
-cdef double L = 20.0*hbar/(m*c)   # length of 1-sphere in x and y
-cdef int N2 = 41                  # max positive/negative mode in px and py   # max 41
+cdef double L = 40.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
+cdef int N2 = 40                  # max positive/negative mode in px and py   # max 41
 cdef int Ntot = 2*N2+1            # Total number of modes in one dimension
 
 
@@ -32,34 +30,38 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
     cdef double px = 0
     cdef double py = 0
 
-    cdef int nx = 0
-    cdef int ny = 0
+    cdef int ix = 0
+    cdef int iy = 0
     cdef int l  = 0
     cdef double xx = 0.
     # nx * (Ntot x 2 x 2) + ny * (2 x 2) + l * 2 + c
-    while nx < Ntot:
-        ny = 0
-        while ny < Ntot:
-            dbl_nx = <double>nx
-            dbl_ny = <double>ny
-            px = hbar*2*M_PI/L*dbl_nx
-            py = hbar*2*M_PI/L*dbl_ny
+    while ix < Ntot:
+        iy = 0
+        while iy < Ntot:
+            dbl_nx = <double>(ix - N2)
+            dbl_ny = <double>(iy - N2)
+            px = 2*M_PI/L*dbl_nx
+            py = 2*M_PI/L*dbl_ny
 
-            dy[nx*Ntot*2*2 + ny*2*2 + 0*2 + 0] =  ene(px,py) *   1.  * y[nx*Ntot*2*2 + ny*2*2 + 0*2 + 1]
-            dy[nx*Ntot*2*2 + ny*2*2 + 0*2 + 1] = -ene(px,py) *   1.  * y[nx*Ntot*2*2 + ny*2*2 + 0*2 + 0]
-            dy[nx*Ntot*2*2 + ny*2*2 + 1*2 + 0] =  ene(px,py) * (-1.) * y[nx*Ntot*2*2 + ny*2*2 + 1*2 + 1]
-            dy[nx*Ntot*2*2 + ny*2*2 + 1*2 + 1] = -ene(px,py) * (-1.) * y[nx*Ntot*2*2 + ny*2*2 + 1*2 + 0]
+            # printf("%f ",dbl_nx)
+            # printf("%f ",dbl_ny)
+
+            dy[ix*Ntot*2*2 + iy*2*2 + 0*2 + 0] =  ene(px,py) *   1.  * y[ix*Ntot*2*2 + iy*2*2 + 0*2 + 1]
+            dy[ix*Ntot*2*2 + iy*2*2 + 0*2 + 1] = -ene(px,py) *   1.  * y[ix*Ntot*2*2 + iy*2*2 + 0*2 + 0]
+            dy[ix*Ntot*2*2 + iy*2*2 + 1*2 + 0] =  ene(px,py) * (-1.) * y[ix*Ntot*2*2 + iy*2*2 + 1*2 + 1]
+            dy[ix*Ntot*2*2 + iy*2*2 + 1*2 + 1] = -ene(px,py) * (-1.) * y[ix*Ntot*2*2 + iy*2*2 + 1*2 + 0]
 
             # l = 0
             # while l < 4:
-            #     xx = y[nx*Ntot*2*2 + ny*2*2 + l]
+            #     xx = y[ix*Ntot*2*2 + iy*2*2 + l]
             #     if fabs(xx) > 0.001:
-            #         printf("%i ", l)   
-            #         printf("%f\n", xx)   
+            #         printf("%f ", dbl_nx)   
+            #         printf("%f\n", dbl_ny)   
+            #         printf("%f\n", ene(px,py))
             #     l += 1             
 
-            ny += 1
-        nx += 1
+            iy += 1
+        ix += 1
         
 def solver(tuple t_span, double[:] y0, double[:] coef):
     print('solver')
