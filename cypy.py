@@ -1,8 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from colorsys import hls_to_rgb
+from fastccolor.colorize import colorize
 from array import array
 from cy_solver import solver
+from PIL import Image, ImageOps
+from time import time
 
 ###
 ###     THESE NEED TO BE CHANGED IN CY_SOLVER TOO!
@@ -18,19 +20,6 @@ Ntot = 2*N2+1       # Total number of modes in one dimension
 ###     Functions
 ###
   
-def colorize(z):
-    n,m = z.shape
-    c = np.zeros((n,m,3))
-    c[np.isinf(z)] = (1.0, 1.0, 1.0)
-    c[np.isnan(z)] = (0.5, 0.5, 0.5)
-
-    idx = ~(np.isinf(z) + np.isnan(z))
-    A = (np.angle(z[idx]) + np.pi) / (2*np.pi)
-    A = (A + 0.5) % 1.0
-    B = 1.0 - 1.0/(1.0+abs(z[idx])**0.3)
-    c[idx] = [hls_to_rgb(a, b, 0.8) for a,b in zip(A,B)]
-    return c
-
 def ene(px,py):
     return np.sqrt(m**2 + px**2 + py**2)
 
@@ -164,7 +153,7 @@ space_l, space_py, space_px = np.meshgrid(range(2), np.linspace(-p_extent,p_exte
 # kx = 0.3
 # ky = 0.5
 # phi_bar = (space_l+1j)*np.exp(-b*((space_nx-nx0)**2 + (space_ny-ny0)**2) + 1j*10*b*(space_nx*kx+space_ny*ky))
-phi_bar = np.exp(-1j*(4*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*(1-space_l) + np.exp(-1j*(4*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*space_l
+phi_bar = np.exp(-1j*(-20*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*(1-space_l) + np.exp(-1j*(-20*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*space_l
 
 pb_array = flatten_for_cy(phi_bar)
 coefs = array('d',[0.02, 3.1])
@@ -175,45 +164,56 @@ print("Was Integration was successful?", result.success)
 print(result.message)
 print("Size of solution: ", result.size)
 
-
-filenames = []
+# plt.imshow(colorize(cy_to_numpy(result.y[:,t])[0,...]), interpolation='none',extent=(-L/2,L/2,-L/2,L/2),origin='lower')
+# plt.savefig('./ims/fig%i.png'%i,dpi=70)
 
 step = result.size//300
 # step = 1
 
-for i,t in enumerate(range(0,result.size,step)):
-    plt.imshow(colorize(cy_to_numpy(result.y[:,t])[1,...]), interpolation='none',extent=(-L/2,L/2,-L/2,L/2),origin='lower')
-    plt.savefig('./ims/fig%i.png'%i,dpi=350)
-    filenames.append('./ims/fig%i.png'%i)
+t0 = time()
 
-import imageio
 images = []
-for filename in filenames:
-    images.append(imageio.imread(filename))
-imageio.mimsave('anim.gif', images, format='GIF', duration=0.02, loop=10)
+for i,t in enumerate(range(0,result.size,step)):
+    datac = colorize(cy_to_numpy(result.y[:,t])[0,...], stretch = 3)
+    img = Image.fromarray((datac[:, :, :3] * 255).astype(np.uint8))
+    img = ImageOps.flip(img)
+    img.save('./ims/fig%i.png'%i)
+    images.append(img)
+images[0].save("anim.gif", save_all = True, append_images=images[1:], duration = 100, loop=0)
+
+del images
+
+images = []
+for i,t in enumerate(range(0,result.size,step)):
+    datac = colorize(fv_to_field(cy_to_numpy(result.y[:,t])), stretch = 3)
+    img = Image.fromarray((datac[:, :, :3] * 255).astype(np.uint8))
+    img = ImageOps.flip(img)
+    img.save('./ims/afig%i.png'%i)
+    images.append(img)
+images[0].save("anim2.gif", save_all = True, append_images=images[1:], duration = 100, loop=0)
+
+te = time()
+print("time: %f"%(te-t0))
+
+# filenames = []
+
+# for i,t in enumerate(range(0,result.size,step)):
+#     plt.imsave('./ims/fig%i.png'%i,colorize(cy_to_numpy(result.y[:,t])[0,...]))
+#     filenames.append('./ims/fig%i.png'%i)
+
+# images = []
+# for filename in filenames:
+#     images.append(imageio.imread(filename))
+# imageio.mimsave('anim.gif', images, format='GIF', duration=0.01, loop=10)
 
 # filenames2 = []
 
 # for i,t in enumerate(range(0,result.size,step)):
-#     plt.imshow(colorize(fv_to_field(cy_to_numpy(result.y[:,t]))[0,...]), interpolation='none',extent=(-L/2,L/2,-L/2,L/2),origin='lower')
-#     plt.savefig('./ims/f2ig%i.png'%i,dpi=70)
+#     plt.imsave(colorize(fv_to_field(cy_to_numpy(result.y[:,t]))), './ims/f2ig%i.png'%i, dpi=250, interpolation='none',extent=(-L/2,L/2,-L/2,L/2),origin='lower')
+#     plt.close()
 #     filenames2.append('./ims/f2ig%i.png'%i)
 
-# import imageio
 # images = []
 # for filename in filenames2:
 #     images.append(imageio.imread(filename))
-# imageio.mimsave('anim2.gif', images, format='GIF', duration=0.01, loop=10)
-
-filenames2 = []
-
-for i,t in enumerate(range(0,result.size,step)):
-    plt.imshow(colorize(fv_to_field(cy_to_numpy(result.y[:,t]))), interpolation='none',extent=(-L/2,L/2,-L/2,L/2),origin='lower')
-    plt.savefig('./ims/f2ig%i.png'%i,dpi=350)
-    filenames2.append('./ims/f2ig%i.png'%i)
-
-import imageio
-images = []
-for filename in filenames2:
-    images.append(imageio.imread(filename))
-imageio.mimsave('anim2.gif', images, format='GIF', duration=0.02, loop=10)
+# imageio.mimsave('anim2.gif', images, format='GIF', duration=0.02, loop=0)
