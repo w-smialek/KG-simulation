@@ -13,7 +13,7 @@ from time import time
 m = 1               # mass in multiples of m_e
 
 L = 10              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
-N2 = 350             # max positive/negative mode in px and py   # max 41
+N2 = 100             # max positive/negative mode in px and py   # max 41
 Ntot = 2*N2+1       # Total number of modes in one dimension
 
 print("Full size of vector: ",Ntot*Ntot*2*2)
@@ -44,6 +44,24 @@ def phi_to_phibar(phi):
             phibar[:,ny+N2,nx+N2] = t_space_rot_inv(nx,ny)@phi[:,ny+N2,nx+N2]
     return phibar
 
+def varphi_to_phibar(varphi, idtvarphi):
+    psi = np.zeros((2,Ntot,Ntot)).astype(complex)
+    psi[0,...] = 1/np.sqrt(2)*(varphi+idtvarphi)
+    psi[1,...] = 1/np.sqrt(2)*(varphi-idtvarphi)
+
+    phi = np.zeros(psi.shape).astype(complex)
+    phibar = np.zeros(psi.shape).astype(complex)
+
+    for l in range(2):
+        phi[l,:,:] = 1/Ntot**2*np.fft.fft2(psi[l,:,:])
+        phi[l,:,:] = np.fft.fftshift(phi[l,:,:])
+
+    for nx in range(-N2,N2+1):
+        for ny in range(-N2,N2+1):
+            phibar[:,ny+N2,nx+N2] = t_space_rot_inv(nx,ny)@phi[:,ny+N2,nx+N2]
+
+    return phibar
+
 def phibar_to_varphi(phi_bar):
     phi = np.zeros(phi_bar.shape).astype(complex)
     psi = np.zeros(phi_bar.shape).astype(complex)
@@ -52,11 +70,10 @@ def phibar_to_varphi(phi_bar):
             phi[:,ny+N2,nx+N2] = t_space_rot(nx,ny)@phi_bar[:,ny+N2,nx+N2]
     for l in range(2):
         # phi_shifted = np.roll(phi[l,:,:],(N2-1,N2-1),(0,1))
-        psi[l,:,:] = np.fft.ifft2(phi[l,:,:])
+        psi[l,:,:] = Ntot**2*np.fft.ifft2(phi[l,:,:])
         psi[l,:,:] = np.fft.fftshift(psi[l,:,:])
-    return 1/np.sqrt(2)*(psi[0,:,:]+psi[1,:,:])
-    # return 1/np.sqrt(2)*(phi[0,:,:]+phi[1,:,:])
-    # return phi
+    varphi, idtvarphi = 1/np.sqrt(2)*(psi[0,:,:]+psi[1,:,:]), 1/np.sqrt(2)*(psi[0,:,:]-psi[1,:,:])
+    return varphi, idtvarphi
 
 def flatten_for_cy(a):
     '''Convert feshbach - villard representation 2d complex field into a 1D python array,
@@ -170,17 +187,25 @@ space_l, space_py, space_px = np.meshgrid(range(2), np.linspace(-p_extent,p_exte
 # kx = 0.3
 # ky = 0.5
 # phi_bar = (space_l+1j)*np.exp(-b*((space_nx-nx0)**2 + (space_ny-ny0)**2) + 1j*10*b*(space_nx*kx+space_ny*ky))
-phi = np.exp(-1j*(10*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*(1-space_l)# + np.exp(-1j*(-20*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*space_l
+phi = np.exp(-1j*(2*np.pi/Ntot*space_nx) -1j*(2*np.pi/Ntot*space_ny))*(1-space_l)# + np.exp(-1j*(-20*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*space_l
 
 phi_bar = phi_to_phibar(phi)
 
-plt.imshow(colorize(phi_bar[0,...]), extent=(-N2,N2,-N2,N2),origin='lower')
+varphi, idtvarphi = phibar_to_varphi(phi_bar)
+phi_bar_ret = varphi_to_phibar(varphi, idtvarphi)
+
+
+plt.imshow(phi_bar[0,...].imag, extent=(-N2,N2,-N2,N2),origin='lower')
 plt.show()
-plt.imshow(colorize(phibar_to_varphi(phi_bar)), extent=(-N2,N2,-N2,N2),origin='lower')
+plt.imshow(phi_bar_ret[0,...].imag, extent=(-N2,N2,-N2,N2),origin='lower')
 plt.show()
+# plt.imshow(colorize(phi_bar[0,...]), extent=(-N2,N2,-N2,N2),origin='lower')
+# plt.show()
+
+exit()
 
 pb_array = flatten_for_cy(phi_bar)
-coefs = array('d',[N2])
+coefs = array('d',[N2,L])
 
 t_init = 0.
 t_end = 2.0
@@ -198,9 +223,6 @@ print("Mycyrk time: %f"%(te-t0))
 
 print(result.message)
 print("Size of solution: ", result.size)
-
-# plt.imshow(colorize(cy_to_numpy(result.y[:,t])[0,...]), interpolation='none',extent=(-L/2,L/2,-L/2,L/2),origin='lower')
-# plt.savefig('./ims/fig%i.png'%i,dpi=70)
 
 t0 = time()
 stretch = 2
@@ -220,7 +242,7 @@ del images
 
 images = []
 for i in range(n_timesteps):
-    datac = colorize(phibar_to_varphi(cy_to_numpy(result.y[:,i])), stretch)
+    datac = colorize(phibar_to_varphi(cy_to_numpy(result.y[:,i]))[0], stretch)
     img = Image.fromarray((datac[:, :, :3] * 255).astype(np.uint8))
     img = ImageOps.flip(img)
     img.save('./ims/afig%i.png'%i)

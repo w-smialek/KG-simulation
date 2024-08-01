@@ -10,7 +10,7 @@ from mycyrk.cy.cysolverNew cimport cysolve_ivp, DiffeqFuncType, WrapCySolverResu
 
 cdef double m = 1.0               # mass in multiples of m_e
 
-cdef double L = 40.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
+# cdef double L = 40.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
 # cdef int N2 = 50                  # max positive/negative mode in px and py   # max 41
 # cdef int Ntot = 2*N2+1            # Total number of modes in one dimension
 
@@ -24,6 +24,7 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
     cdef double* args_as_dbls = <double*>args
 
     cdef int n2 = <int>args_as_dbls[0]
+    cdef double L = args_as_dbls[1]
     cdef int ntot = 2*n2 + 1
 
     cdef double px = 0
