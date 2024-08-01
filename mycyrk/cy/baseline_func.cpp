@@ -76,6 +76,7 @@ std::shared_ptr<CySolverResult> baseline_cysolve_ivp(
             t_eval_provided);
 
     // Build solver class
+
     CySolverBase* solver;
 
     switch (method)

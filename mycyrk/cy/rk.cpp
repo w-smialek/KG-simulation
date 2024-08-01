@@ -1010,6 +1010,7 @@ void RKSolver::p_update_Q(double* Q_ptr)
         }
         break;
     }
+
 }
 
 CySolverDense* RKSolver::p_dense_output_heap()
@@ -1036,6 +1037,15 @@ void RKSolver::p_dense_output_stack(CySolverDense& dense_output_ptr)
     
     // Update Q
     this->p_update_Q(dense_output_ptr.Q_ptr);
+}
+
+void RKSolver::nocls_p_dense_output_stack(unsigned int ddQ_order,double* ddQ_ptr)
+{
+    // Update integration method specific items
+    ddQ_order = this->len_Pcols;
+    
+    // Update Q
+    this->p_update_Q(ddQ_ptr);
 }
 
 

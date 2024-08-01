@@ -16,8 +16,8 @@ cimport numpy as np
 cdef extern from "common.cpp" nogil:
     const double INF
     const double EPS_100
-    const unsigned int Y_LIMIT
-    const unsigned int DY_LIMIT
+    # const unsigned int Y_LIMIT
+    # const unsigned int DY_LIMIT
     const double MAX_STEP
 
     ctypedef void (*PreEvalFunc)(void*, double, double*, const void*)

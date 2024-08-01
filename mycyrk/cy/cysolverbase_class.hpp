@@ -33,6 +33,8 @@ protected:
     virtual void p_step_implementation();
     virtual CySolverDense* p_dense_output_heap();
     virtual void p_dense_output_stack(CySolverDense& dense_output_ptr);
+    virtual void nocls_p_dense_output_stack(unsigned int ddQ_order, double* ddQ_ptr);
+    virtual void p_update_Q(double* Q_ptr);
 
 public:
     CySolverBase();

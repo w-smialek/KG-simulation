@@ -4,11 +4,11 @@
 #include <limits>
 
 // Pre-processor constants
-static const int Y_LIMIT      = 27800;
+static const int Y_LIMIT      = 500000;
 // DONT USE EXTRA OUTPUT AND SET DY_LIMIT = Y_LIMIT
-static const int DY_LIMIT     = 27800;  // dy limit is defined by Y_LIMIT and number of extra output allowed. Typically we allow 2x the Y_LIMIT.
+static const int DY_LIMIT     = 500000;  // dy limit is defined by Y_LIMIT and number of extra output allowed. Typically we allow 2x the Y_LIMIT.
 static const int MESSAGE_SIZE = 128;
-static const int BUFFER_SIZE  = 32;
+static const int BUFFER_SIZE  = 16;
 
 // Integration Constants
 // Multiply steps computed from asymptotic behaviour of errors by this.
@@ -64,7 +64,8 @@ MaxNumStepsOutput find_max_num_steps(
     const int num_y,
     const int num_extra,
     const size_t max_num_steps,
-    const size_t max_ram_MB);
+    const size_t max_ram_MB,
+    const size_t leneval);
 
 
 size_t find_expected_size(

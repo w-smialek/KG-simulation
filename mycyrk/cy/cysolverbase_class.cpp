@@ -134,7 +134,8 @@ CySolverBase::CySolverBase(
         this->num_y,
         num_extra,
         max_num_steps,
-        max_ram_MB
+        max_ram_MB,
+        this->len_t_eval
     );
     this->user_provided_max_num_steps = max_num_steps_output.user_provided_max_num_steps;
     this->max_num_steps               = max_num_steps_output.max_num_steps;
@@ -259,7 +260,7 @@ void CySolverBase::reset()
 #include <iostream>
 
 void CySolverBase::take_step()
-{    
+{
     if (!this->reset_called) [[unlikely]]
     {
         // Reset must be called first.
@@ -288,6 +289,7 @@ void CySolverBase::take_step()
                 this->status = -3;
             }
         }
+
         else [[likely]]
         {
             // ** Make call to solver's step implementation **
@@ -311,18 +313,19 @@ void CySolverBase::take_step()
                 // Don't save data at the end
                 save_data = false;
 
-                // We are not saving interpolators to storage but we still need one to work on t_eval. 
-                // We will only ever need 1 interpolator per step. So let's just stack allocate that one.
-                CySolverDense dense_output(
-                    this->integration_method,
-                    this->t_old,
-                    this->t_now_ptr[0],
-                    this->y_old_ptr,
-                    this->num_y,
-                    0 // Fake Q order just for consistent constructor call
-                    );
-                // Update the dense output class with integrator-specific data
-                this->p_dense_output_stack(dense_output);
+                // // We are not saving interpolators to storage but we still need one to work on t_eval. 
+                // // We will only ever need 1 interpolator per step. So let's just stack allocate that one.
+                // CySolverDense dense_output(
+                //     this->integration_method,
+                //     this->t_old,
+                //     this->t_now_ptr[0],
+                //     this->y_old_ptr,
+                //     this->num_y,
+                //     0 // Fake Q order just for consistent constructor call
+                //     );
+
+                // // Update the dense output class with integrator-specific data
+                // this->nocls_p_dense_output_stack(ddQ_order, ddQ_ptr);
 
                 // Need to step through t_eval and call dense to determine correct data at each t_eval step.
                 // Find the first index in t_eval that is close to current time.
@@ -382,17 +385,6 @@ void CySolverBase::take_step()
                     // However we need a copy of the current state pointers at the end of this step anyways. So just
                     // store them now and skip storing them later.
 
-                    if (this->capture_extra)
-                    {
-                        // We need to copy the current state of y, dy, and time
-                        this->t_old = this->t_now_ptr[0];
-                        std::memcpy(this->y_old_ptr, this->y_now_ptr, sizeof(double) * this->num_y);
-                        std::memcpy(this->dy_old_ptr, this->dy_now_ptr, sizeof(double) * this->num_dy);
-
-                        // Don't update these again at the end
-                        prepare_for_next_step = false;
-                    }
-
                     for (int i = 0; i < t_eval_index_delta; i++)
                     {
                         double t_interp;
@@ -405,30 +397,18 @@ void CySolverBase::take_step()
                             t_interp = this->t_eval_ptr[this->t_eval_index_old - i - 1];
                         }
 
-                        // Call the interpolator using this new time value.
-                        dense_output.call(t_interp, y_interp_ptr);
+                        // // Call the interpolator using this new time value.
+                        // dense_output.call(t_interp, y_interp_ptr);
 
-                        if (this->capture_extra)
-                        {
-                            // If the user want to capture extra output then we also have to call the differential equation to get that extra output.
-                            // To do this we need to hack the current integrators t_now, y_now, and dy_now.
-                            // TODO: This could be more efficient if we just changed pointers but since the PySolver only stores y_now_ptr, dy_now_ptr, etc at initialization, it won't be able to see changes to new pointer. 
-                            // So for now we have to do a lot of copying of data.
-
-                            // Copy the interpreted y onto the current y_now_ptr. Also update t_now
-                            this->t_now_ptr[0] = t_interp;
-                            std::memcpy(this->y_now_ptr, y_interp_ptr, sizeof(double) * this->num_y);
-
-                            // Call diffeq to update dy_now_ptr with the extra output.
-                            this->diffeq(this);
-                        }
-                        // Save interpolated data to storage. If capture extra is true then dy_now holds those extra values. If it is false then it won't hurt to pass dy_now to storage.
-                        this->storage_ptr->save_data(t_interp, y_interp_ptr, this->dy_now_ptr);
+                        // // Save interpolated data to storage. If capture extra is true then dy_now holds those extra values. If it is false then it won't hurt to pass dy_now to storage.
+                        // this->storage_ptr->save_data(t_interp, y_interp_ptr, this->dy_now_ptr);
+                        this->storage_ptr->save_data(this->t_now_ptr[0], this->y_now_ptr, this->dy_now_ptr);
                     }
                 }
                 // Update the old index for the next step
                 this->t_eval_index_old = t_eval_index_new;
             }
+
             if (save_data)
             {
                 // No data has been saved from the current step. Save the integrator data for this step as the solution.
@@ -443,6 +423,7 @@ void CySolverBase::take_step()
                 std::memcpy(this->dy_old_ptr, this->dy_now_ptr, sizeof(double) * this->num_dy);
             }
         }
+    
     }
 
     // Note this is not an "else" block because the integrator may have finished with that last step.
@@ -480,11 +461,244 @@ void CySolverBase::take_step()
             this->storage_ptr->update_message("Unknown status encountered during integration.");
             break;
         }
-        
         // Call the finalizer on the storage class instance
         this->storage_ptr->finalize();
     }
 }
+
+// void CySolverBase::take_step()
+// {    
+//     printf("Inside take_step");
+//     if (!this->reset_called) [[unlikely]]
+//     {
+//         // Reset must be called first.
+//         this->reset();
+//     }
+
+//     bool skip_t_eval = false;
+
+//     if (!this->status)
+//     {
+//         if (this->t_now_ptr[0] == this->t_end) [[unlikely]]
+//         {
+//             printf("t now greater than t end - finished");
+//             // Integration finished
+//             this->t_old = this->t_end;
+//             this->status = 1;
+//         }
+//         else if (this->len_t >= this->max_num_steps) [[unlikely]]
+//         {
+//             if (this->user_provided_max_num_steps)
+//             {
+//                 printf("Maximum number of steps reached (as set by user)");
+//                 // Maximum number of steps reached (as set by user).
+//                 this->status = -2;
+//             }
+//             else {
+//                 printf("Maximum number of steps reached (as set by RAM limitations)");
+//                 // Maximum number of steps reached (as set by RAM limitations).
+//                 this->status = -3;
+//             }
+//         }
+//         else [[likely]]
+//         {
+//             // ** Make call to solver's step implementation **
+//             bool save_data = true;
+//             bool prepare_for_next_step = true;
+
+//             printf("About to call step implementation");
+//             this->p_step_implementation();
+//             this->len_t++;
+
+//             // Take care of dense output and t_eval
+//             if (this->use_dense_output)
+//             {
+//                 // We need to save many dense interpolators to storage. So let's heap allocate them.
+//                 CySolverDense* dense_output_heap_ptr = this->p_dense_output_heap();
+//                 // Save to storage array.
+//                 this->storage_ptr->save_dense(this->t_now_ptr[0], dense_output_heap_ptr);
+//             }
+
+//             if (this->use_t_eval && !skip_t_eval)
+//             {
+//                 // Don't save data at the end
+//                 save_data = false;
+
+//                 // We are not saving interpolators to storage but we still need one to work on t_eval. 
+//                 // We will only ever need 1 interpolator per step. So let's just stack allocate that one.
+//                 CySolverDense dense_output(
+//                     this->integration_method,
+//                     this->t_old,
+//                     this->t_now_ptr[0],
+//                     this->y_old_ptr,
+//                     this->num_y,
+//                     0 // Fake Q order just for consistent constructor call
+//                     );
+//                 // Update the dense output class with integrator-specific data
+//                 this->p_dense_output_stack(dense_output);
+
+//                 // Need to step through t_eval and call dense to determine correct data at each t_eval step.
+//                 // Find the first index in t_eval that is close to current time.
+
+//                 // Check if there are any t_eval steps between this new index and the last index.
+//                 // Get lowest and highest indices
+//                 auto lower_i = std::lower_bound(this->t_eval_vec.begin(), this->t_eval_vec.end(), this->t_now_ptr[0]) - this->t_eval_vec.begin();
+//                 auto upper_i  = std::upper_bound(this->t_eval_vec.begin(), this->t_eval_vec.end(), this->t_now_ptr[0]) - this->t_eval_vec.begin();
+                
+//                 size_t t_eval_index_new;
+//                 if (lower_i == upper_i)
+//                 {
+//                     // Only 1 index came back wrapping the value. See if it is different from before.
+//                     t_eval_index_new = lower_i;  // Doesn't matter which one we choose
+//                 }
+//                 else if (this->direction_flag)
+//                 {
+//                     // Two different indicies returned. Since we are working our way from low to high values we want the upper one.
+//                     t_eval_index_new = upper_i;
+//                     if (t_eval_index_new == this->len_t_eval)
+//                     {
+//                         skip_t_eval = true;
+//                     }
+//                 }
+//                 else
+//                 {
+//                     // Two different indicies returned. Since we are working our way from high to low values we want the lower one.
+//                     t_eval_index_new = lower_i;
+//                     if (t_eval_index_new == 0)
+//                     {
+//                         skip_t_eval = true;
+//                     }
+//                 }
+
+//                 int t_eval_index_delta;
+//                 if (this->direction_flag)
+//                 {
+//                     t_eval_index_delta = (int)t_eval_index_new - (int)this->t_eval_index_old;
+//                 }
+//                 else
+//                 {
+//                     t_eval_index_delta = (int)this->t_eval_index_old - (int)t_eval_index_new;
+//                 }
+                
+//                 // If t_eval_index_delta == 0 then there are no new interpolations required between the last integration step and now.
+//                 // ^ In this case do not save any data, we are done with this step.
+//                 if (t_eval_index_delta > 0)
+//                 {
+//                     // There are steps we need to interpolate over.
+//                     // Start with the old time and add t_eval step sizes until we are done.
+//                     // Create a y array and dy_array to use during interpolation
+//                     printf("using Y_LIMIT in cysolver_baseclass.cpp:\n");
+//                     double y_interp[Y_LIMIT] = { };
+//                     double* y_interp_ptr     = &y_interp[0];
+
+//                     // If capture extra is set to true then we need to hold onto a copy of the current state
+//                     // The current state pointers must be overwritten if extra output is to be captured.
+//                     // However we need a copy of the current state pointers at the end of this step anyways. So just
+//                     // store them now and skip storing them later.
+
+//                     if (this->capture_extra)
+//                     {
+//                         // We need to copy the current state of y, dy, and time
+//                         this->t_old = this->t_now_ptr[0];
+//                         std::memcpy(this->y_old_ptr, this->y_now_ptr, sizeof(double) * this->num_y);
+//                         std::memcpy(this->dy_old_ptr, this->dy_now_ptr, sizeof(double) * this->num_dy);
+
+//                         // Don't update these again at the end
+//                         prepare_for_next_step = false;
+//                     }
+
+//                     for (int i = 0; i < t_eval_index_delta; i++)
+//                     {
+//                         double t_interp;
+//                         if (this->direction_flag)
+//                         {
+//                             t_interp = this->t_eval_ptr[this->t_eval_index_old + i];
+//                         }
+//                         else
+//                         {
+//                             t_interp = this->t_eval_ptr[this->t_eval_index_old - i - 1];
+//                         }
+
+//                         // Call the interpolator using this new time value.
+//                         dense_output.call(t_interp, y_interp_ptr);
+
+//                         if (this->capture_extra)
+//                         {
+//                             // If the user want to capture extra output then we also have to call the differential equation to get that extra output.
+//                             // To do this we need to hack the current integrators t_now, y_now, and dy_now.
+//                             // TODO: This could be more efficient if we just changed pointers but since the PySolver only stores y_now_ptr, dy_now_ptr, etc at initialization, it won't be able to see changes to new pointer. 
+//                             // So for now we have to do a lot of copying of data.
+
+//                             // Copy the interpreted y onto the current y_now_ptr. Also update t_now
+//                             this->t_now_ptr[0] = t_interp;
+//                             std::memcpy(this->y_now_ptr, y_interp_ptr, sizeof(double) * this->num_y);
+
+//                             // Call diffeq to update dy_now_ptr with the extra output.
+//                             this->diffeq(this);
+//                         }
+//                         // Save interpolated data to storage. If capture extra is true then dy_now holds those extra values. If it is false then it won't hurt to pass dy_now to storage.
+//                         this->storage_ptr->save_data(t_interp, y_interp_ptr, this->dy_now_ptr);
+//                     }
+//                 }
+//                 // Update the old index for the next step
+//                 this->t_eval_index_old = t_eval_index_new;
+//             }
+//             if (save_data)
+//             {
+//                 // No data has been saved from the current step. Save the integrator data for this step as the solution.
+//                 this->storage_ptr->save_data(this->t_now_ptr[0], this->y_now_ptr, this->dy_now_ptr);
+//             }
+
+//             if (prepare_for_next_step)
+//             {
+//                 // Prep for next step
+//                 this->t_old = this->t_now_ptr[0];
+//                 std::memcpy(this->y_old_ptr, this->y_now_ptr, sizeof(double) * this->num_y);
+//                 std::memcpy(this->dy_old_ptr, this->dy_now_ptr, sizeof(double) * this->num_dy);
+//             }
+//         }
+//     }
+
+//     // Note this is not an "else" block because the integrator may have finished with that last step.
+//     // Check status again to see if we are finished or there was an error in the last step
+//     if (this->status != 0)
+//     {
+//         // Update integration message
+//         this->storage_ptr->error_code = this->status;
+//         this->storage_ptr->success    = false;
+//         switch (this->status)
+//         {
+//         case 2:
+//             this->storage_ptr->update_message("Integration storage changed but integrator was not reset. Call `.reset()` before integrating after change.");
+//             break;
+//         case 1:
+//             this->storage_ptr->update_message("Integration completed without issue.");
+//             this->storage_ptr->success = true;
+//             break;
+//         case -1:
+//             this->storage_ptr->update_message("Error in step size calculation:\n\tRequired step size is less than spacing between numbers.");
+//             break;
+//         case -2:
+//             this->storage_ptr->update_message("Maximum number of steps (set by user) exceeded during integration.");
+//             break;
+//         case -3:
+//             this->storage_ptr->update_message("Maximum number of steps (set by system architecture) exceeded during integration.");
+//             break;
+//         case -4:
+//             this->storage_ptr->update_message("Error in step size calculation:\n\tError in step size acceptance.");
+//             break;
+//         case -9:
+//             this->storage_ptr->update_message("Error in CySolver initialization.");
+//             break;
+//         default:
+//             this->storage_ptr->update_message("Unknown status encountered during integration.");
+//             break;
+//         }
+//         printf("some error in take step\n");
+//         // Call the finalizer on the storage class instance
+//         this->storage_ptr->finalize();
+//     }
+// }
 
 
 void CySolverBase::change_storage(std::shared_ptr<CySolverResult> new_storage_ptr, bool auto_reset)
@@ -526,6 +740,16 @@ CySolverDense* CySolverBase::p_dense_output_heap()
 }
 
 void CySolverBase::p_dense_output_stack(CySolverDense& dense_output_ptr)
+{
+    // Don't do anything. Subclasses will override this method.
+}
+
+void CySolverBase::nocls_p_dense_output_stack(unsigned int ddQ_order,double* ddQ_ptr)
+{
+    // Don't do anything. Subclasses will override this method.
+}
+
+void CySolverBase::p_update_Q(double* Q_ptr)
 {
     // Don't do anything. Subclasses will override this method.
 }

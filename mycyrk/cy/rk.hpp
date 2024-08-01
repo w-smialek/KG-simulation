@@ -647,7 +647,7 @@ const double* const DOP853_E5_ptr = &DOP853_E5[0];
 // Classes
 // ########################################################################################################################
 class RKSolver : public CySolverBase {
-
+ 
 // Attributes
 protected:
     // Step globals
@@ -706,6 +706,7 @@ protected:
     virtual void p_step_implementation() override;
     virtual CySolverDense* p_dense_output_heap() override;
     virtual void p_dense_output_stack(CySolverDense& dense_output_ptr) override;
+    virtual void nocls_p_dense_output_stack(unsigned int ddQ_order,double* ddQ_ptr);
     virtual void p_update_Q(double* Q_ptr);
 
 public:
@@ -745,7 +746,6 @@ class RK23 : public RKSolver {
 
 protected:
     double K[4 * Y_LIMIT] = { 0.0 };
-
 public:
     // Copy over base class constructors
     using RKSolver::RKSolver;
@@ -766,7 +766,7 @@ public:
 class DOP853 : public RKSolver {
 
 protected:
-    double K[13 * Y_LIMIT] = { 0.0 };
+    double K[1 * Y_LIMIT] = { 0.0 }; // TU MUSI BYĆ 13, A NIE 1!!!!
 
 public:
     // Copy over base class constructors

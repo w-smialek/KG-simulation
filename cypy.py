@@ -12,9 +12,11 @@ from time import time
 
 m = 1               # mass in multiples of m_e
 
-L = 40              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
-N2 = 40             # max positive/negative mode in px and py   # max 41
+L = 10              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
+N2 = 350             # max positive/negative mode in px and py   # max 41
 Ntot = 2*N2+1       # Total number of modes in one dimension
+
+print("Full size of vector: ",Ntot*Ntot*2*2)
 
 ###
 ###     Functions
@@ -29,17 +31,32 @@ def t_space_rot(nx,ny):
     U = 1/(2*np.sqrt(m*ene(px,py)))*np.array([[m+ene(px,py),m-ene(px,py)],[m-ene(px,py),m+ene(px,py)]])
     return U
 
-def fv_to_field(phi_bar):
+def t_space_rot_inv(nx,ny):
+    px = 2*np.pi/L*nx
+    py = 2*np.pi/L*ny
+    U = 1/(2*np.sqrt(m*ene(px,py)))*np.array([[m+ene(px,py),ene(px,py)-m],[ene(px,py)-m,m+ene(px,py)]])
+    return U
+
+def phi_to_phibar(phi):
+    phibar = np.zeros(phi.shape).astype(complex)
+    for nx in range(-N2,N2+1):
+        for ny in range(-N2,N2+1):
+            phibar[:,ny+N2,nx+N2] = t_space_rot_inv(nx,ny)@phi[:,ny+N2,nx+N2]
+    return phibar
+
+def phibar_to_varphi(phi_bar):
     phi = np.zeros(phi_bar.shape).astype(complex)
     psi = np.zeros(phi_bar.shape).astype(complex)
     for nx in range(-N2,N2+1):
         for ny in range(-N2,N2+1):
             phi[:,ny+N2,nx+N2] = t_space_rot(nx,ny)@phi_bar[:,ny+N2,nx+N2]
     for l in range(2):
-        phi_shifted = np.roll(phi[l,:,:],(N2+1,N2+1),(0,1))
-        psi[l,:,:] = Ntot**2*np.fft.ifft2(phi_shifted)
+        # phi_shifted = np.roll(phi[l,:,:],(N2-1,N2-1),(0,1))
+        psi[l,:,:] = np.fft.ifft2(phi[l,:,:])
         psi[l,:,:] = np.fft.fftshift(psi[l,:,:])
     return 1/np.sqrt(2)*(psi[0,:,:]+psi[1,:,:])
+    # return 1/np.sqrt(2)*(phi[0,:,:]+phi[1,:,:])
+    # return phi
 
 def flatten_for_cy(a):
     '''Convert feshbach - villard representation 2d complex field into a 1D python array,
@@ -153,67 +170,90 @@ space_l, space_py, space_px = np.meshgrid(range(2), np.linspace(-p_extent,p_exte
 # kx = 0.3
 # ky = 0.5
 # phi_bar = (space_l+1j)*np.exp(-b*((space_nx-nx0)**2 + (space_ny-ny0)**2) + 1j*10*b*(space_nx*kx+space_ny*ky))
-phi_bar = np.exp(-1j*(-20*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*(1-space_l) + np.exp(-1j*(-20*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*space_l
+phi = np.exp(-1j*(10*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*(1-space_l)# + np.exp(-1j*(-20*np.pi/Ntot*space_nx) -1j*(20*np.pi/Ntot*space_ny))*space_l
+
+phi_bar = phi_to_phibar(phi)
+
+plt.imshow(colorize(phi_bar[0,...]), extent=(-N2,N2,-N2,N2),origin='lower')
+plt.show()
+plt.imshow(colorize(phibar_to_varphi(phi_bar)), extent=(-N2,N2,-N2,N2),origin='lower')
+plt.show()
 
 pb_array = flatten_for_cy(phi_bar)
-coefs = array('d',[0.02, 3.1])
-t_span = (0., 50.0)
+coefs = array('d',[N2])
 
-result = solver(t_span, pb_array, coefs)
-print("Was Integration was successful?", result.success)
+t_init = 0.
+t_end = 2.0
+n_timesteps = 40
+
+t_span = (t_init, t_end)
+timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
+
+fps = 50
+
+t0 = time()
+result = solver(t_span, pb_array, coefs, timesteps)
+te = time()
+print("Mycyrk time: %f"%(te-t0))
+
 print(result.message)
 print("Size of solution: ", result.size)
 
 # plt.imshow(colorize(cy_to_numpy(result.y[:,t])[0,...]), interpolation='none',extent=(-L/2,L/2,-L/2,L/2),origin='lower')
 # plt.savefig('./ims/fig%i.png'%i,dpi=70)
 
-step = result.size//300
-# step = 1
-
 t0 = time()
+stretch = 2
 
 images = []
-for i,t in enumerate(range(0,result.size,step)):
-    datac = colorize(cy_to_numpy(result.y[:,t])[0,...], stretch = 3)
+for i in range(n_timesteps):
+    datac = colorize(cy_to_numpy(result.y[:,i])[0,...], stretch)
     img = Image.fromarray((datac[:, :, :3] * 255).astype(np.uint8))
     img = ImageOps.flip(img)
     img.save('./ims/fig%i.png'%i)
     images.append(img)
-images[0].save("anim.gif", save_all = True, append_images=images[1:], duration = 100, loop=0)
+    if (i%20==0):
+        print(i)
+images[0].save("anim.gif", save_all = True, append_images=images[1:], duration = 1/fps*1000, loop=0)
 
 del images
 
 images = []
-for i,t in enumerate(range(0,result.size,step)):
-    datac = colorize(fv_to_field(cy_to_numpy(result.y[:,t])), stretch = 3)
+for i in range(n_timesteps):
+    datac = colorize(phibar_to_varphi(cy_to_numpy(result.y[:,i])), stretch)
     img = Image.fromarray((datac[:, :, :3] * 255).astype(np.uint8))
     img = ImageOps.flip(img)
     img.save('./ims/afig%i.png'%i)
     images.append(img)
-images[0].save("anim2.gif", save_all = True, append_images=images[1:], duration = 100, loop=0)
+    if (i%20==0):
+        print(i)
+images[0].save("anim2.gif", save_all = True, append_images=images[1:], duration = 1/fps*1000, loop=0)
 
 te = time()
-print("time: %f"%(te-t0))
+print("rendering images time: %f"%(te-t0))
 
-# filenames = []
+# t0 = time()
+# stretch = 2
 
-# for i,t in enumerate(range(0,result.size,step)):
-#     plt.imsave('./ims/fig%i.png'%i,colorize(cy_to_numpy(result.y[:,t])[0,...]))
-#     filenames.append('./ims/fig%i.png'%i)
-
-# images = []
-# for filename in filenames:
-#     images.append(imageio.imread(filename))
-# imageio.mimsave('anim.gif', images, format='GIF', duration=0.01, loop=10)
-
-# filenames2 = []
-
-# for i,t in enumerate(range(0,result.size,step)):
-#     plt.imsave(colorize(fv_to_field(cy_to_numpy(result.y[:,t]))), './ims/f2ig%i.png'%i, dpi=250, interpolation='none',extent=(-L/2,L/2,-L/2,L/2),origin='lower')
-#     plt.close()
-#     filenames2.append('./ims/f2ig%i.png'%i)
+# fps = 50
 
 # images = []
-# for filename in filenames2:
-#     images.append(imageio.imread(filename))
-# imageio.mimsave('anim2.gif', images, format='GIF', duration=0.02, loop=0)
+# for i in range(n_timesteps):
+#     img = Image.open('./ims/fig%i.png'%i)
+#     images.append(img)
+#     if (i%20==0):
+#         print(i)
+# images[0].save("anim11.gif", save_all = True, append_images=images[1:], duration = 1/fps*1000, loop=0)
+
+# del images
+
+# images = []
+# for i in range(n_timesteps):
+#     img = Image.open('./ims/afig%i.png'%i)
+#     images.append(img)
+#     if (i%20==0):
+#         print(i)
+# images[0].save("anim22.gif", save_all = True, append_images=images[1:], duration = 1/fps*1000, loop=0)
+
+# te = time()
+# print("time: %f"%(te-t0))
