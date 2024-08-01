@@ -54,7 +54,8 @@ def varphi_to_phibar(varphi, idtvarphi):
     phibar = np.zeros(psi.shape).astype(complex)
 
     for l in range(2):
-        phi[l,:,:] = 1/Ntot**2*np.fft.fft2(psi[l,:,:])
+        psi[l,:,:] = np.fft.fftshift(psi[l,:,:])
+        phi[l,:,:] = np.fft.fft2(psi[l,:,:])
         phi[l,:,:] = np.fft.fftshift(phi[l,:,:])
 
     for nx in range(-N2,N2):
@@ -71,8 +72,8 @@ def phibar_to_varphi(phi_bar):
             phi[:,ny+N2,nx+N2] = t_space_rot(nx,ny)@phi_bar[:,ny+N2,nx+N2]
     for l in range(2):
         phi[l,:,:] = np.roll(phi[l,:,:],(N2,N2),(0,1))
-        psi[l,:,:] = Ntot**2*np.fft.ifft2(phi[l,:,:])*np.exp(1j*np.pi*(space_nx+space_ny)[0,...])
-        # psi[l,:,:] = np.fft.fftshift(psi[l,:,:])
+        psi[l,:,:] = np.fft.ifft2(phi[l,:,:])*np.exp(1j*np.pi*(space_nx+space_ny)[0,...])
+        psi[l,:,:] = np.fft.fftshift(psi[l,:,:])
     varphi, idtvarphi = 1/np.sqrt(2)*(psi[0,:,:]+psi[1,:,:]), 1/np.sqrt(2)*(psi[0,:,:]-psi[1,:,:])
     return varphi, idtvarphi
 
@@ -80,7 +81,7 @@ def phibar_to_varphi(phi_bar):
 ###
 ###
 
-phi = np.exp(-1j*(2*np.pi/Ntot*space_nx) -1j*(2*np.pi/Ntot*space_ny))*(1-space_l)
+phi = np.exp(-1j*(5*np.pi/Ntot*space_nx) -1j*(-5*np.pi/Ntot*space_ny))*(1-space_l) + np.exp(-1j*(-3*np.pi/Ntot*space_nx) -1j*(30*np.pi/Ntot*space_ny))*(1-space_l)
 
 phi_bar = phi_to_phibar(phi)
 
@@ -92,7 +93,29 @@ plt.imshow(phi_bar[0,...].imag, extent=(-N2,N2,-N2,N2),origin='lower')
 plt.show()
 plt.imshow(phi_bar_ret[0,...].imag, extent=(-N2,N2,-N2,N2),origin='lower')
 plt.show()
-# plt.imshow(colorize(phi_bar[0,...]), extent=(-N2,N2,-N2,N2),origin='lower')
-# plt.show()
+plt.imshow(np.sum(np.abs(phi_bar - phi_bar_ret),0), extent=(-N2,N2,-N2,N2),origin='lower')
+plt.show()
+plt.imshow(abs(varphi), extent=(-N2,N2,-N2,N2),origin='lower')
+plt.show()
 
-exit()
+from scipy.interpolate import RegularGridInterpolator
+
+x, y = np.meshgrid(range(-N2,N2),range(-N2,N2))
+
+z = phi_bar[0,...].imag
+
+# 2D grid interpolation
+interpolator_real = RegularGridInterpolator((x, y), np.real(z))
+interpolator_imag = RegularGridInterpolator((x, y), np.imag(z))
+
+def interpolator_complex(x, y):
+    return interpolator_real(x, y) + 1j*interpolator_imag(x, y)
+
+# test
+new_x = np.linspace(-N2, N2, 2*Ntot)
+new_y = np.linspace(-N2, N2, 2*Ntot)
+
+ar = interpolator_complex(new_x, new_y)
+
+plt.imshow(ar)
+plt.show()

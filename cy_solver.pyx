@@ -8,15 +8,13 @@ from libc.stdio cimport printf
   
 from mycyrk.cy.cysolverNew cimport cysolve_ivp, DiffeqFuncType, WrapCySolverResult, CySolveOutput, PreEvalFunc, RK45_METHOD_INT, RK23_METHOD_INT
 
-cdef double m = 1.0               # mass in multiples of m_e
-
 # cdef double L = 40.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
 # cdef int N2 = 50                  # max positive/negative mode in px and py   # max 41
 # cdef int Ntot = 2*N2+1            # Total number of modes in one dimension
 
       
 
-cdef double ene(double px, double py) noexcept nogil:
+cdef double ene(double px, double py, double m) noexcept nogil:
     return sqrt(m*m + px*px + py*py)
 
 cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEvalFunc pre_eval_func) noexcept nogil:
@@ -25,7 +23,8 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
 
     cdef int n2 = <int>args_as_dbls[0]
     cdef double L = args_as_dbls[1]
-    cdef int ntot = 2*n2 + 1
+    cdef double mass = args_as_dbls[2]
+    cdef int ntot = 2*n2
 
     cdef double px = 0
     cdef double py = 0
@@ -43,10 +42,10 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
             px = 2*M_PI/L*dbl_nx
             py = 2*M_PI/L*dbl_ny
 
-            dy[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] =  ene(px,py) *   1.  * y[ix*ntot*2*2 + iy*2*2 + 0*2 + 1]
-            dy[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] = -ene(px,py) *   1.  * y[ix*ntot*2*2 + iy*2*2 + 0*2 + 0]
-            dy[ix*ntot*2*2 + iy*2*2 + 1*2 + 0] =  ene(px,py) * (-1.) * y[ix*ntot*2*2 + iy*2*2 + 1*2 + 1]
-            dy[ix*ntot*2*2 + iy*2*2 + 1*2 + 1] = -ene(px,py) * (-1.) * y[ix*ntot*2*2 + iy*2*2 + 1*2 + 0]
+            dy[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] =  ene(px,py,mass) *   1.  * y[ix*ntot*2*2 + iy*2*2 + 0*2 + 1]
+            dy[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] = -ene(px,py,mass) *   1.  * y[ix*ntot*2*2 + iy*2*2 + 0*2 + 0]
+            dy[ix*ntot*2*2 + iy*2*2 + 1*2 + 0] =  ene(px,py,mass) * (-1.) * y[ix*ntot*2*2 + iy*2*2 + 1*2 + 1]
+            dy[ix*ntot*2*2 + iy*2*2 + 1*2 + 1] = -ene(px,py,mass) * (-1.) * y[ix*ntot*2*2 + iy*2*2 + 1*2 + 0]
 
             # l = 0
             # while l < 4:
@@ -94,8 +93,8 @@ def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps):
         y0_ptr,
         num_y,
         method = RK45_METHOD_INT,
-        rtol = 1.0e-9,
-        atol = 1.0e-10,
+        rtol = 1.0e-6,
+        atol = 1.0e-7,
         args_ptr = args_ptr,
         num_extra = 0,
         max_num_steps = 0,

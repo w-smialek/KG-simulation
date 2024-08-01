@@ -20879,7 +20879,7 @@ static void __pyx_f_9cy_solver_cython_diffeq(double *__pyx_v_dy, CYTHON_UNUSED d
  * 
  *     cdef int n2 = <int>args_as_dbls[0]             # <<<<<<<<<<<<<<
  *     cdef double L = args_as_dbls[1]
- *     cdef int ntot = 2*n2 + 1
+ *     cdef int ntot = 2*n2
  */
   __pyx_v_n2 = ((int)(__pyx_v_args_as_dbls[0]));
 
@@ -20887,7 +20887,7 @@ static void __pyx_f_9cy_solver_cython_diffeq(double *__pyx_v_dy, CYTHON_UNUSED d
  * 
  *     cdef int n2 = <int>args_as_dbls[0]
  *     cdef double L = args_as_dbls[1]             # <<<<<<<<<<<<<<
- *     cdef int ntot = 2*n2 + 1
+ *     cdef int ntot = 2*n2
  * 
  */
   __pyx_v_L = (__pyx_v_args_as_dbls[1]);
@@ -20895,14 +20895,14 @@ static void __pyx_f_9cy_solver_cython_diffeq(double *__pyx_v_dy, CYTHON_UNUSED d
   /* "cy_solver.pyx":28
  *     cdef int n2 = <int>args_as_dbls[0]
  *     cdef double L = args_as_dbls[1]
- *     cdef int ntot = 2*n2 + 1             # <<<<<<<<<<<<<<
+ *     cdef int ntot = 2*n2             # <<<<<<<<<<<<<<
  * 
  *     cdef double px = 0
  */
-  __pyx_v_ntot = ((2 * __pyx_v_n2) + 1);
+  __pyx_v_ntot = (2 * __pyx_v_n2);
 
   /* "cy_solver.pyx":30
- *     cdef int ntot = 2*n2 + 1
+ *     cdef int ntot = 2*n2
  * 
  *     cdef double px = 0             # <<<<<<<<<<<<<<
  *     cdef double py = 0
@@ -21452,8 +21452,8 @@ static PyObject *__pyx_pf_9cy_solver_solver(CYTHON_UNUSED PyObject *__pyx_self, 
  */
   __pyx_t_10.__pyx_n = 16;
   __pyx_t_10.method = RK45_METHOD_INT;
-  __pyx_t_10.rtol = 1.0e-9;
-  __pyx_t_10.atol = 1.0e-10;
+  __pyx_t_10.rtol = 1.0e-6;
+  __pyx_t_10.atol = 1.0e-7;
   __pyx_t_10.args_ptr = __pyx_v_args_ptr;
   __pyx_t_10.num_extra = 0;
   __pyx_t_10.max_num_steps = 0;
