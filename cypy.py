@@ -13,7 +13,7 @@ from time import time
 m = 1.0               # mass in multiples of m_e
 
 L = 10              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
-N2 = 100             # max positive/negative mode in px and py   # max 41
+N2 = 25             # max positive/negative mode in px and py   # max 41
 Ntot = 2*N2       # Total number of modes in one dimension
 
 print("Full size of vector: ",Ntot*Ntot*2*2)

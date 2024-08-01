@@ -6,7 +6,7 @@ import array
 from libc.math cimport sqrt, M_PI
 # import numpy as np
   
-from mycyrk2 cimport cysolve_ivp, DiffeqFuncType, WrapCySolverResult, CySolveOutput, PreEvalFunc, RK45_METHOD_INT, RK23_METHOD_INT
+from mycyrk.cy.cysolverNew cimport cysolve_ivp, DiffeqFuncType, WrapCySolverResult, CySolveOutput, PreEvalFunc, RK45_METHOD_INT, RK23_METHOD_INT
 
 # cdef double L = 40.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
 # cdef int N2 = 50                  # max positive/negative mode in px and py   # max 41
@@ -118,7 +118,7 @@ def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps):
         max_num_steps = 0,
         max_ram_MB = 3000,
         dense_output = False,
-        t_eval = timesteps_ptr,
+        t_eval = NULL,#timesteps_ptr,
         len_t_eval = n_tsteps, 
         pre_eval_func = NULL,
         rtols_ptr = NULL,
