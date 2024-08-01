@@ -5,8 +5,9 @@ from array import array
 from cy_solver import solver
 from PIL import Image, ImageOps
 from time import time
+from scipy import interpolate
 
-N2 = 16            # max positive/negative mode in px and py
+N2 = 60            # max positive/negative mode in px and py
 Ntot = 2*N2         # Total number of modes in any dimension
 
 ###
@@ -34,6 +35,9 @@ p_extent_hi = p(N2-1)
 #
 p_extent = (p_extent_lo,p_extent_hi,p_extent_lo,p_extent_hi)
 x_extent = (-L,L,-L,L)
+#
+p_linspace = np.linspace(p_extent_lo,p_extent_hi,Ntot)
+x_linspace = np.linspace(-L,L,Ntot)
 #
 ###
 ### Coordinates
@@ -200,3 +204,159 @@ def cy_to_numpy(a):
                 a_out_im[l,nx,ny] = a[nx*Ntot*2*2 + ny*2*2 + l*2 +1]
 
     return a_out_re + 1j*a_out_im
+
+def complex_interp_phi(phi, py_interp, px_interp):
+    phi_interp = np.zeros(phi.shape)
+    intplt0re = interpolate.RegularGridInterpolator([p_linspace,p_linspace], phi[0,...].real)
+    intplt0im = interpolate.RegularGridInterpolator([p_linspace,p_linspace], phi[0,...].imag)
+    intplt1re = interpolate.RegularGridInterpolator([p_linspace,p_linspace], phi[1,...].real)
+    intplt1im = interpolate.RegularGridInterpolator([p_linspace,p_linspace], phi[1,...].imag)
+
+    phi_interp[0,...] = intplt0re((py_interp,px_interp)) + 1j*intplt0im((py_interp,px_interp))
+    phi_interp[1,...] = intplt1re((py_interp,px_interp)) + 1j*intplt1im((py_interp,px_interp))
+
+    return phi_interp
+
+###
+### Prepare initial conditions
+###
+
+x0 = 1.4
+y0 = -2.5
+phi = np.exp(-1j*(x0*space_px + y0*space_py))
+
+phi_bar = phi_to_phi_bar(phi)
+
+pb_array = flatten_for_cy(phi_bar)
+coefs = array('d',[N2,L,m])
+
+t_init = 0.
+t_end = 2.0  # around 15 seconds per 1.0 on N2 = 100
+n_timesteps = 10
+
+t_span = (t_init, t_end)
+timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
+
+###
+### Run solver
+###
+
+t0 = time()
+result = solver(t_span, pb_array, coefs, timesteps)
+te = time()
+print("Mycyrk time: %f"%(te-t0))
+
+print(result.message)
+print("Size of solution: ", result.size)
+
+
+###
+### Render pictures
+###
+
+factor = 1
+stretch = 2
+fps = 50
+cmap1 = plt.get_cmap('binary')
+t0 = time()
+
+p_linspace_interp = np.linspace(p_extent_lo,p_extent_hi,Ntot*factor)
+py_interp, px_interp = np.meshgrid(p_linspace_interp, p_linspace_interp, indexing='ij')
+
+imagesa = []
+imagesb = []
+imagesc = []
+for i in range(n_timesteps):
+
+    sol_phi_bar = cy_to_numpy(result.y[:,i])
+    if factor != 1:
+        sol_phi_bar = complex_interp_phi(sol_phi_bar, py_interp, px_interp)
+    
+    sol_varphi = phi_to_psi(phi_bar_to_phi(sol_phi_bar))[0]
+
+    datac_phi_bar = colorize(sol_phi_bar[0,...], stretch)
+    datac_varphi = colorize(sol_varphi, stretch)
+
+    databs_varphi = abs(sol_varphi)
+    databs_varphi = databs_varphi/np.max(databs_varphi)
+    databs_varphi = cmap1(databs_varphi)
+    if stretch != 1:
+        databs_varphi = np.repeat(np.repeat(databs_varphi,stretch, axis=0), stretch, axis=1)
+
+    imga = Image.fromarray((datac_phi_bar[:, :, :3] * 255).astype(np.uint8))
+    imga = ImageOps.flip(imga)
+    imga.save('./ims/afig%i.png'%i)
+    imagesa.append(imga)
+
+    imgb = Image.fromarray((datac_varphi[:, :, :3] * 255).astype(np.uint8))
+    imgb = ImageOps.flip(imgb)
+    imgb.save('./ims/bfig%i.png'%i)
+    imagesb.append(imgb)
+
+    imgc = Image.fromarray((databs_varphi[:, :, :3] * 255).astype(np.uint8))
+    imgc = ImageOps.flip(imgc)
+    imgc.save('./ims/cfig%i.png'%i)
+    imagesc.append(imgc)
+
+    if (i%20==0):
+        print(i)
+    
+imagesa[0].save("anima.gif", save_all = True, append_images=imagesa[1:], duration = 1/fps*1000, loop=0)
+imagesb[0].save("animb.gif", save_all = True, append_images=imagesb[1:], duration = 1/fps*1000, loop=0)
+imagesc[0].save("animc.gif", save_all = True, append_images=imagesc[1:], duration = 1/fps*1000, loop=0)
+
+# images = []
+# for i in range(n_timesteps):
+#     datac = colorize(phi_to_psi(phi_bar_to_phi(cy_to_numpy(result.y[:,i])))[0], stretch)
+#     img = Image.fromarray((datac[:, :, :3] * 255).astype(np.uint8))
+#     img = ImageOps.flip(img)
+#     img.save('./ims/afig%i.png'%i)
+#     images.append(img)
+#     if (i%20==0):
+#         print(i)
+# images[0].save("anim2.gif", save_all = True, append_images=images[1:], duration = 1/fps*1000, loop=0)
+
+
+# images = []
+# for i in range(n_timesteps):
+#     datac = abs(phi_to_psi(phi_bar_to_phi(cy_to_numpy(result.y[:,i])))[0])
+#     datac = datac/np.max(datac)
+#     datac = cmap1(datac)
+#     datac = np.repeat(np.repeat(datac,stretch, axis=0), stretch, axis=1)
+
+#     img = Image.fromarray((datac[:, :, :3] * 255).astype(np.uint8))
+#     img = ImageOps.flip(img)
+#     img.save('./ims/bfig%i.png'%i)
+#     images.append(img)
+#     if (i%20==0):
+#         print(i)
+# images[0].save("anim3.gif", save_all = True, append_images=images[1:], duration = 1/fps*1000, loop=0)
+
+te = time()
+print("rendering images time: %f"%(te-t0))
+
+###
+### Interpolation
+###
+
+data = cy_to_numpy(result.y[:,5])
+plt.imshow(colorize(data[0,...]))
+plt.show()
+
+p_linspace = np.linspace(p_extent_lo,p_extent_hi,Ntot)
+
+intplt0re = interpolate.RegularGridInterpolator([p_linspace,p_linspace], data[0,...].real)
+intplt0im = interpolate.RegularGridInterpolator([p_linspace,p_linspace], data[0,...].imag)
+intplt1re = interpolate.RegularGridInterpolator([p_linspace,p_linspace], data[1,...].real)
+intplt1im = interpolate.RegularGridInterpolator([p_linspace,p_linspace], data[1,...].imag)
+
+factor = 4
+p_linspace_interp = np.linspace(p_extent_lo,p_extent_hi,Ntot*factor)
+py_interp, px_interp = np.meshgrid(p_linspace_interp, p_linspace_interp, indexing='ij')
+
+datan = intplt0re([py_interp,px_interp]) + 1j*intplt0im([py_interp,px_interp])
+
+print(datan.shape)
+
+plt.imshow(colorize(datan))
+plt.show()
