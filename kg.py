@@ -409,8 +409,8 @@ print('p_extent: ',p_extent_hi)
 
 x0 = L/5
 y0 = -L/3
-px0 = -p_extent_hi*(1/4)
-py0 = p_extent_hi*(2/4)
+px0 = p_extent_hi*(1/4)
+py0 = -p_extent_hi*(2/4)
 a_gauss = 5
 phi = (1+space_l)*np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px - px0)**2 + (space_py - py0)**2))
 phi += (1-space_l)*np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px + px0)**2 + (space_py + py0)**2))
@@ -425,11 +425,8 @@ pb_array = flatten_for_cy(phi_bar)
 coefs = array('d',[N2,L,m])
 
 t_init = 0.
-# t_end = 40.0  # around 15 seconds per 1.0 on N2 = 100
-# n_timesteps = 100
-
-t_end = 2.0  # around 15 seconds per 1.0 on N2 = 100
-n_timesteps = 20
+t_end = 300.0  # around 15 seconds per 1.0 on N2 = 100
+n_timesteps = 600
 
 t_span = (t_init, t_end)
 timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
@@ -451,8 +448,8 @@ print("Size of solution: ", result.size)
 ### Render pictures
 ###
 
-factor = 2
-stretch = 2
+factor = 4
+stretch = 1
 interpolate_phi_bar = False
 fps = 50
 cmap1 = plt.get_cmap('binary')
@@ -545,10 +542,10 @@ for i in range(n_timesteps):
     if (i%2==0):
         print(i)
     
-gif_id = 5
-imagesa[0].save("anim%ia.gif"%gif_id, save_all = True, append_images=imagesa[1:], duration = 1/fps*1000, loop=0)
-imagesb[0].save("anim%ib.gif"%gif_id, save_all = True, append_images=imagesb[1:], duration = 1/fps*1000, loop=0)
-imagesc[0].save("anim%ic.gif"%gif_id, save_all = True, append_images=imagesc[1:], duration = 1/fps*1000, loop=0)
+gif_id = 1
+imagesa[0].save("./gifs/anim%ia.gif"%gif_id, save_all = True, append_images=imagesa[1:], duration = 1/fps*1000, loop=0)
+imagesb[0].save("./gifs/anim%ib.gif"%gif_id, save_all = True, append_images=imagesb[1:], duration = 1/fps*1000, loop=0)
+imagesc[0].save("./gifs/anim%ic.gif"%gif_id, save_all = True, append_images=imagesc[1:], duration = 1/fps*1000, loop=0)
 
 te = time()
 print("rendering images time: %f"%(te-t0))
