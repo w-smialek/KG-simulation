@@ -10,7 +10,7 @@ from time import time
 from scipy import interpolate
 from barcy import barcy
 
-N2 = 150            # max positive/negative mode in px and py
+N2 = 100            # max positive/negative mode in px and py
 Ntot = 2*N2         # Total number of modes in any dimension
 
 ###
@@ -275,6 +275,34 @@ def flatten_for_cy(a):
     a_out = array('d',a_out)
     return a_out
 
+def flatten_for_cycol(a, n, m):
+    '''Convert feshbach - villard representation 2d complex field into a 1D python array,
+    with index = nx * (Ntot x 2 x 2) + ny * (2 x 2) + l * 2 + c '''
+
+    # a_re = a.real.astype(float)
+    # a_im = a.imag.astype(float)
+
+    # a_out = np.zeros((2*n*m,))
+
+    # for nx in range(n):
+    #     for ny in range(m):
+    #         a_out[nx*n*2 + ny*2 +0] = a_re[nx,ny]
+    #         a_out[nx*n*2 + ny*2 +1] = a_im[nx,ny]
+
+    a_out = a.reshape((-1,),order='C')
+    a_out = a_out.view(float).reshape((-1,),order='C')
+    a_out = array('d',a_out)
+    return a_out
+
+def cycol_rgb_to_np(arr, n, m):
+    c_out = np.zeros((n,m,3))
+
+    c_out[...,0] = np.reshape(arr[0::3],(n,m),order="C")
+    c_out[...,1] = np.reshape(arr[1::3],(n,m),order="C")
+    c_out[...,2] = np.reshape(arr[2::3],(n,m),order="C")
+
+    return c_out
+
 def cy_to_numpy(a):
     '''inverse of flatten_for_cy'''
 
@@ -356,8 +384,21 @@ def complex_interp_varphi(varphi, y_interp, x_interp, factor): # ,idtvarphi):
     # idtvarphi_interp = intplt1re((y_interp,x_interp)) + 1j*intplt1im((y_interp,x_interp))
     return varphi_interp#, idtvarphi_interp
 
-def colorpy(arr):
-    return
+def colorpy(z, stretch = 1):
+    n,m = z.shape
+
+    zar = flatten_for_cycol(z,n,m)
+
+    car = array('d',np.zeros((n*m*3,)))
+
+    car = colorize(zar, car, n, m)
+
+    c_out = cycol_rgb_to_np(car,n,m)
+
+    if stretch != 1:
+        c_out = np.repeat(np.repeat(c_out,stretch, axis=0), stretch, axis=1)
+
+    return c_out
 
 ###
 ### Prepare initial conditions
@@ -368,13 +409,13 @@ print('p_extent: ',p_extent_hi)
 
 x0 = L/5
 y0 = -L/3
-px0 = -p_extent_hi*(1/2)
-py0 = p_extent_hi*(1/4)
+px0 = -p_extent_hi*(1/4)
+py0 = p_extent_hi*(2/4)
 a_gauss = 5
 phi = (1+space_l)*np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px - px0)**2 + (space_py - py0)**2))
 phi += (1-space_l)*np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px + px0)**2 + (space_py + py0)**2))
 
-# phi = np.exp(-1j*(0*space_px + 0*space_py))
+# phi = np.exp(-1j*(4*space_px + 4*space_py))
 
 
 phi_bar = phi_to_phi_bar(phi)
@@ -388,7 +429,7 @@ t_init = 0.
 # n_timesteps = 100
 
 t_end = 2.0  # around 15 seconds per 1.0 on N2 = 100
-n_timesteps = 10
+n_timesteps = 20
 
 t_span = (t_init, t_end)
 timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
@@ -440,18 +481,18 @@ for i in range(n_timesteps):
     t00 = time()
     sol_phi_bar = cy_to_numpy(result.y[:,i])
     tee = time()
-    print('transforms1 time: ',tee-t00)
+    # print('transforms1 time: ',tee-t00)
 
     t00 = time()
     sol_phi = phi_bar_to_phi(sol_phi_bar)
     # sol_phi = phi_bar_to_phi_cy(sol_phi_bar)
     tee = time()
-    print('transforms2 time: ',tee-t00)
+    # print('transforms2 time: ',tee-t00)
 
     t00 = time()
     sol_varphi, sol_idtvarphi = phi_to_psi(sol_phi)
     tee = time()
-    print('transforms3 time: ',tee-t00)
+    # print('transforms3 time: ',tee-t00)
 
     t00 = time()
     if factor != 1:
@@ -463,13 +504,13 @@ for i in range(n_timesteps):
         # # sol_varphi = phi_to_psi_interp(sol_phi, spacef_jx, spacef_iy, factor)[0]
         # sol_varphi = phi_to_psi_interp2(sol_phi, px_interp, py_interp, factor)[0]
     tee = time()
-    print('interpolations time: ',tee-t00)
+    # print('interpolations time: ',tee-t00)
 
     t00 = time()
-    datac_phi_bar = colorize(sol_phi_bar[0,...], stretch)
-    datac_varphi = colorize(sol_varphi, stretch)
+    datac_phi_bar = colorpy(sol_phi_bar[0,...], stretch)
+    datac_varphi = colorpy(sol_varphi, stretch)
     tee = time()
-    print('coloring1 time: ',tee-t00)
+    # print('coloring1 time: ',tee-t00)
 
     t00 = time()
     databs_varphi = abs(sol_varphi)
@@ -479,7 +520,7 @@ for i in range(n_timesteps):
     if stretch != 1:
         databs_varphi = np.repeat(np.repeat(databs_varphi,stretch, axis=0), stretch, axis=1)
     tee = time()
-    print('coloring2 time: ',tee-t00)
+    # print('coloring2 time: ',tee-t00)
 
     t00 = time()
     imga = Image.fromarray((datac_phi_bar[:, :, :3] * 255).astype(np.uint8))
@@ -498,7 +539,7 @@ for i in range(n_timesteps):
     imagesc.append(imgc)
 
     tee = time()
-    print('saving images time: ',tee-t00)
+    # print('saving images time: ',tee-t00)
 
 
     if (i%2==0):

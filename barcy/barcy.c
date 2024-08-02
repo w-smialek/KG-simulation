@@ -3,20 +3,17 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "depends": [
-            "hsl.c"
-        ],
+        "depends": [],
         "include_dirs": [
-            ".",
             "C:\\python\\lib\\site-packages\\numpy\\core\\include"
         ],
         "language": "c",
-        "name": "colorize",
+        "name": "barcy",
         "sources": [
-            "./colorize.pyx"
+            "./barcy.pyx"
         ]
     },
-    "module_name": "colorize"
+    "module_name": "barcy"
 }
 END: Cython Metadata */
 
@@ -1236,10 +1233,9 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__colorize
-#define __PYX_HAVE_API__colorize
+#define __PYX_HAVE__barcy
+#define __PYX_HAVE_API__barcy
 /* Early includes */
-#include "hsl.c"
 #include <math.h>
 #include "pythread.h"
 #include <string.h>
@@ -1493,7 +1489,7 @@ static const char *__pyx_filename;
 
 static const char *__pyx_f[] = {
   "<stringsource>",
-  "colorize.pyx",
+  "barcy.pyx",
 };
 /* #### Code section: utility_code_proto_before_types ### */
 /* ForceInitThreads.proto */
@@ -1646,21 +1642,6 @@ struct __pyx_array_obj;
 struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
-
-/* "colorize.pxd":17
- *     rgb struct_hsl_to_rgb(double h, double s, double l)nogil;
- * 
- * ctypedef hsl HSL_             # <<<<<<<<<<<<<<
- * ctypedef rgb RGB_
- */
-typedef struct hsl __pyx_t_8colorize_HSL_;
-
-/* "colorize.pxd":18
- * 
- * ctypedef hsl HSL_
- * ctypedef rgb RGB_             # <<<<<<<<<<<<<<
- */
-typedef struct rgb __pyx_t_8colorize_RGB_;
 
 /* "View.MemoryView":114
  * @cython.collection_type("sequence")
@@ -2749,15 +2730,9 @@ static PyObject *__pyx_memoryviewslice_convert_item_to_object(struct __pyx_memor
 static PyObject *__pyx_memoryviewslice_assign_item_from_object(struct __pyx_memoryviewslice_obj *__pyx_v_self, char *__pyx_v_itemp, PyObject *__pyx_v_value); /* proto*/
 static PyObject *__pyx_memoryviewslice__get_base(struct __pyx_memoryviewslice_obj *__pyx_v_self); /* proto*/
 
-/* Module declarations from "cython.view" */
-
-/* Module declarations from "cython.dataclasses" */
-
-/* Module declarations from "cython" */
-
 /* Module declarations from "libc.math" */
 
-/* Module declarations from "colorize" */
+/* Module declarations from "barcy" */
 static PyObject *__pyx_collections_abc_Sequence = 0;
 static PyObject *generic = 0;
 static PyObject *strided = 0;
@@ -2766,7 +2741,8 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static void __pyx_f_8colorize_cycol(double *, double *, int, int); /*proto*/
+static double __pyx_f_5barcy_ene(double, double, double); /*proto*/
+static void __pyx_f_5barcy_rot(double *, double, double, int); /*proto*/
 static int __pyx_array_allocate_buffer(struct __pyx_array_obj *); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -2804,11 +2780,11 @@ static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, 
 /* #### Code section: typeinfo ### */
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
 /* #### Code section: before_global_var ### */
-#define __Pyx_MODULE_NAME "colorize"
-extern int __pyx_module_is_main_colorize;
-int __pyx_module_is_main_colorize = 0;
+#define __Pyx_MODULE_NAME "barcy"
+extern int __pyx_module_is_main_barcy;
+int __pyx_module_is_main_barcy = 0;
 
-/* Implementation of "colorize" */
+/* Implementation of "barcy" */
 /* #### Code section: global_var ### */
 static PyObject *__pyx_builtin___import__;
 static PyObject *__pyx_builtin_ValueError;
@@ -2822,17 +2798,17 @@ static PyObject *__pyx_builtin_id;
 static PyObject *__pyx_builtin_IndexError;
 /* #### Code section: string_decls ### */
 static const char __pyx_k_[] = ": ";
+static const char __pyx_k_L[] = "L";
 static const char __pyx_k_O[] = "O";
 static const char __pyx_k_c[] = "c";
 static const char __pyx_k_m[] = "m";
-static const char __pyx_k_n[] = "n";
-static const char __pyx_k_z[] = "z";
 static const char __pyx_k__2[] = ".";
 static const char __pyx_k__3[] = "*";
 static const char __pyx_k__6[] = "'";
 static const char __pyx_k__7[] = ")";
 static const char __pyx_k_gc[] = "gc";
 static const char __pyx_k_id[] = "id";
+static const char __pyx_k_n2[] = "n2";
 static const char __pyx_k__22[] = "?";
 static const char __pyx_k_abc[] = "abc";
 static const char __pyx_k_and[] = " and ";
@@ -2853,7 +2829,7 @@ static const char __pyx_k_step[] = "step";
 static const char __pyx_k_stop[] = "stop";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_ASCII[] = "ASCII";
-static const char __pyx_k_c_ptr[] = "c_ptr";
+static const char __pyx_k_barcy[] = "barcy";
 static const char __pyx_k_class[] = "__class__";
 static const char __pyx_k_count[] = "count";
 static const char __pyx_k_error[] = "error";
@@ -2862,7 +2838,6 @@ static const char __pyx_k_index[] = "index";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_shape[] = "shape";
 static const char __pyx_k_start[] = "start";
-static const char __pyx_k_z_ptr[] = "z_ptr";
 static const char __pyx_k_enable[] = "enable";
 static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_format[] = "format";
@@ -2876,15 +2851,16 @@ static const char __pyx_k_update[] = "update";
 static const char __pyx_k_disable[] = "disable";
 static const char __pyx_k_fortran[] = "fortran";
 static const char __pyx_k_memview[] = "memview";
+static const char __pyx_k_phi_bar[] = "phi_bar";
 static const char __pyx_k_Ellipsis[] = "Ellipsis";
 static const char __pyx_k_Sequence[] = "Sequence";
-static const char __pyx_k_colorize[] = "colorize";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_itemsize[] = "itemsize";
 static const char __pyx_k_pyx_type[] = "__pyx_type";
 static const char __pyx_k_register[] = "register";
 static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_TypeError[] = "TypeError";
+static const char __pyx_k_barcy_pyx[] = "barcy.pyx";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_isenabled[] = "isenabled";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
@@ -2896,7 +2872,7 @@ static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_PickleError[] = "PickleError";
 static const char __pyx_k_collections[] = "collections";
-static const char __pyx_k_colorize_pyx[] = "colorize.pyx";
+static const char __pyx_k_phi_bar_ptr[] = "phi_bar_ptr";
 static const char __pyx_k_initializing[] = "_initializing";
 static const char __pyx_k_is_coroutine[] = "_is_coroutine";
 static const char __pyx_k_pyx_checksum[] = "__pyx_checksum";
@@ -2985,7 +2961,7 @@ static void __pyx_memoryviewslice___pyx_pf_15View_dot_MemoryView_16_memoryviewsl
 static PyObject *__pyx_pf___pyx_memoryviewslice___reduce_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf___pyx_memoryviewslice_2__setstate_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_15View_dot_MemoryView___pyx_unpickle_Enum(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_8colorize_colorize(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_z, __Pyx_memviewslice __pyx_v_c, int __pyx_v_n, int __pyx_v_m); /* proto */
+static PyObject *__pyx_pf_5barcy_barcy(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_phi_bar, double __pyx_v_L, double __pyx_v_m, int __pyx_v_n2); /* proto */
 static PyObject *__pyx_tp_new_array(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_Enum(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_memoryview(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -3020,12 +2996,6 @@ typedef struct {
   #if CYTHON_USE_MODULE_STATE
   #endif
   #if CYTHON_USE_MODULE_STATE
-  #endif
-  #if CYTHON_USE_MODULE_STATE
-  #endif
-  #if CYTHON_USE_MODULE_STATE
-  #endif
-  #if CYTHON_USE_MODULE_STATE
   PyObject *__pyx_type___pyx_array;
   PyObject *__pyx_type___pyx_MemviewEnum;
   PyObject *__pyx_type___pyx_memoryview;
@@ -3054,6 +3024,7 @@ typedef struct {
   PyObject *__pyx_kp_s_Indirect_dimensions_not_supporte;
   PyObject *__pyx_kp_u_Invalid_mode_expected_c_or_fortr;
   PyObject *__pyx_kp_u_Invalid_shape_in_axis;
+  PyObject *__pyx_n_s_L;
   PyObject *__pyx_n_s_MemoryError;
   PyObject *__pyx_kp_s_MemoryView_of_r_at_0x_x;
   PyObject *__pyx_kp_s_MemoryView_of_r_object;
@@ -3075,17 +3046,16 @@ typedef struct {
   PyObject *__pyx_n_s_allocate_buffer;
   PyObject *__pyx_kp_u_and;
   PyObject *__pyx_n_s_asyncio_coroutines;
+  PyObject *__pyx_n_s_barcy;
+  PyObject *__pyx_kp_s_barcy_pyx;
   PyObject *__pyx_n_s_base;
   PyObject *__pyx_n_s_c;
   PyObject *__pyx_n_u_c;
-  PyObject *__pyx_n_s_c_ptr;
   PyObject *__pyx_n_s_class;
   PyObject *__pyx_n_s_class_getitem;
   PyObject *__pyx_n_s_cline_in_traceback;
   PyObject *__pyx_n_s_collections;
   PyObject *__pyx_kp_s_collections_abc;
-  PyObject *__pyx_n_s_colorize;
-  PyObject *__pyx_kp_s_colorize_pyx;
   PyObject *__pyx_kp_s_contiguous_and_direct;
   PyObject *__pyx_kp_s_contiguous_and_indirect;
   PyObject *__pyx_n_s_count;
@@ -3116,7 +3086,7 @@ typedef struct {
   PyObject *__pyx_n_s_main;
   PyObject *__pyx_n_s_memview;
   PyObject *__pyx_n_s_mode;
-  PyObject *__pyx_n_s_n;
+  PyObject *__pyx_n_s_n2;
   PyObject *__pyx_n_s_name;
   PyObject *__pyx_n_s_name_2;
   PyObject *__pyx_n_s_ndim;
@@ -3124,6 +3094,8 @@ typedef struct {
   PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
   PyObject *__pyx_n_s_obj;
   PyObject *__pyx_n_s_pack;
+  PyObject *__pyx_n_s_phi_bar;
+  PyObject *__pyx_n_s_phi_bar_ptr;
   PyObject *__pyx_n_s_pickle;
   PyObject *__pyx_n_s_pyx_PickleError;
   PyObject *__pyx_n_s_pyx_checksum;
@@ -3157,8 +3129,6 @@ typedef struct {
   PyObject *__pyx_n_s_unpack;
   PyObject *__pyx_n_s_update;
   PyObject *__pyx_n_s_version_info;
-  PyObject *__pyx_n_s_z;
-  PyObject *__pyx_n_s_z_ptr;
   PyObject *__pyx_int_0;
   PyObject *__pyx_int_1;
   PyObject *__pyx_int_3;
@@ -3251,6 +3221,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_s_Indirect_dimensions_not_supporte);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Invalid_mode_expected_c_or_fortr);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Invalid_shape_in_axis);
+  Py_CLEAR(clear_module_state->__pyx_n_s_L);
   Py_CLEAR(clear_module_state->__pyx_n_s_MemoryError);
   Py_CLEAR(clear_module_state->__pyx_kp_s_MemoryView_of_r_at_0x_x);
   Py_CLEAR(clear_module_state->__pyx_kp_s_MemoryView_of_r_object);
@@ -3272,17 +3243,16 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_allocate_buffer);
   Py_CLEAR(clear_module_state->__pyx_kp_u_and);
   Py_CLEAR(clear_module_state->__pyx_n_s_asyncio_coroutines);
+  Py_CLEAR(clear_module_state->__pyx_n_s_barcy);
+  Py_CLEAR(clear_module_state->__pyx_kp_s_barcy_pyx);
   Py_CLEAR(clear_module_state->__pyx_n_s_base);
   Py_CLEAR(clear_module_state->__pyx_n_s_c);
   Py_CLEAR(clear_module_state->__pyx_n_u_c);
-  Py_CLEAR(clear_module_state->__pyx_n_s_c_ptr);
   Py_CLEAR(clear_module_state->__pyx_n_s_class);
   Py_CLEAR(clear_module_state->__pyx_n_s_class_getitem);
   Py_CLEAR(clear_module_state->__pyx_n_s_cline_in_traceback);
   Py_CLEAR(clear_module_state->__pyx_n_s_collections);
   Py_CLEAR(clear_module_state->__pyx_kp_s_collections_abc);
-  Py_CLEAR(clear_module_state->__pyx_n_s_colorize);
-  Py_CLEAR(clear_module_state->__pyx_kp_s_colorize_pyx);
   Py_CLEAR(clear_module_state->__pyx_kp_s_contiguous_and_direct);
   Py_CLEAR(clear_module_state->__pyx_kp_s_contiguous_and_indirect);
   Py_CLEAR(clear_module_state->__pyx_n_s_count);
@@ -3313,7 +3283,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
   Py_CLEAR(clear_module_state->__pyx_n_s_memview);
   Py_CLEAR(clear_module_state->__pyx_n_s_mode);
-  Py_CLEAR(clear_module_state->__pyx_n_s_n);
+  Py_CLEAR(clear_module_state->__pyx_n_s_n2);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
   Py_CLEAR(clear_module_state->__pyx_n_s_name_2);
   Py_CLEAR(clear_module_state->__pyx_n_s_ndim);
@@ -3321,6 +3291,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_s_no_default___reduce___due_to_non);
   Py_CLEAR(clear_module_state->__pyx_n_s_obj);
   Py_CLEAR(clear_module_state->__pyx_n_s_pack);
+  Py_CLEAR(clear_module_state->__pyx_n_s_phi_bar);
+  Py_CLEAR(clear_module_state->__pyx_n_s_phi_bar_ptr);
   Py_CLEAR(clear_module_state->__pyx_n_s_pickle);
   Py_CLEAR(clear_module_state->__pyx_n_s_pyx_PickleError);
   Py_CLEAR(clear_module_state->__pyx_n_s_pyx_checksum);
@@ -3354,8 +3326,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_unpack);
   Py_CLEAR(clear_module_state->__pyx_n_s_update);
   Py_CLEAR(clear_module_state->__pyx_n_s_version_info);
-  Py_CLEAR(clear_module_state->__pyx_n_s_z);
-  Py_CLEAR(clear_module_state->__pyx_n_s_z_ptr);
   Py_CLEAR(clear_module_state->__pyx_int_0);
   Py_CLEAR(clear_module_state->__pyx_int_1);
   Py_CLEAR(clear_module_state->__pyx_int_3);
@@ -3426,6 +3396,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_s_Indirect_dimensions_not_supporte);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Invalid_mode_expected_c_or_fortr);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Invalid_shape_in_axis);
+  Py_VISIT(traverse_module_state->__pyx_n_s_L);
   Py_VISIT(traverse_module_state->__pyx_n_s_MemoryError);
   Py_VISIT(traverse_module_state->__pyx_kp_s_MemoryView_of_r_at_0x_x);
   Py_VISIT(traverse_module_state->__pyx_kp_s_MemoryView_of_r_object);
@@ -3447,17 +3418,16 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_allocate_buffer);
   Py_VISIT(traverse_module_state->__pyx_kp_u_and);
   Py_VISIT(traverse_module_state->__pyx_n_s_asyncio_coroutines);
+  Py_VISIT(traverse_module_state->__pyx_n_s_barcy);
+  Py_VISIT(traverse_module_state->__pyx_kp_s_barcy_pyx);
   Py_VISIT(traverse_module_state->__pyx_n_s_base);
   Py_VISIT(traverse_module_state->__pyx_n_s_c);
   Py_VISIT(traverse_module_state->__pyx_n_u_c);
-  Py_VISIT(traverse_module_state->__pyx_n_s_c_ptr);
   Py_VISIT(traverse_module_state->__pyx_n_s_class);
   Py_VISIT(traverse_module_state->__pyx_n_s_class_getitem);
   Py_VISIT(traverse_module_state->__pyx_n_s_cline_in_traceback);
   Py_VISIT(traverse_module_state->__pyx_n_s_collections);
   Py_VISIT(traverse_module_state->__pyx_kp_s_collections_abc);
-  Py_VISIT(traverse_module_state->__pyx_n_s_colorize);
-  Py_VISIT(traverse_module_state->__pyx_kp_s_colorize_pyx);
   Py_VISIT(traverse_module_state->__pyx_kp_s_contiguous_and_direct);
   Py_VISIT(traverse_module_state->__pyx_kp_s_contiguous_and_indirect);
   Py_VISIT(traverse_module_state->__pyx_n_s_count);
@@ -3488,7 +3458,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
   Py_VISIT(traverse_module_state->__pyx_n_s_memview);
   Py_VISIT(traverse_module_state->__pyx_n_s_mode);
-  Py_VISIT(traverse_module_state->__pyx_n_s_n);
+  Py_VISIT(traverse_module_state->__pyx_n_s_n2);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
   Py_VISIT(traverse_module_state->__pyx_n_s_name_2);
   Py_VISIT(traverse_module_state->__pyx_n_s_ndim);
@@ -3496,6 +3466,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_s_no_default___reduce___due_to_non);
   Py_VISIT(traverse_module_state->__pyx_n_s_obj);
   Py_VISIT(traverse_module_state->__pyx_n_s_pack);
+  Py_VISIT(traverse_module_state->__pyx_n_s_phi_bar);
+  Py_VISIT(traverse_module_state->__pyx_n_s_phi_bar_ptr);
   Py_VISIT(traverse_module_state->__pyx_n_s_pickle);
   Py_VISIT(traverse_module_state->__pyx_n_s_pyx_PickleError);
   Py_VISIT(traverse_module_state->__pyx_n_s_pyx_checksum);
@@ -3529,8 +3501,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_unpack);
   Py_VISIT(traverse_module_state->__pyx_n_s_update);
   Py_VISIT(traverse_module_state->__pyx_n_s_version_info);
-  Py_VISIT(traverse_module_state->__pyx_n_s_z);
-  Py_VISIT(traverse_module_state->__pyx_n_s_z_ptr);
   Py_VISIT(traverse_module_state->__pyx_int_0);
   Py_VISIT(traverse_module_state->__pyx_int_1);
   Py_VISIT(traverse_module_state->__pyx_int_3);
@@ -3585,12 +3555,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #if CYTHON_USE_MODULE_STATE
 #endif
 #if CYTHON_USE_MODULE_STATE
-#endif
-#if CYTHON_USE_MODULE_STATE
-#endif
-#if CYTHON_USE_MODULE_STATE
-#endif
-#if CYTHON_USE_MODULE_STATE
 #define __pyx_type___pyx_array __pyx_mstate_global->__pyx_type___pyx_array
 #define __pyx_type___pyx_MemviewEnum __pyx_mstate_global->__pyx_type___pyx_MemviewEnum
 #define __pyx_type___pyx_memoryview __pyx_mstate_global->__pyx_type___pyx_memoryview
@@ -3619,6 +3583,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_s_Indirect_dimensions_not_supporte __pyx_mstate_global->__pyx_kp_s_Indirect_dimensions_not_supporte
 #define __pyx_kp_u_Invalid_mode_expected_c_or_fortr __pyx_mstate_global->__pyx_kp_u_Invalid_mode_expected_c_or_fortr
 #define __pyx_kp_u_Invalid_shape_in_axis __pyx_mstate_global->__pyx_kp_u_Invalid_shape_in_axis
+#define __pyx_n_s_L __pyx_mstate_global->__pyx_n_s_L
 #define __pyx_n_s_MemoryError __pyx_mstate_global->__pyx_n_s_MemoryError
 #define __pyx_kp_s_MemoryView_of_r_at_0x_x __pyx_mstate_global->__pyx_kp_s_MemoryView_of_r_at_0x_x
 #define __pyx_kp_s_MemoryView_of_r_object __pyx_mstate_global->__pyx_kp_s_MemoryView_of_r_object
@@ -3640,17 +3605,16 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_allocate_buffer __pyx_mstate_global->__pyx_n_s_allocate_buffer
 #define __pyx_kp_u_and __pyx_mstate_global->__pyx_kp_u_and
 #define __pyx_n_s_asyncio_coroutines __pyx_mstate_global->__pyx_n_s_asyncio_coroutines
+#define __pyx_n_s_barcy __pyx_mstate_global->__pyx_n_s_barcy
+#define __pyx_kp_s_barcy_pyx __pyx_mstate_global->__pyx_kp_s_barcy_pyx
 #define __pyx_n_s_base __pyx_mstate_global->__pyx_n_s_base
 #define __pyx_n_s_c __pyx_mstate_global->__pyx_n_s_c
 #define __pyx_n_u_c __pyx_mstate_global->__pyx_n_u_c
-#define __pyx_n_s_c_ptr __pyx_mstate_global->__pyx_n_s_c_ptr
 #define __pyx_n_s_class __pyx_mstate_global->__pyx_n_s_class
 #define __pyx_n_s_class_getitem __pyx_mstate_global->__pyx_n_s_class_getitem
 #define __pyx_n_s_cline_in_traceback __pyx_mstate_global->__pyx_n_s_cline_in_traceback
 #define __pyx_n_s_collections __pyx_mstate_global->__pyx_n_s_collections
 #define __pyx_kp_s_collections_abc __pyx_mstate_global->__pyx_kp_s_collections_abc
-#define __pyx_n_s_colorize __pyx_mstate_global->__pyx_n_s_colorize
-#define __pyx_kp_s_colorize_pyx __pyx_mstate_global->__pyx_kp_s_colorize_pyx
 #define __pyx_kp_s_contiguous_and_direct __pyx_mstate_global->__pyx_kp_s_contiguous_and_direct
 #define __pyx_kp_s_contiguous_and_indirect __pyx_mstate_global->__pyx_kp_s_contiguous_and_indirect
 #define __pyx_n_s_count __pyx_mstate_global->__pyx_n_s_count
@@ -3681,7 +3645,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
 #define __pyx_n_s_memview __pyx_mstate_global->__pyx_n_s_memview
 #define __pyx_n_s_mode __pyx_mstate_global->__pyx_n_s_mode
-#define __pyx_n_s_n __pyx_mstate_global->__pyx_n_s_n
+#define __pyx_n_s_n2 __pyx_mstate_global->__pyx_n_s_n2
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
 #define __pyx_n_s_name_2 __pyx_mstate_global->__pyx_n_s_name_2
 #define __pyx_n_s_ndim __pyx_mstate_global->__pyx_n_s_ndim
@@ -3689,6 +3653,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_s_no_default___reduce___due_to_non __pyx_mstate_global->__pyx_kp_s_no_default___reduce___due_to_non
 #define __pyx_n_s_obj __pyx_mstate_global->__pyx_n_s_obj
 #define __pyx_n_s_pack __pyx_mstate_global->__pyx_n_s_pack
+#define __pyx_n_s_phi_bar __pyx_mstate_global->__pyx_n_s_phi_bar
+#define __pyx_n_s_phi_bar_ptr __pyx_mstate_global->__pyx_n_s_phi_bar_ptr
 #define __pyx_n_s_pickle __pyx_mstate_global->__pyx_n_s_pickle
 #define __pyx_n_s_pyx_PickleError __pyx_mstate_global->__pyx_n_s_pyx_PickleError
 #define __pyx_n_s_pyx_checksum __pyx_mstate_global->__pyx_n_s_pyx_checksum
@@ -3722,8 +3688,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_unpack __pyx_mstate_global->__pyx_n_s_unpack
 #define __pyx_n_s_update __pyx_mstate_global->__pyx_n_s_update
 #define __pyx_n_s_version_info __pyx_mstate_global->__pyx_n_s_version_info
-#define __pyx_n_s_z __pyx_mstate_global->__pyx_n_s_z
-#define __pyx_n_s_z_ptr __pyx_mstate_global->__pyx_n_s_z_ptr
 #define __pyx_int_0 __pyx_mstate_global->__pyx_int_0
 #define __pyx_int_1 __pyx_mstate_global->__pyx_int_1
 #define __pyx_int_3 __pyx_mstate_global->__pyx_int_3
@@ -17375,26 +17339,60 @@ static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *__
   return __pyx_r;
 }
 
-/* "colorize.pyx":23
- * #     return c
+/* "barcy.pyx":3
+ * from libc.math cimport M_PI, sqrt
  * 
- * cdef void cycol(double* z, double* c, int n, int m)noexcept nogil:             # <<<<<<<<<<<<<<
+ * cdef double ene(double px,double py,double m)noexcept nogil:             # <<<<<<<<<<<<<<
+ *     return sqrt(m*m + px*px + py*py)
  * 
- *     cdef int nx = 0
  */
 
-static void __pyx_f_8colorize_cycol(double *__pyx_v_z, double *__pyx_v_c, int __pyx_v_n, int __pyx_v_m) {
-  int __pyx_v_nx;
-  int __pyx_v_ny;
-  double __pyx_v_zim;
-  double __pyx_v_zre;
-  double __pyx_v_angle;
-  double __pyx_v_b;
-  double __pyx_v_abs_z;
-  __pyx_t_8colorize_RGB_ __pyx_v_rgb_;
+static double __pyx_f_5barcy_ene(double __pyx_v_px, double __pyx_v_py, double __pyx_v_m) {
+  double __pyx_r;
+
+  /* "barcy.pyx":4
+ * 
+ * cdef double ene(double px,double py,double m)noexcept nogil:
+ *     return sqrt(m*m + px*px + py*py)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = sqrt((((__pyx_v_m * __pyx_v_m) + (__pyx_v_px * __pyx_v_px)) + (__pyx_v_py * __pyx_v_py)));
+  goto __pyx_L0;
+
+  /* "barcy.pyx":3
+ * from libc.math cimport M_PI, sqrt
+ * 
+ * cdef double ene(double px,double py,double m)noexcept nogil:             # <<<<<<<<<<<<<<
+ *     return sqrt(m*m + px*px + py*py)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "barcy.pyx":13
+ * #     return U
+ * 
+ * cdef void rot(double* ar,double L,double m,int n2)noexcept nogil:             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int ntot = 2*n2
+ */
+
+static void __pyx_f_5barcy_rot(double *__pyx_v_ar, double __pyx_v_L, double __pyx_v_m, int __pyx_v_n2) {
+  int __pyx_v_ntot;
+  double __pyx_v_px;
+  double __pyx_v_py;
+  double __pyx_v_dbl_nx;
+  double __pyx_v_dbl_ny;
+  int __pyx_v_ix;
+  int __pyx_v_iy;
+  double __pyx_v_ene_val;
+  double __pyx_v_pre_val;
   int __pyx_t_1;
   double __pyx_t_2;
-  double __pyx_t_3;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -17402,128 +17400,145 @@ static void __pyx_f_8colorize_cycol(double *__pyx_v_z, double *__pyx_v_c, int __
   PyGILState_STATE __pyx_gilstate_save;
   #endif
 
-  /* "colorize.pyx":25
- * cdef void cycol(double* z, double* c, int n, int m)noexcept nogil:
+  /* "barcy.pyx":15
+ * cdef void rot(double* ar,double L,double m,int n2)noexcept nogil:
  * 
- *     cdef int nx = 0             # <<<<<<<<<<<<<<
- *     cdef int ny = 0
- *     cdef double zim = 0.
- */
-  __pyx_v_nx = 0;
-
-  /* "colorize.pyx":26
+ *     cdef int ntot = 2*n2             # <<<<<<<<<<<<<<
  * 
- *     cdef int nx = 0
- *     cdef int ny = 0             # <<<<<<<<<<<<<<
- *     cdef double zim = 0.
- *     cdef double zre = 0.
+ *     cdef double px = 0.
  */
-  __pyx_v_ny = 0;
+  __pyx_v_ntot = (2 * __pyx_v_n2);
 
-  /* "colorize.pyx":27
- *     cdef int nx = 0
- *     cdef int ny = 0
- *     cdef double zim = 0.             # <<<<<<<<<<<<<<
- *     cdef double zre = 0.
- *     cdef double angle = 0.
- */
-  __pyx_v_zim = 0.;
-
-  /* "colorize.pyx":28
- *     cdef int ny = 0
- *     cdef double zim = 0.
- *     cdef double zre = 0.             # <<<<<<<<<<<<<<
- *     cdef double angle = 0.
- *     cdef double b = 0.
- */
-  __pyx_v_zre = 0.;
-
-  /* "colorize.pyx":29
- *     cdef double zim = 0.
- *     cdef double zre = 0.
- *     cdef double angle = 0.             # <<<<<<<<<<<<<<
- *     cdef double b = 0.
- *     cdef double abs_z = 0.
- */
-  __pyx_v_angle = 0.;
-
-  /* "colorize.pyx":30
- *     cdef double zre = 0.
- *     cdef double angle = 0.
- *     cdef double b = 0.             # <<<<<<<<<<<<<<
- *     cdef double abs_z = 0.
- *     cdef RGB_ rgb_
- */
-  __pyx_v_b = 0.;
-
-  /* "colorize.pyx":31
- *     cdef double angle = 0.
- *     cdef double b = 0.
- *     cdef double abs_z = 0.             # <<<<<<<<<<<<<<
- *     cdef RGB_ rgb_
+  /* "barcy.pyx":17
+ *     cdef int ntot = 2*n2
  * 
+ *     cdef double px = 0.             # <<<<<<<<<<<<<<
+ *     cdef double py = 0.
+ *     cdef double dbl_nx = 0.
  */
-  __pyx_v_abs_z = 0.;
+  __pyx_v_px = 0.;
 
-  /* "colorize.pyx":34
- *     cdef RGB_ rgb_
+  /* "barcy.pyx":18
  * 
- *     while nx < n:             # <<<<<<<<<<<<<<
- *         ny = 0
- *         while ny < m:
+ *     cdef double px = 0.
+ *     cdef double py = 0.             # <<<<<<<<<<<<<<
+ *     cdef double dbl_nx = 0.
+ *     cdef double dbl_ny = 0.
+ */
+  __pyx_v_py = 0.;
+
+  /* "barcy.pyx":19
+ *     cdef double px = 0.
+ *     cdef double py = 0.
+ *     cdef double dbl_nx = 0.             # <<<<<<<<<<<<<<
+ *     cdef double dbl_ny = 0.
+ *     cdef int ix = 0
+ */
+  __pyx_v_dbl_nx = 0.;
+
+  /* "barcy.pyx":20
+ *     cdef double py = 0.
+ *     cdef double dbl_nx = 0.
+ *     cdef double dbl_ny = 0.             # <<<<<<<<<<<<<<
+ *     cdef int ix = 0
+ *     cdef int iy = 0
+ */
+  __pyx_v_dbl_ny = 0.;
+
+  /* "barcy.pyx":21
+ *     cdef double dbl_nx = 0.
+ *     cdef double dbl_ny = 0.
+ *     cdef int ix = 0             # <<<<<<<<<<<<<<
+ *     cdef int iy = 0
+ *     cdef double ene_val = 0.
+ */
+  __pyx_v_ix = 0;
+
+  /* "barcy.pyx":22
+ *     cdef double dbl_ny = 0.
+ *     cdef int ix = 0
+ *     cdef int iy = 0             # <<<<<<<<<<<<<<
+ *     cdef double ene_val = 0.
+ *     cdef double pre_val = 0.
+ */
+  __pyx_v_iy = 0;
+
+  /* "barcy.pyx":23
+ *     cdef int ix = 0
+ *     cdef int iy = 0
+ *     cdef double ene_val = 0.             # <<<<<<<<<<<<<<
+ *     cdef double pre_val = 0.
+ *     # nx * (Ntot x 2 x 2) + ny * (2 x 2) + l * 2 + c
+ */
+  __pyx_v_ene_val = 0.;
+
+  /* "barcy.pyx":24
+ *     cdef int iy = 0
+ *     cdef double ene_val = 0.
+ *     cdef double pre_val = 0.             # <<<<<<<<<<<<<<
+ *     # nx * (Ntot x 2 x 2) + ny * (2 x 2) + l * 2 + c
+ *     while ix < ntot:
+ */
+  __pyx_v_pre_val = 0.;
+
+  /* "barcy.pyx":26
+ *     cdef double pre_val = 0.
+ *     # nx * (Ntot x 2 x 2) + ny * (2 x 2) + l * 2 + c
+ *     while ix < ntot:             # <<<<<<<<<<<<<<
+ *         iy = 0
+ *         while iy < ntot:
  */
   while (1) {
-    __pyx_t_1 = (__pyx_v_nx < __pyx_v_n);
+    __pyx_t_1 = (__pyx_v_ix < __pyx_v_ntot);
     if (!__pyx_t_1) break;
 
-    /* "colorize.pyx":35
- * 
- *     while nx < n:
- *         ny = 0             # <<<<<<<<<<<<<<
- *         while ny < m:
- *             zre = z[ny*m*2 + nx*2 + 0]
+    /* "barcy.pyx":27
+ *     # nx * (Ntot x 2 x 2) + ny * (2 x 2) + l * 2 + c
+ *     while ix < ntot:
+ *         iy = 0             # <<<<<<<<<<<<<<
+ *         while iy < ntot:
+ *             dbl_nx = <double>(ix - n2)
  */
-    __pyx_v_ny = 0;
+    __pyx_v_iy = 0;
 
-    /* "colorize.pyx":36
- *     while nx < n:
- *         ny = 0
- *         while ny < m:             # <<<<<<<<<<<<<<
- *             zre = z[ny*m*2 + nx*2 + 0]
- *             zim = z[ny*m*2 + nx*2 + 1]
+    /* "barcy.pyx":28
+ *     while ix < ntot:
+ *         iy = 0
+ *         while iy < ntot:             # <<<<<<<<<<<<<<
+ *             dbl_nx = <double>(ix - n2)
+ *             dbl_ny = <double>(iy - n2)
  */
     while (1) {
-      __pyx_t_1 = (__pyx_v_ny < __pyx_v_m);
+      __pyx_t_1 = (__pyx_v_iy < __pyx_v_ntot);
       if (!__pyx_t_1) break;
 
-      /* "colorize.pyx":37
- *         ny = 0
- *         while ny < m:
- *             zre = z[ny*m*2 + nx*2 + 0]             # <<<<<<<<<<<<<<
- *             zim = z[ny*m*2 + nx*2 + 1]
- *             angle = (atan2(zim,zre)/(2*M_PI) + 0.5)
+      /* "barcy.pyx":29
+ *         iy = 0
+ *         while iy < ntot:
+ *             dbl_nx = <double>(ix - n2)             # <<<<<<<<<<<<<<
+ *             dbl_ny = <double>(iy - n2)
+ *             px = 2*M_PI/L*dbl_nx
  */
-      __pyx_v_zre = (__pyx_v_z[((((__pyx_v_ny * __pyx_v_m) * 2) + (__pyx_v_nx * 2)) + 0)]);
+      __pyx_v_dbl_nx = ((double)(__pyx_v_ix - __pyx_v_n2));
 
-      /* "colorize.pyx":38
- *         while ny < m:
- *             zre = z[ny*m*2 + nx*2 + 0]
- *             zim = z[ny*m*2 + nx*2 + 1]             # <<<<<<<<<<<<<<
- *             angle = (atan2(zim,zre)/(2*M_PI) + 0.5)
- *             if angle != angle:
+      /* "barcy.pyx":30
+ *         while iy < ntot:
+ *             dbl_nx = <double>(ix - n2)
+ *             dbl_ny = <double>(iy - n2)             # <<<<<<<<<<<<<<
+ *             px = 2*M_PI/L*dbl_nx
+ *             py = 2*M_PI/L*dbl_ny
  */
-      __pyx_v_zim = (__pyx_v_z[((((__pyx_v_ny * __pyx_v_m) * 2) + (__pyx_v_nx * 2)) + 1)]);
+      __pyx_v_dbl_ny = ((double)(__pyx_v_iy - __pyx_v_n2));
 
-      /* "colorize.pyx":39
- *             zre = z[ny*m*2 + nx*2 + 0]
- *             zim = z[ny*m*2 + nx*2 + 1]
- *             angle = (atan2(zim,zre)/(2*M_PI) + 0.5)             # <<<<<<<<<<<<<<
- *             if angle != angle:
- *                 c[ny*m*3 + nx*3 + 0] = 0.5
+      /* "barcy.pyx":31
+ *             dbl_nx = <double>(ix - n2)
+ *             dbl_ny = <double>(iy - n2)
+ *             px = 2*M_PI/L*dbl_nx             # <<<<<<<<<<<<<<
+ *             py = 2*M_PI/L*dbl_ny
+ *             ene_val = ene(px, py, m)
  */
-      __pyx_t_2 = atan2(__pyx_v_zim, __pyx_v_zre);
-      __pyx_t_3 = (2.0 * M_PI);
-      if (unlikely(__pyx_t_3 == 0)) {
+      __pyx_t_2 = (2.0 * M_PI);
+      if (unlikely(__pyx_v_L == 0)) {
         #ifdef WITH_THREAD
         PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
         #endif
@@ -17531,219 +17546,130 @@ static void __pyx_f_8colorize_cycol(double *__pyx_v_z, double *__pyx_v_c, int __
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(1, 39, __pyx_L1_error)
+        __PYX_ERR(1, 31, __pyx_L1_error)
       }
-      __pyx_v_angle = ((__pyx_t_2 / __pyx_t_3) + 0.5);
+      __pyx_v_px = ((__pyx_t_2 / __pyx_v_L) * __pyx_v_dbl_nx);
 
-      /* "colorize.pyx":40
- *             zim = z[ny*m*2 + nx*2 + 1]
- *             angle = (atan2(zim,zre)/(2*M_PI) + 0.5)
- *             if angle != angle:             # <<<<<<<<<<<<<<
- *                 c[ny*m*3 + nx*3 + 0] = 0.5
- *                 c[ny*m*3 + nx*3 + 1] = 0.5
+      /* "barcy.pyx":32
+ *             dbl_ny = <double>(iy - n2)
+ *             px = 2*M_PI/L*dbl_nx
+ *             py = 2*M_PI/L*dbl_ny             # <<<<<<<<<<<<<<
+ *             ene_val = ene(px, py, m)
+ *             pre_val = 1/(2*sqrt(m*ene_val))
  */
-      __pyx_t_1 = (__pyx_v_angle != __pyx_v_angle);
-      if (__pyx_t_1) {
-
-        /* "colorize.pyx":41
- *             angle = (atan2(zim,zre)/(2*M_PI) + 0.5)
- *             if angle != angle:
- *                 c[ny*m*3 + nx*3 + 0] = 0.5             # <<<<<<<<<<<<<<
- *                 c[ny*m*3 + nx*3 + 1] = 0.5
- *                 c[ny*m*3 + nx*3 + 2] = 0.5
- */
-        (__pyx_v_c[((((__pyx_v_ny * __pyx_v_m) * 3) + (__pyx_v_nx * 3)) + 0)]) = 0.5;
-
-        /* "colorize.pyx":42
- *             if angle != angle:
- *                 c[ny*m*3 + nx*3 + 0] = 0.5
- *                 c[ny*m*3 + nx*3 + 1] = 0.5             # <<<<<<<<<<<<<<
- *                 c[ny*m*3 + nx*3 + 2] = 0.5
- *             else:
- */
-        (__pyx_v_c[((((__pyx_v_ny * __pyx_v_m) * 3) + (__pyx_v_nx * 3)) + 1)]) = 0.5;
-
-        /* "colorize.pyx":43
- *                 c[ny*m*3 + nx*3 + 0] = 0.5
- *                 c[ny*m*3 + nx*3 + 1] = 0.5
- *                 c[ny*m*3 + nx*3 + 2] = 0.5             # <<<<<<<<<<<<<<
- *             else:
- *                 angle = fmod(angle + 0.5, 1.0)
- */
-        (__pyx_v_c[((((__pyx_v_ny * __pyx_v_m) * 3) + (__pyx_v_nx * 3)) + 2)]) = 0.5;
-
-        /* "colorize.pyx":40
- *             zim = z[ny*m*2 + nx*2 + 1]
- *             angle = (atan2(zim,zre)/(2*M_PI) + 0.5)
- *             if angle != angle:             # <<<<<<<<<<<<<<
- *                 c[ny*m*3 + nx*3 + 0] = 0.5
- *                 c[ny*m*3 + nx*3 + 1] = 0.5
- */
-        goto __pyx_L7;
+      __pyx_t_2 = (2.0 * M_PI);
+      if (unlikely(__pyx_v_L == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(1, 32, __pyx_L1_error)
       }
+      __pyx_v_py = ((__pyx_t_2 / __pyx_v_L) * __pyx_v_dbl_ny);
 
-      /* "colorize.pyx":45
- *                 c[ny*m*3 + nx*3 + 2] = 0.5
- *             else:
- *                 angle = fmod(angle + 0.5, 1.0)             # <<<<<<<<<<<<<<
- *                 abs_z = sqrt(zim*zim + zre*zre)
- *                 b = 1.0 - 1.0/(1.0+powf(abs_z,0.3))
+      /* "barcy.pyx":33
+ *             px = 2*M_PI/L*dbl_nx
+ *             py = 2*M_PI/L*dbl_ny
+ *             ene_val = ene(px, py, m)             # <<<<<<<<<<<<<<
+ *             pre_val = 1/(2*sqrt(m*ene_val))
+ * 
  */
-      /*else*/ {
-        __pyx_v_angle = fmod((__pyx_v_angle + 0.5), 1.0);
+      __pyx_v_ene_val = __pyx_f_5barcy_ene(__pyx_v_px, __pyx_v_py, __pyx_v_m);
 
-        /* "colorize.pyx":46
- *             else:
- *                 angle = fmod(angle + 0.5, 1.0)
- *                 abs_z = sqrt(zim*zim + zre*zre)             # <<<<<<<<<<<<<<
- *                 b = 1.0 - 1.0/(1.0+powf(abs_z,0.3))
- *                 if b != b:
+      /* "barcy.pyx":34
+ *             py = 2*M_PI/L*dbl_ny
+ *             ene_val = ene(px, py, m)
+ *             pre_val = 1/(2*sqrt(m*ene_val))             # <<<<<<<<<<<<<<
+ * 
+ *             ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] = ((m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] + (m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0])*pre_val
  */
-        __pyx_v_abs_z = sqrt(((__pyx_v_zim * __pyx_v_zim) + (__pyx_v_zre * __pyx_v_zre)));
-
-        /* "colorize.pyx":47
- *                 angle = fmod(angle + 0.5, 1.0)
- *                 abs_z = sqrt(zim*zim + zre*zre)
- *                 b = 1.0 - 1.0/(1.0+powf(abs_z,0.3))             # <<<<<<<<<<<<<<
- *                 if b != b:
- *                     c[ny*m*3 + nx*3 + 0] = 0.5
- */
-        __pyx_t_3 = (1.0 + powf(__pyx_v_abs_z, 0.3));
-        if (unlikely(__pyx_t_3 == 0)) {
-          #ifdef WITH_THREAD
-          PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
-          #endif
-          PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-          #ifdef WITH_THREAD
-          __Pyx_PyGILState_Release(__pyx_gilstate_save);
-          #endif
-          __PYX_ERR(1, 47, __pyx_L1_error)
-        }
-        __pyx_v_b = (1.0 - (1.0 / __pyx_t_3));
-
-        /* "colorize.pyx":48
- *                 abs_z = sqrt(zim*zim + zre*zre)
- *                 b = 1.0 - 1.0/(1.0+powf(abs_z,0.3))
- *                 if b != b:             # <<<<<<<<<<<<<<
- *                     c[ny*m*3 + nx*3 + 0] = 0.5
- *                     c[ny*m*3 + nx*3 + 1] = 0.5
- */
-        __pyx_t_1 = (__pyx_v_b != __pyx_v_b);
-        if (__pyx_t_1) {
-
-          /* "colorize.pyx":49
- *                 b = 1.0 - 1.0/(1.0+powf(abs_z,0.3))
- *                 if b != b:
- *                     c[ny*m*3 + nx*3 + 0] = 0.5             # <<<<<<<<<<<<<<
- *                     c[ny*m*3 + nx*3 + 1] = 0.5
- *                     c[ny*m*3 + nx*3 + 2] = 0.5
- */
-          (__pyx_v_c[((((__pyx_v_ny * __pyx_v_m) * 3) + (__pyx_v_nx * 3)) + 0)]) = 0.5;
-
-          /* "colorize.pyx":50
- *                 if b != b:
- *                     c[ny*m*3 + nx*3 + 0] = 0.5
- *                     c[ny*m*3 + nx*3 + 1] = 0.5             # <<<<<<<<<<<<<<
- *                     c[ny*m*3 + nx*3 + 2] = 0.5
- *                 else:
- */
-          (__pyx_v_c[((((__pyx_v_ny * __pyx_v_m) * 3) + (__pyx_v_nx * 3)) + 1)]) = 0.5;
-
-          /* "colorize.pyx":51
- *                     c[ny*m*3 + nx*3 + 0] = 0.5
- *                     c[ny*m*3 + nx*3 + 1] = 0.5
- *                     c[ny*m*3 + nx*3 + 2] = 0.5             # <<<<<<<<<<<<<<
- *                 else:
- *                     rgb_ = struct_hsl_to_rgb(angle,0.8,b)
- */
-          (__pyx_v_c[((((__pyx_v_ny * __pyx_v_m) * 3) + (__pyx_v_nx * 3)) + 2)]) = 0.5;
-
-          /* "colorize.pyx":48
- *                 abs_z = sqrt(zim*zim + zre*zre)
- *                 b = 1.0 - 1.0/(1.0+powf(abs_z,0.3))
- *                 if b != b:             # <<<<<<<<<<<<<<
- *                     c[ny*m*3 + nx*3 + 0] = 0.5
- *                     c[ny*m*3 + nx*3 + 1] = 0.5
- */
-          goto __pyx_L8;
-        }
-
-        /* "colorize.pyx":53
- *                     c[ny*m*3 + nx*3 + 2] = 0.5
- *                 else:
- *                     rgb_ = struct_hsl_to_rgb(angle,0.8,b)             # <<<<<<<<<<<<<<
- *                     c[ny*m*3 + nx*3 + 0] = <double>rgb_.r
- *                     c[ny*m*3 + nx*3 + 1] = <double>rgb_.g
- */
-        /*else*/ {
-          __pyx_v_rgb_ = struct_hsl_to_rgb(__pyx_v_angle, 0.8, __pyx_v_b);
-
-          /* "colorize.pyx":54
- *                 else:
- *                     rgb_ = struct_hsl_to_rgb(angle,0.8,b)
- *                     c[ny*m*3 + nx*3 + 0] = <double>rgb_.r             # <<<<<<<<<<<<<<
- *                     c[ny*m*3 + nx*3 + 1] = <double>rgb_.g
- *                     c[ny*m*3 + nx*3 + 2] = <double>rgb_.b
- */
-          (__pyx_v_c[((((__pyx_v_ny * __pyx_v_m) * 3) + (__pyx_v_nx * 3)) + 0)]) = ((double)__pyx_v_rgb_.r);
-
-          /* "colorize.pyx":55
- *                     rgb_ = struct_hsl_to_rgb(angle,0.8,b)
- *                     c[ny*m*3 + nx*3 + 0] = <double>rgb_.r
- *                     c[ny*m*3 + nx*3 + 1] = <double>rgb_.g             # <<<<<<<<<<<<<<
- *                     c[ny*m*3 + nx*3 + 2] = <double>rgb_.b
- *                     # c[ny*m*3 + nx*3 + 0] = hsl_to_rgb(angle,0.8,b)[0]
- */
-          (__pyx_v_c[((((__pyx_v_ny * __pyx_v_m) * 3) + (__pyx_v_nx * 3)) + 1)]) = ((double)__pyx_v_rgb_.g);
-
-          /* "colorize.pyx":56
- *                     c[ny*m*3 + nx*3 + 0] = <double>rgb_.r
- *                     c[ny*m*3 + nx*3 + 1] = <double>rgb_.g
- *                     c[ny*m*3 + nx*3 + 2] = <double>rgb_.b             # <<<<<<<<<<<<<<
- *                     # c[ny*m*3 + nx*3 + 0] = hsl_to_rgb(angle,0.8,b)[0]
- *                     # c[ny*m*3 + nx*3 + 1] = hsl_to_rgb(angle,0.8,b)[1]
- */
-          (__pyx_v_c[((((__pyx_v_ny * __pyx_v_m) * 3) + (__pyx_v_nx * 3)) + 2)]) = ((double)__pyx_v_rgb_.b);
-        }
-        __pyx_L8:;
+      __pyx_t_2 = (2.0 * sqrt((__pyx_v_m * __pyx_v_ene_val)));
+      if (unlikely(__pyx_t_2 == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(1, 34, __pyx_L1_error)
       }
-      __pyx_L7:;
+      __pyx_v_pre_val = (1.0 / __pyx_t_2);
 
-      /* "colorize.pyx":60
- *                     # c[ny*m*3 + nx*3 + 1] = hsl_to_rgb(angle,0.8,b)[1]
- *                     # c[ny*m*3 + nx*3 + 2] = hsl_to_rgb(angle,0.8,b)[2]
- *             ny+=1             # <<<<<<<<<<<<<<
- *         nx+=1
+      /* "barcy.pyx":36
+ *             pre_val = 1/(2*sqrt(m*ene_val))
+ * 
+ *             ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] = ((m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] + (m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0])*pre_val             # <<<<<<<<<<<<<<
+ *             ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] = ((m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] + (m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1])*pre_val
+ *             ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0] = ((m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] + (m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0])*pre_val
+ */
+      (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x0) + 0)]) = ((((__pyx_v_m + __pyx_v_ene_val) * (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x0) + 0)])) + ((__pyx_v_m - __pyx_v_ene_val) * (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x2) + 0)]))) * __pyx_v_pre_val);
+
+      /* "barcy.pyx":37
+ * 
+ *             ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] = ((m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] + (m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0])*pre_val
+ *             ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] = ((m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] + (m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1])*pre_val             # <<<<<<<<<<<<<<
+ *             ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0] = ((m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] + (m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0])*pre_val
+ *             ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1] = ((m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] + (m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1])*pre_val
+ */
+      (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x0) + 1)]) = ((((__pyx_v_m + __pyx_v_ene_val) * (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x0) + 1)])) + ((__pyx_v_m - __pyx_v_ene_val) * (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x2) + 1)]))) * __pyx_v_pre_val);
+
+      /* "barcy.pyx":38
+ *             ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] = ((m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] + (m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0])*pre_val
+ *             ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] = ((m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] + (m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1])*pre_val
+ *             ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0] = ((m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] + (m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0])*pre_val             # <<<<<<<<<<<<<<
+ *             ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1] = ((m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] + (m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1])*pre_val
+ * 
+ */
+      (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x2) + 0)]) = ((((__pyx_v_m - __pyx_v_ene_val) * (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x0) + 0)])) + ((__pyx_v_m + __pyx_v_ene_val) * (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x2) + 0)]))) * __pyx_v_pre_val);
+
+      /* "barcy.pyx":39
+ *             ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] = ((m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] + (m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1])*pre_val
+ *             ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0] = ((m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 0] + (m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 0])*pre_val
+ *             ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1] = ((m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] + (m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1])*pre_val             # <<<<<<<<<<<<<<
+ * 
+ *             iy += 1
+ */
+      (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x2) + 1)]) = ((((__pyx_v_m - __pyx_v_ene_val) * (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x0) + 1)])) + ((__pyx_v_m + __pyx_v_ene_val) * (__pyx_v_ar[((((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2)) + 0x2) + 1)]))) * __pyx_v_pre_val);
+
+      /* "barcy.pyx":41
+ *             ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1] = ((m-ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 0*2 + 1] + (m+ene_val)* ar[ix*ntot*2*2 + iy*2*2 + 1*2 + 1])*pre_val
+ * 
+ *             iy += 1             # <<<<<<<<<<<<<<
+ *         ix += 1
  *     return
  */
-      __pyx_v_ny = (__pyx_v_ny + 1);
+      __pyx_v_iy = (__pyx_v_iy + 1);
     }
 
-    /* "colorize.pyx":61
- *                     # c[ny*m*3 + nx*3 + 2] = hsl_to_rgb(angle,0.8,b)[2]
- *             ny+=1
- *         nx+=1             # <<<<<<<<<<<<<<
+    /* "barcy.pyx":42
+ * 
+ *             iy += 1
+ *         ix += 1             # <<<<<<<<<<<<<<
  *     return
  * 
  */
-    __pyx_v_nx = (__pyx_v_nx + 1);
+    __pyx_v_ix = (__pyx_v_ix + 1);
   }
 
-  /* "colorize.pyx":62
- *             ny+=1
- *         nx+=1
+  /* "barcy.pyx":43
+ *             iy += 1
+ *         ix += 1
  *     return             # <<<<<<<<<<<<<<
  * 
- * def colorize(double[:] z,double[:] c, int n, int m):
+ * # U = 1/(2*sqrt(m*ene(px,py)))*np.array([[m+ene(px,py),m-ene(px,py)],[m-ene(px,py),m+ene(px,py)]])
  */
   goto __pyx_L0;
 
-  /* "colorize.pyx":23
- * #     return c
+  /* "barcy.pyx":13
+ * #     return U
  * 
- * cdef void cycol(double* z, double* c, int n, int m)noexcept nogil:             # <<<<<<<<<<<<<<
+ * cdef void rot(double* ar,double L,double m,int n2)noexcept nogil:             # <<<<<<<<<<<<<<
  * 
- *     cdef int nx = 0
+ *     cdef int ntot = 2*n2
  */
 
   /* function exit code */
@@ -17751,41 +17677,41 @@ static void __pyx_f_8colorize_cycol(double *__pyx_v_z, double *__pyx_v_c, int __
   #ifdef WITH_THREAD
   __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
   #endif
-  __Pyx_WriteUnraisable("colorize.cycol", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("barcy.rot", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   #ifdef WITH_THREAD
   __Pyx_PyGILState_Release(__pyx_gilstate_save);
   #endif
   __pyx_L0:;
 }
 
-/* "colorize.pyx":64
- *     return
+/* "barcy.pyx":48
  * 
- * def colorize(double[:] z,double[:] c, int n, int m):             # <<<<<<<<<<<<<<
  * 
- *     z_ptr = &z[0]
+ * def barcy(double[:] phi_bar,double L,double m,int n2):             # <<<<<<<<<<<<<<
+ * 
+ *     phi_bar_ptr = &phi_bar[0]
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8colorize_1colorize(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5barcy_1barcy(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_8colorize_1colorize = {"colorize", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_8colorize_1colorize, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_8colorize_1colorize(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5barcy_1barcy = {"barcy", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5barcy_1barcy, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5barcy_1barcy(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ) {
-  __Pyx_memviewslice __pyx_v_z = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_v_c = { 0, 0, { 0 }, { 0 }, { 0 } };
-  int __pyx_v_n;
-  int __pyx_v_m;
+  __Pyx_memviewslice __pyx_v_phi_bar = { 0, 0, { 0 }, { 0 }, { 0 } };
+  double __pyx_v_L;
+  double __pyx_v_m;
+  int __pyx_v_n2;
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
@@ -17796,7 +17722,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("colorize (wrapper)", 0);
+  __Pyx_RefNannySetupContext("barcy (wrapper)", 0);
   #if !CYTHON_METH_FASTCALL
   #if CYTHON_ASSUME_SAFE_MACROS
   __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
@@ -17806,7 +17732,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   #endif
   __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
   {
-    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_z,&__pyx_n_s_c,&__pyx_n_s_n,&__pyx_n_s_m,0};
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_phi_bar,&__pyx_n_s_L,&__pyx_n_s_m,&__pyx_n_s_n2,0};
     if (__pyx_kwds) {
       Py_ssize_t kw_args;
       switch (__pyx_nargs) {
@@ -17824,46 +17750,46 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       kw_args = __Pyx_NumKwargs_FASTCALL(__pyx_kwds);
       switch (__pyx_nargs) {
         case  0:
-        if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_z)) != 0)) {
+        if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_phi_bar)) != 0)) {
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 64, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
-        if (likely((values[1] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_c)) != 0)) {
+        if (likely((values[1] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_L)) != 0)) {
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 64, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("colorize", 1, 4, 4, 1); __PYX_ERR(1, 64, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("barcy", 1, 4, 4, 1); __PYX_ERR(1, 48, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
-        if (likely((values[2] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_n)) != 0)) {
+        if (likely((values[2] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_m)) != 0)) {
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 64, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("colorize", 1, 4, 4, 2); __PYX_ERR(1, 64, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("barcy", 1, 4, 4, 2); __PYX_ERR(1, 48, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
-        if (likely((values[3] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_m)) != 0)) {
+        if (likely((values[3] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_n2)) != 0)) {
           (void)__Pyx_Arg_NewRef_FASTCALL(values[3]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 64, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("colorize", 1, 4, 4, 3); __PYX_ERR(1, 64, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("barcy", 1, 4, 4, 3); __PYX_ERR(1, 48, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "colorize") < 0)) __PYX_ERR(1, 64, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "barcy") < 0)) __PYX_ERR(1, 48, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 4)) {
       goto __pyx_L5_argtuple_error;
@@ -17873,14 +17799,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
       values[3] = __Pyx_Arg_FASTCALL(__pyx_args, 3);
     }
-    __pyx_v_z = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_z.memview)) __PYX_ERR(1, 64, __pyx_L3_error)
-    __pyx_v_c = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_c.memview)) __PYX_ERR(1, 64, __pyx_L3_error)
-    __pyx_v_n = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_n == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 64, __pyx_L3_error)
-    __pyx_v_m = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_m == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 64, __pyx_L3_error)
+    __pyx_v_phi_bar = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_phi_bar.memview)) __PYX_ERR(1, 48, __pyx_L3_error)
+    __pyx_v_L = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_L == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L3_error)
+    __pyx_v_m = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_m == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L3_error)
+    __pyx_v_n2 = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_n2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("colorize", 1, 4, 4, __pyx_nargs); __PYX_ERR(1, 64, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("barcy", 1, 4, 4, __pyx_nargs); __PYX_ERR(1, 48, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -17890,17 +17816,15 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __PYX_XCLEAR_MEMVIEW(&__pyx_v_z, 1);
-  __PYX_XCLEAR_MEMVIEW(&__pyx_v_c, 1);
-  __Pyx_AddTraceback("colorize.colorize", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_phi_bar, 1);
+  __Pyx_AddTraceback("barcy.barcy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8colorize_colorize(__pyx_self, __pyx_v_z, __pyx_v_c, __pyx_v_n, __pyx_v_m);
+  __pyx_r = __pyx_pf_5barcy_barcy(__pyx_self, __pyx_v_phi_bar, __pyx_v_L, __pyx_v_m, __pyx_v_n2);
 
   /* function exit code */
-  __PYX_XCLEAR_MEMVIEW(&__pyx_v_z, 1);
-  __PYX_XCLEAR_MEMVIEW(&__pyx_v_c, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_phi_bar, 1);
   {
     Py_ssize_t __pyx_temp;
     for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
@@ -17911,9 +17835,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8colorize_colorize(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_z, __Pyx_memviewslice __pyx_v_c, int __pyx_v_n, int __pyx_v_m) {
-  double *__pyx_v_z_ptr;
-  double *__pyx_v_c_ptr;
+static PyObject *__pyx_pf_5barcy_barcy(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_phi_bar, double __pyx_v_L, double __pyx_v_m, int __pyx_v_n2) {
+  double *__pyx_v_phi_bar_ptr;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   Py_ssize_t __pyx_t_1;
@@ -17922,79 +17845,60 @@ static PyObject *__pyx_pf_8colorize_colorize(CYTHON_UNUSED PyObject *__pyx_self,
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("colorize", 1);
+  __Pyx_RefNannySetupContext("barcy", 1);
 
-  /* "colorize.pyx":66
- * def colorize(double[:] z,double[:] c, int n, int m):
+  /* "barcy.pyx":50
+ * def barcy(double[:] phi_bar,double L,double m,int n2):
  * 
- *     z_ptr = &z[0]             # <<<<<<<<<<<<<<
- *     c_ptr = &c[0]
- *     cycol(z_ptr, c_ptr, n, m)
- */
-  __pyx_t_1 = 0;
-  __pyx_t_2 = -1;
-  if (__pyx_t_1 < 0) {
-    __pyx_t_1 += __pyx_v_z.shape[0];
-    if (unlikely(__pyx_t_1 < 0)) __pyx_t_2 = 0;
-  } else if (unlikely(__pyx_t_1 >= __pyx_v_z.shape[0])) __pyx_t_2 = 0;
-  if (unlikely(__pyx_t_2 != -1)) {
-    __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(1, 66, __pyx_L1_error)
-  }
-  __pyx_v_z_ptr = (&(*((double *) ( /* dim=0 */ (__pyx_v_z.data + __pyx_t_1 * __pyx_v_z.strides[0]) ))));
-
-  /* "colorize.pyx":67
- * 
- *     z_ptr = &z[0]
- *     c_ptr = &c[0]             # <<<<<<<<<<<<<<
- *     cycol(z_ptr, c_ptr, n, m)
+ *     phi_bar_ptr = &phi_bar[0]             # <<<<<<<<<<<<<<
+ *     rot(phi_bar_ptr, L, m, n2)
  * 
  */
   __pyx_t_1 = 0;
   __pyx_t_2 = -1;
   if (__pyx_t_1 < 0) {
-    __pyx_t_1 += __pyx_v_c.shape[0];
+    __pyx_t_1 += __pyx_v_phi_bar.shape[0];
     if (unlikely(__pyx_t_1 < 0)) __pyx_t_2 = 0;
-  } else if (unlikely(__pyx_t_1 >= __pyx_v_c.shape[0])) __pyx_t_2 = 0;
+  } else if (unlikely(__pyx_t_1 >= __pyx_v_phi_bar.shape[0])) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(1, 67, __pyx_L1_error)
+    __PYX_ERR(1, 50, __pyx_L1_error)
   }
-  __pyx_v_c_ptr = (&(*((double *) ( /* dim=0 */ (__pyx_v_c.data + __pyx_t_1 * __pyx_v_c.strides[0]) ))));
+  __pyx_v_phi_bar_ptr = (&(*((double *) ( /* dim=0 */ (__pyx_v_phi_bar.data + __pyx_t_1 * __pyx_v_phi_bar.strides[0]) ))));
 
-  /* "colorize.pyx":68
- *     z_ptr = &z[0]
- *     c_ptr = &c[0]
- *     cycol(z_ptr, c_ptr, n, m)             # <<<<<<<<<<<<<<
+  /* "barcy.pyx":51
  * 
- *     return c
+ *     phi_bar_ptr = &phi_bar[0]
+ *     rot(phi_bar_ptr, L, m, n2)             # <<<<<<<<<<<<<<
+ * 
+ *     return phi_bar
  */
-  __pyx_f_8colorize_cycol(__pyx_v_z_ptr, __pyx_v_c_ptr, __pyx_v_n, __pyx_v_m);
+  __pyx_f_5barcy_rot(__pyx_v_phi_bar_ptr, __pyx_v_L, __pyx_v_m, __pyx_v_n2);
 
-  /* "colorize.pyx":70
- *     cycol(z_ptr, c_ptr, n, m)
+  /* "barcy.pyx":53
+ *     rot(phi_bar_ptr, L, m, n2)
  * 
- *     return c             # <<<<<<<<<<<<<<
+ *     return phi_bar             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_c, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 70, __pyx_L1_error)
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_phi_bar, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "colorize.pyx":64
- *     return
+  /* "barcy.pyx":48
  * 
- * def colorize(double[:] z,double[:] c, int n, int m):             # <<<<<<<<<<<<<<
  * 
- *     z_ptr = &z[0]
+ * def barcy(double[:] phi_bar,double L,double m,int n2):             # <<<<<<<<<<<<<<
+ * 
+ *     phi_bar_ptr = &phi_bar[0]
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("colorize.colorize", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("barcy.barcy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -18139,7 +18043,7 @@ static PyType_Slot __pyx_type___pyx_array_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_array_spec = {
-  "colorize.array",
+  "barcy.array",
   sizeof(struct __pyx_array_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_SEQUENCE,
@@ -18185,7 +18089,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "colorize.""array", /*tp_name*/
+  "barcy.""array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -18345,7 +18249,7 @@ static PyType_Slot __pyx_type___pyx_MemviewEnum_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_MemviewEnum_spec = {
-  "colorize.Enum",
+  "barcy.Enum",
   sizeof(struct __pyx_MemviewEnum_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC,
@@ -18355,7 +18259,7 @@ static PyType_Spec __pyx_type___pyx_MemviewEnum_spec = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "colorize.""Enum", /*tp_name*/
+  "barcy.""Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -18652,7 +18556,7 @@ static PyType_Slot __pyx_type___pyx_memoryview_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_memoryview_spec = {
-  "colorize.memoryview",
+  "barcy.memoryview",
   sizeof(struct __pyx_memoryview_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC,
@@ -18698,7 +18602,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "colorize.""memoryview", /*tp_name*/
+  "barcy.""memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -18850,7 +18754,7 @@ static PyType_Slot __pyx_type___pyx_memoryviewslice_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_memoryviewslice_spec = {
-  "colorize._memoryviewslice",
+  "barcy._memoryviewslice",
   sizeof(struct __pyx_memoryviewslice_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC|Py_TPFLAGS_SEQUENCE,
@@ -18860,7 +18764,7 @@ static PyType_Spec __pyx_type___pyx_memoryviewslice_spec = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "colorize.""_memoryviewslice", /*tp_name*/
+  "barcy.""_memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -18983,6 +18887,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_kp_s_Indirect_dimensions_not_supporte, __pyx_k_Indirect_dimensions_not_supporte, sizeof(__pyx_k_Indirect_dimensions_not_supporte), 0, 0, 1, 0},
     {&__pyx_kp_u_Invalid_mode_expected_c_or_fortr, __pyx_k_Invalid_mode_expected_c_or_fortr, sizeof(__pyx_k_Invalid_mode_expected_c_or_fortr), 0, 1, 0, 0},
     {&__pyx_kp_u_Invalid_shape_in_axis, __pyx_k_Invalid_shape_in_axis, sizeof(__pyx_k_Invalid_shape_in_axis), 0, 1, 0, 0},
+    {&__pyx_n_s_L, __pyx_k_L, sizeof(__pyx_k_L), 0, 0, 1, 1},
     {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
     {&__pyx_kp_s_MemoryView_of_r_at_0x_x, __pyx_k_MemoryView_of_r_at_0x_x, sizeof(__pyx_k_MemoryView_of_r_at_0x_x), 0, 0, 1, 0},
     {&__pyx_kp_s_MemoryView_of_r_object, __pyx_k_MemoryView_of_r_object, sizeof(__pyx_k_MemoryView_of_r_object), 0, 0, 1, 0},
@@ -19004,17 +18909,16 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_allocate_buffer, __pyx_k_allocate_buffer, sizeof(__pyx_k_allocate_buffer), 0, 0, 1, 1},
     {&__pyx_kp_u_and, __pyx_k_and, sizeof(__pyx_k_and), 0, 1, 0, 0},
     {&__pyx_n_s_asyncio_coroutines, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
+    {&__pyx_n_s_barcy, __pyx_k_barcy, sizeof(__pyx_k_barcy), 0, 0, 1, 1},
+    {&__pyx_kp_s_barcy_pyx, __pyx_k_barcy_pyx, sizeof(__pyx_k_barcy_pyx), 0, 0, 1, 0},
     {&__pyx_n_s_base, __pyx_k_base, sizeof(__pyx_k_base), 0, 0, 1, 1},
     {&__pyx_n_s_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 0, 1, 1},
     {&__pyx_n_u_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 1, 0, 1},
-    {&__pyx_n_s_c_ptr, __pyx_k_c_ptr, sizeof(__pyx_k_c_ptr), 0, 0, 1, 1},
     {&__pyx_n_s_class, __pyx_k_class, sizeof(__pyx_k_class), 0, 0, 1, 1},
     {&__pyx_n_s_class_getitem, __pyx_k_class_getitem, sizeof(__pyx_k_class_getitem), 0, 0, 1, 1},
     {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
     {&__pyx_n_s_collections, __pyx_k_collections, sizeof(__pyx_k_collections), 0, 0, 1, 1},
     {&__pyx_kp_s_collections_abc, __pyx_k_collections_abc, sizeof(__pyx_k_collections_abc), 0, 0, 1, 0},
-    {&__pyx_n_s_colorize, __pyx_k_colorize, sizeof(__pyx_k_colorize), 0, 0, 1, 1},
-    {&__pyx_kp_s_colorize_pyx, __pyx_k_colorize_pyx, sizeof(__pyx_k_colorize_pyx), 0, 0, 1, 0},
     {&__pyx_kp_s_contiguous_and_direct, __pyx_k_contiguous_and_direct, sizeof(__pyx_k_contiguous_and_direct), 0, 0, 1, 0},
     {&__pyx_kp_s_contiguous_and_indirect, __pyx_k_contiguous_and_indirect, sizeof(__pyx_k_contiguous_and_indirect), 0, 0, 1, 0},
     {&__pyx_n_s_count, __pyx_k_count, sizeof(__pyx_k_count), 0, 0, 1, 1},
@@ -19045,7 +18949,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
     {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
     {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
-    {&__pyx_n_s_n, __pyx_k_n, sizeof(__pyx_k_n), 0, 0, 1, 1},
+    {&__pyx_n_s_n2, __pyx_k_n2, sizeof(__pyx_k_n2), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
     {&__pyx_n_s_name_2, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},
     {&__pyx_n_s_ndim, __pyx_k_ndim, sizeof(__pyx_k_ndim), 0, 0, 1, 1},
@@ -19053,6 +18957,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
     {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
     {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
+    {&__pyx_n_s_phi_bar, __pyx_k_phi_bar, sizeof(__pyx_k_phi_bar), 0, 0, 1, 1},
+    {&__pyx_n_s_phi_bar_ptr, __pyx_k_phi_bar_ptr, sizeof(__pyx_k_phi_bar_ptr), 0, 0, 1, 1},
     {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
     {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
     {&__pyx_n_s_pyx_checksum, __pyx_k_pyx_checksum, sizeof(__pyx_k_pyx_checksum), 0, 0, 1, 1},
@@ -19086,8 +18992,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_unpack, __pyx_k_unpack, sizeof(__pyx_k_unpack), 0, 0, 1, 1},
     {&__pyx_n_s_update, __pyx_k_update, sizeof(__pyx_k_update), 0, 0, 1, 1},
     {&__pyx_n_s_version_info, __pyx_k_version_info, sizeof(__pyx_k_version_info), 0, 0, 1, 1},
-    {&__pyx_n_s_z, __pyx_k_z, sizeof(__pyx_k_z), 0, 0, 1, 1},
-    {&__pyx_n_s_z_ptr, __pyx_k_z_ptr, sizeof(__pyx_k_z_ptr), 0, 0, 1, 1},
     {0, 0, 0, 0, 0, 0, 0}
   };
   return __Pyx_InitStrings(__pyx_string_tab);
@@ -19251,17 +19155,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__18);
   __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 1, __pyx_L1_error)
 
-  /* "colorize.pyx":64
- *     return
+  /* "barcy.pyx":48
  * 
- * def colorize(double[:] z,double[:] c, int n, int m):             # <<<<<<<<<<<<<<
  * 
- *     z_ptr = &z[0]
+ * def barcy(double[:] phi_bar,double L,double m,int n2):             # <<<<<<<<<<<<<<
+ * 
+ *     phi_bar_ptr = &phi_bar[0]
  */
-  __pyx_tuple__20 = PyTuple_Pack(6, __pyx_n_s_z, __pyx_n_s_c, __pyx_n_s_n, __pyx_n_s_m, __pyx_n_s_z_ptr, __pyx_n_s_c_ptr); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_tuple__20 = PyTuple_Pack(5, __pyx_n_s_phi_bar, __pyx_n_s_L, __pyx_n_s_m, __pyx_n_s_n2, __pyx_n_s_phi_bar_ptr); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(1, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__20);
   __Pyx_GIVEREF(__pyx_tuple__20);
-  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_colorize_pyx, __pyx_n_s_colorize, 64, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_barcy_pyx, __pyx_n_s_barcy, 48, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(1, 48, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -19519,10 +19423,10 @@ static int __Pyx_modinit_function_import_code(void) {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_colorize(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_barcy(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_colorize},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_barcy},
   {0, NULL}
 };
 #endif
@@ -19535,7 +19439,7 @@ namespace {
   #endif
   {
       PyModuleDef_HEAD_INIT,
-      "colorize",
+      "barcy",
       0, /* m_doc */
     #if CYTHON_PEP489_MULTI_PHASE_INIT
       0, /* m_size */
@@ -19583,11 +19487,11 @@ namespace {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initcolorize(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initcolorize(void)
+__Pyx_PyMODINIT_FUNC initbarcy(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initbarcy(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_colorize(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_colorize(void)
+__Pyx_PyMODINIT_FUNC PyInit_barcy(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_barcy(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -19668,7 +19572,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_colorize(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_barcy(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -19691,7 +19595,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_colorize(PyObject *__pyx_pyinit_mo
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'colorize' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'barcy' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -19703,13 +19607,13 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_colorize(PyObject *__pyx_pyinit_mo
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("colorize", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("barcy", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   if (unlikely(!__pyx_m)) __PYX_ERR(1, 1, __pyx_L1_error)
   #elif CYTHON_USE_MODULE_STATE
   __pyx_t_1 = PyModule_Create(&__pyx_moduledef); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   {
     int add_module_result = PyState_AddModule(__pyx_t_1, &__pyx_moduledef);
-    __pyx_t_1 = 0; /* transfer ownership from __pyx_t_1 to "colorize" pseudovariable */
+    __pyx_t_1 = 0; /* transfer ownership from __pyx_t_1 to "barcy" pseudovariable */
     if (unlikely((add_module_result < 0))) __PYX_ERR(1, 1, __pyx_L1_error)
     pystate_addmodule_run = 1;
   }
@@ -19733,7 +19637,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_colorize(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_barcy(void)", 0);
   if (__Pyx_check_binary_version(__PYX_LIMITED_VERSION_HEX, __Pyx_get_runtime_version(), CYTHON_COMPILING_IN_LIMITED_API) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -19771,14 +19675,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_colorize) {
+  if (__pyx_module_is_main_barcy) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name_2, __pyx_n_s_main) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(1, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "colorize")) {
-      if (unlikely((PyDict_SetItemString(modules, "colorize", __pyx_m) < 0))) __PYX_ERR(1, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "barcy")) {
+      if (unlikely((PyDict_SetItemString(modules, "barcy", __pyx_m) < 0))) __PYX_ERR(1, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -20312,22 +20216,22 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Enum, __pyx_t_7) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "colorize.pyx":64
- *     return
+  /* "barcy.pyx":48
  * 
- * def colorize(double[:] z,double[:] c, int n, int m):             # <<<<<<<<<<<<<<
  * 
- *     z_ptr = &z[0]
+ * def barcy(double[:] phi_bar,double L,double m,int n2):             # <<<<<<<<<<<<<<
+ * 
+ *     phi_bar_ptr = &phi_bar[0]
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_8colorize_1colorize, 0, __pyx_n_s_colorize, NULL, __pyx_n_s_colorize, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5barcy_1barcy, 0, __pyx_n_s_barcy, NULL, __pyx_n_s_barcy, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_colorize, __pyx_t_7) < 0) __PYX_ERR(1, 64, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_barcy, __pyx_t_7) < 0) __PYX_ERR(1, 48, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "colorize.pyx":1
- * cimport cython             # <<<<<<<<<<<<<<
- * from colorize cimport struct_rgb_to_hsl, struct_hsl_to_rgb, HSL_, RGB_
+  /* "barcy.pyx":1
+ * from libc.math cimport M_PI, sqrt             # <<<<<<<<<<<<<<
  * 
+ * cdef double ene(double px,double py,double m)noexcept nogil:
  */
   __pyx_t_7 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
@@ -20343,7 +20247,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_7);
   if (__pyx_m) {
     if (__pyx_d && stringtab_initialized) {
-      __Pyx_AddTraceback("init colorize", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init barcy", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     #if !CYTHON_USE_MODULE_STATE
     Py_CLEAR(__pyx_m);
@@ -20357,7 +20261,7 @@ if (!__Pyx_RefNanny) {
     }
     #endif
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init colorize");
+    PyErr_SetString(PyExc_ImportError, "init barcy");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
