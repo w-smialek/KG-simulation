@@ -8,6 +8,7 @@ from ftinterp import ftinterp
 from PIL import Image, ImageOps
 from time import time
 from scipy import interpolate
+from barcy import barcy
 
 N2 = 150            # max positive/negative mode in px and py
 Ntot = 2*N2         # Total number of modes in any dimension
@@ -91,13 +92,36 @@ def t_space_rot_inv(nx,ny):  # phi_bar_p = U_inv(p) @ phi_p
     U = 1/(2*np.sqrt(m*ene(px,py)))*np.array([[m+ene(px,py),ene(px,py)-m],[ene(px,py)-m,m+ene(px,py)]])
     return U
 
+# def phi_bar_to_phi(phi_bar):
+#     phi = np.zeros(phi_bar.shape).astype(complex)
+#     for iy in range(-N2,N2):
+#         for jx in range(-N2,N2):
+#             row = N2 + iy 
+#             col = N2 + jx
+#             phi[:,row,col] = t_space_rot(jx,iy)@phi_bar[:,row,col]
+#     return phi
+
 def phi_bar_to_phi(phi_bar):
-    phi = np.zeros(phi_bar.shape).astype(complex)
-    for iy in range(-N2,N2):
-        for jx in range(-N2,N2):
-            row = N2 + iy 
-            col = N2 + jx
-            phi[:,row,col] = t_space_rot(jx,iy)@phi_bar[:,row,col]
+
+    mplus = 1/(2*np.sqrt(m*ene(space_px[0,...],space_py[0,...])))*(m+ene(space_px[0,...],space_py[0,...]))
+    mminus = 1/(2*np.sqrt(m*ene(space_px[0,...],space_py[0,...])))*(m-ene(space_px[0,...],space_py[0,...]))
+    
+    u_mats = np.zeros((2,2,Ntot,Ntot))
+    u_mats[0,0,...] = mplus
+    u_mats[0,1,...] = mminus
+    u_mats[1,0,...] = mminus
+    u_mats[1,1,...] = mplus
+
+    phi = np.einsum('ijnm,jnm->inm',u_mats,phi_bar)
+
+    return phi
+
+def phi_bar_to_phi_cy(phi_bar):
+    phi_bar = flatten_for_cy(phi_bar)
+
+    phi_bar = barcy.barcy(phi_bar, L, m, N2)
+
+    phi = cy_to_numpy(phi_bar)
     return phi
 
 def phi_bar_to_phi_interp(phi_bar, factor):
@@ -253,17 +277,25 @@ def flatten_for_cy(a):
 
 def cy_to_numpy(a):
     '''inverse of flatten_for_cy'''
-    # a_out_re = np.reshape(a[0::2],(2,Ntot,Ntot),order="F").astype(complex)
-    # a_out_im = np.reshape(a[1::2],(2,Ntot,Ntot),order="F").astype(complex)
 
     a_out_re = np.zeros((2,Ntot,Ntot)).astype(complex)
     a_out_im = np.zeros((2,Ntot,Ntot)).astype(complex)
 
-    for nx in range(Ntot):
-        for ny in range(Ntot):
-            for l in range(2):
-                a_out_re[l,nx,ny] = a[nx*Ntot*2*2 + ny*2*2 + l*2 +0]
-                a_out_im[l,nx,ny] = a[nx*Ntot*2*2 + ny*2*2 + l*2 +1]
+    a_out_re0 = np.reshape(a[0::4],(Ntot,Ntot),order="C").astype(complex)
+    a_out_im0 = np.reshape(a[1::4],(Ntot,Ntot),order="C").astype(complex)
+    a_out_re1 = np.reshape(a[2::4],(Ntot,Ntot),order="C").astype(complex)
+    a_out_im1 = np.reshape(a[3::4],(Ntot,Ntot),order="C").astype(complex)
+
+    a_out_re[0,...] = a_out_re0
+    a_out_re[1,...] = a_out_re1
+    a_out_im[0,...] = a_out_im0
+    a_out_im[1,...] = a_out_im1
+
+    # for nx in range(Ntot):
+    #     for ny in range(Ntot):
+    #         for l in range(2):
+    #             a_out_re[l,nx,ny] = a[nx*Ntot*2*2 + ny*2*2 + l*2 +0]
+    #             a_out_im[l,nx,ny] = a[nx*Ntot*2*2 + ny*2*2 + l*2 +1]
 
     return a_out_re + 1j*a_out_im
 
@@ -324,6 +356,8 @@ def complex_interp_varphi(varphi, y_interp, x_interp, factor): # ,idtvarphi):
     # idtvarphi_interp = intplt1re((y_interp,x_interp)) + 1j*intplt1im((y_interp,x_interp))
     return varphi_interp#, idtvarphi_interp
 
+def colorpy(arr):
+    return
 
 ###
 ### Prepare initial conditions
@@ -410,6 +444,7 @@ for i in range(n_timesteps):
 
     t00 = time()
     sol_phi = phi_bar_to_phi(sol_phi_bar)
+    # sol_phi = phi_bar_to_phi_cy(sol_phi_bar)
     tee = time()
     print('transforms2 time: ',tee-t00)
 
@@ -469,7 +504,7 @@ for i in range(n_timesteps):
     if (i%2==0):
         print(i)
     
-gif_id = 2
+gif_id = 5
 imagesa[0].save("anim%ia.gif"%gif_id, save_all = True, append_images=imagesa[1:], duration = 1/fps*1000, loop=0)
 imagesb[0].save("anim%ib.gif"%gif_id, save_all = True, append_images=imagesb[1:], duration = 1/fps*1000, loop=0)
 imagesc[0].save("anim%ic.gif"%gif_id, save_all = True, append_images=imagesc[1:], duration = 1/fps*1000, loop=0)
