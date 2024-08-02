@@ -3,12 +3,13 @@ import matplotlib.pyplot as plt
 from fastccolor.colorize import colorize
 from array import array
 from cy_solver import solver
+from ftinterp import ftinterp
 # from cy_solver import phi_to_psi_interp_cy
 from PIL import Image, ImageOps
 from time import time
 from scipy import interpolate
 
-N2 = 100            # max positive/negative mode in px and py
+N2 = 150            # max positive/negative mode in px and py
 Ntot = 2*N2         # Total number of modes in any dimension
 
 ###
@@ -16,7 +17,7 @@ Ntot = 2*N2         # Total number of modes in any dimension
 ###
 #
 m = 1.0             # mass in multiples of m_e
-L = 16              # torus half-diameter in x and y in multiples of hbar/(m_e * c)
+L = 40              # torus half-diameter in x and y in multiples of hbar/(m_e * c)
 #                   # (that means THE TOTAL LENGTH IS 2L)
 #
 # time_phys = time_var * hbar/(c^2 * m_e)
@@ -188,6 +189,41 @@ def phi_to_psi_interp2(phi, px_interp, py_interp, factor):
     varphi, idtvarphi = 1/np.sqrt(2)*(psi[0,:,:]+psi[1,:,:]), 1/np.sqrt(2)*(psi[0,:,:]-psi[1,:,:])
     return varphi, idtvarphi
 
+def phi_to_psi_interp2(phi, px_interp, py_interp, factor):
+
+    psi = np.zeros(phi.shape).astype(complex)
+    px2 = np.zeros(phi.shape).astype(complex)
+    py2 = np.zeros(phi.shape).astype(complex)
+
+    px2[0,...] = px_interp
+    px2[1,...] = px_interp
+    py2[0,...] = py_interp
+    py2[1,...] = py_interp
+
+    phi2 = flatten_for_cy_interp(phi, factor)
+    psi2 = flatten_for_cy_interp(psi, factor)
+    px2 = flatten_for_cy_interp(px2, factor)
+    py2 = flatten_for_cy_interp(py2, factor)
+
+    psiar = ftinterp(psi2, phi2, px2, py2, factor, N2, L)
+
+    psi = cy_to_numpy_interp(psiar, factor)
+    # for iy in range(-N2*factor,N2*factor):      # ROWS ARE Y,       FROM ROW     0 -> iy = -N2 -> Y = -L
+    #     for jx in range(-N2*factor,N2*factor):  # COLLUNMS ARE X,   FROM COLLUMN 0 -> jx = -N2 -> X = -L
+    #         for d in range(2):                  # DEPTH IS l,       d = 0 -> l = 1;  d = 1 -> q = -1
+    #             row = N2*factor + iy 
+    #             col = N2*factor + jx
+    #             xx = x(jx/factor)
+    #             yy = x(iy/factor)
+
+    #             ft_ar = phi[d,...] * np.exp(1j*(px_interp*xx + py_interp*yy))
+    #             psi_xy = np.sum(ft_ar)
+    #             psi[d,row,col] = psi_xy
+    #     print(iy)
+
+    varphi, idtvarphi = 1/np.sqrt(2)*(psi[0,:,:]+psi[1,:,:]), 1/np.sqrt(2)*(psi[0,:,:]-psi[1,:,:])
+    return varphi, idtvarphi
+
 
 def psi_to_phi(varphi, idtvarphi):
     phi = np.zeros((2,Ntot,Ntot)).astype(complex)
@@ -261,6 +297,42 @@ def cy_to_numpy(a):
 
     return a_out_re + 1j*a_out_im
 
+def flatten_for_cy_interp(a,factor):
+    '''Convert feshbach - villard representation 2d complex field into a 1D python array,
+    with index = nx * (Ntot x 2 x 2) + ny * (2 x 2) + l * 2 + c '''
+
+    a_re = a.real.astype(float)
+    a_im = a.imag.astype(float)
+
+    ntf = Ntot*factor
+
+    a_out = np.zeros((2*2*ntf*ntf))
+
+    for nx in range(ntf):
+        for ny in range(ntf):
+            for l in range(2):
+                a_out[nx*ntf*2*2 + ny*2*2 + l*2 +0] = a_re[l,nx,ny]
+                a_out[nx*ntf*2*2 + ny*2*2 + l*2 +1] = a_im[l,nx,ny]
+
+    a_out = array('d',a_out)
+    return a_out
+
+def cy_to_numpy_interp(a,factor):
+    '''inverse of flatten_for_cy'''
+
+    ntf = Ntot*factor
+
+    a_out_re = np.zeros((2,ntf,ntf)).astype(complex)
+    a_out_im = np.zeros((2,ntf,ntf)).astype(complex)
+
+    for nx in range(ntf):
+        for ny in range(ntf):
+            for l in range(2):
+                a_out_re[l,nx,ny] = a[nx*ntf*2*2 + ny*2*2 + l*2 +0]
+                a_out_im[l,nx,ny] = a[nx*ntf*2*2 + ny*2*2 + l*2 +1]
+
+    return a_out_re + 1j*a_out_im
+
 p_linspace = np.linspace(p_extent_lo,p_extent_hi,Ntot)
 
 def complex_interp_phi(phi, py_interp, px_interp, factor):
@@ -280,7 +352,7 @@ def complex_interp_phi(phi, py_interp, px_interp, factor):
 
 x0 = 5
 y0 = -3.5
-phi = np.exp(-1j*(x0*space_px + y0*space_py))
+phi = np.exp(-1j*(x0*space_px + y0*space_py) - 0.5*((space_px + 1)**2 + (space_py - 1)**2))
 
 phi_bar = phi_to_phi_bar(phi)
 
@@ -288,8 +360,8 @@ pb_array = flatten_for_cy(phi_bar)
 coefs = array('d',[N2,L,m])
 
 t_init = 0.
-t_end = 0.1  # around 15 seconds per 1.0 on N2 = 100
-n_timesteps = 20
+t_end = 20.0  # around 15 seconds per 1.0 on N2 = 100
+n_timesteps = 100
 
 t_span = (t_init, t_end)
 timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
@@ -311,8 +383,8 @@ print("Size of solution: ", result.size)
 ### Render pictures
 ###
 
-factor = 2
-stretch = 1
+factor = 1
+stretch = 2
 fps = 50
 cmap1 = plt.get_cmap('binary')
 t0 = time()
@@ -338,10 +410,13 @@ for i in range(n_timesteps):
     sol_phi_bar = cy_to_numpy(result.y[:,i])
     if factor != 1:
         sol_phi_bar = complex_interp_phi(sol_phi_bar, py_interp, px_interp, factor)
-    
-    sol_phi = phi_bar_to_phi_interp(sol_phi_bar, factor), spacef_jx, spacef_iy, factor
-    sol_varphi = phi_to_psi_interp(sol_phi, spacef_jx, spacef_iy, factor)[0]
-    # sol_varphi = phi_to_psi_interp_cy(sol_phi, px_interp, py_interp, factor, N2, L)[0]
+        sol_phi = phi_bar_to_phi_interp(sol_phi_bar, factor)#, spacef_jx, spacef_iy, factor
+        # sol_varphi = phi_to_psi_interp(sol_phi, spacef_jx, spacef_iy, factor)[0]
+        sol_varphi = phi_to_psi_interp2(sol_phi, px_interp, py_interp, factor)[0]
+        # sol_varphi = phi_to_psi_interp_cy(sol_phi, px_interp, py_interp, factor, N2, L)[0]
+    else:
+        sol_phi = phi_bar_to_phi(sol_phi_bar)
+        sol_varphi = phi_to_psi(sol_phi)[0]
 
     datac_phi_bar = colorize(sol_phi_bar[0,...], stretch)
     datac_varphi = colorize(sol_varphi, stretch)
@@ -367,68 +442,12 @@ for i in range(n_timesteps):
     imgc.save('./ims/cfig%i.png'%i)
     imagesc.append(imgc)
 
-    if (i%20==0):
+    if (i%2==0):
         print(i)
     
-imagesa[0].save("anima2.gif", save_all = True, append_images=imagesa[1:], duration = 1/fps*1000, loop=0)
-imagesb[0].save("animb2.gif", save_all = True, append_images=imagesb[1:], duration = 1/fps*1000, loop=0)
-imagesc[0].save("animc2.gif", save_all = True, append_images=imagesc[1:], duration = 1/fps*1000, loop=0)
+imagesa[0].save("anima.gif", save_all = True, append_images=imagesa[1:], duration = 1/fps*1000, loop=0)
+imagesb[0].save("animb.gif", save_all = True, append_images=imagesb[1:], duration = 1/fps*1000, loop=0)
+imagesc[0].save("animc.gif", save_all = True, append_images=imagesc[1:], duration = 1/fps*1000, loop=0)
 
 te = time()
 print("rendering images time: %f"%(te-t0))
-
-###
-###
-###
-
-def complex_interp_phi(phi, py_interp, px_interp, factor):
-    phi_interp = np.zeros((2,Ntot*factor,Ntot*factor)).astype(complex)
-    intplt0re = interpolate.RegularGridInterpolator([p_linspace,p_linspace], phi[0,...].real)
-    intplt0im = interpolate.RegularGridInterpolator([p_linspace,p_linspace], phi[0,...].imag)
-    intplt1re = interpolate.RegularGridInterpolator([p_linspace,p_linspace], phi[1,...].real)
-    intplt1im = interpolate.RegularGridInterpolator([p_linspace,p_linspace], phi[1,...].imag)
-
-    phi_interp[0,...] = intplt0re((py_interp,px_interp)) + 1j*intplt0im((py_interp,px_interp))
-    phi_interp[1,...] = intplt1re((py_interp,px_interp)) + 1j*intplt1im((py_interp,px_interp))
-    return phi_interp
-
-
-# def phi_to_psi_interp(phi, spacef_jx, spacef_iy, factor):
-#     psi = np.zeros(phi.shape).astype(complex)
-
-#     for d in range(2):
-#         psi[d,...] = (Ntot*factor)**2*np.fft.ifft2(phi[d,...])*np.exp(1j*np.pi*(spacef_jx+spacef_iy)[0,...])
-#         psi[d,...] = np.roll(psi[d,...],(N2*factor,N2*factor),(0,1))
-
-#     varphi, idtvarphi = 1/np.sqrt(2)*(psi[0,:,:]+psi[1,:,:]), 1/np.sqrt(2)*(psi[0,:,:]-psi[1,:,:])
-#     return varphi, idtvarphi
-
-# phi = np.exp(1j*(2*space_px - 1*space_py))
-
-plt.imshow(colorize(phi[0,...]))
-plt.show()
-
-phi_interp = complex_interp_phi(phi, py_interp, px_interp, factor)
-
-plt.imshow(colorize(phi_interp[0,...]))
-plt.show()
-
-varphi_interp, _ = phi_to_psi_interp(phi_interp, spacef_jx, spacef_iy, factor)
-varphi_interp2, _ = phi_to_psi_interp2(phi_interp, px_interp, py_interp, factor)
-
-plt.imshow(colorize(varphi_interp))
-plt.show()
-plt.imshow(abs(varphi_interp))
-plt.show()
-
-plt.imshow(colorize(varphi_interp2))
-plt.show()
-plt.imshow(abs(varphi_interp2))
-plt.show()
-
-varphi, _ = phi_to_psi(phi)
-
-plt.imshow(colorize(varphi))
-plt.show()
-plt.imshow(abs(varphi))
-plt.show()

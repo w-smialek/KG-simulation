@@ -4,11 +4,11 @@
 #include <limits>
 
 // Pre-processor constants
-static const int Y_LIMIT      = 200000;
+static const int Y_LIMIT      = 500000;
 // DONT USE EXTRA OUTPUT AND SET DY_LIMIT = Y_LIMIT
-static const int DY_LIMIT     = 200000;  // dy limit is defined by Y_LIMIT and number of extra output allowed. Typically we allow 2x the Y_LIMIT.
+static const int DY_LIMIT     = 500000;  // dy limit is defined by Y_LIMIT and number of extra output allowed. Typically we allow 2x the Y_LIMIT.
 static const int MESSAGE_SIZE = 128;
-static const int BUFFER_SIZE  = 32;
+static const int BUFFER_SIZE  = 16;
 
 // Integration Constants
 // Multiply steps computed from asymptotic behaviour of errors by this.
