@@ -8,9 +8,9 @@ from libc.stdio cimport printf
   
 from mycyrk.cy.cysolverNew cimport cysolve_ivp, DiffeqFuncType, WrapCySolverResult, CySolveOutput, PreEvalFunc, RK45_METHOD_INT, RK23_METHOD_INT
 
-cdef double m = 1.0               # mass in multiples of m_e
+cdef double m = 0.2               # mass in multiples of m_e
 
-cdef double L = 40.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
+cdef double L = 200.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
 # cdef int N2 = 50                  # max positive/negative mode in px and py   # max 41
 # cdef int Ntot = 2*N2+1            # Total number of modes in one dimension
 
@@ -93,8 +93,8 @@ def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps):
         y0_ptr,
         num_y,
         method = RK45_METHOD_INT,
-        rtol = 1.0e-9,
-        atol = 1.0e-10,
+        rtol = 1.0e-7,
+        atol = 1.0e-8,
         args_ptr = args_ptr,
         num_extra = 0,
         max_num_steps = 0,

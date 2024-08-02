@@ -21443,8 +21443,8 @@ static PyObject *__pyx_pf_9cy_solver_solver(CYTHON_UNUSED PyObject *__pyx_self, 
  */
   __pyx_t_10.__pyx_n = 16;
   __pyx_t_10.method = RK45_METHOD_INT;
-  __pyx_t_10.rtol = 1.0e-9;
-  __pyx_t_10.atol = 1.0e-10;
+  __pyx_t_10.rtol = 1.0e-7;
+  __pyx_t_10.atol = 1.0e-8;
   __pyx_t_10.args_ptr = __pyx_v_args_ptr;
   __pyx_t_10.num_extra = 0;
   __pyx_t_10.max_num_steps = 0;
@@ -23950,20 +23950,20 @@ if (!__Pyx_RefNanny) {
   /* "cy_solver.pyx":11
  * from mycyrk.cy.cysolverNew cimport cysolve_ivp, DiffeqFuncType, WrapCySolverResult, CySolveOutput, PreEvalFunc, RK45_METHOD_INT, RK23_METHOD_INT
  * 
- * cdef double m = 1.0               # mass in multiples of m_e             # <<<<<<<<<<<<<<
+ * cdef double m = 0.2               # mass in multiples of m_e             # <<<<<<<<<<<<<<
  * 
- * cdef double L = 40.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
+ * cdef double L = 200.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)
  */
-  __pyx_v_9cy_solver_m = 1.0;
+  __pyx_v_9cy_solver_m = 0.2;
 
   /* "cy_solver.pyx":13
- * cdef double m = 1.0               # mass in multiples of m_e
+ * cdef double m = 0.2               # mass in multiples of m_e
  * 
- * cdef double L = 40.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)             # <<<<<<<<<<<<<<
+ * cdef double L = 200.0              # length of 1-sphere in x and y in multiples of hbar/(m_e c)             # <<<<<<<<<<<<<<
  * # cdef int N2 = 50                  # max positive/negative mode in px and py   # max 41
  * # cdef int Ntot = 2*N2+1            # Total number of modes in one dimension
  */
-  __pyx_v_9cy_solver_L = 40.0;
+  __pyx_v_9cy_solver_L = 200.0;
 
   /* "cy_solver.pyx":62
  *         ix += 1
