@@ -2,9 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from fastccolor.colorize import colorize
 from array import array
-from cy_solver import solver
-from ftinterp import ftinterp
-# from cy_solver import phi_to_psi_interp_cy
+from cy_solver_field import solver
 from PIL import Image, ImageOps
 from time import time
 from scipy import interpolate
@@ -142,6 +140,19 @@ def phi_to_psi(phi):
 
     varphi, idtvarphi = 1/np.sqrt(2)*(psi[0,:,:]+psi[1,:,:]), 1/np.sqrt(2)*(psi[0,:,:]-psi[1,:,:])
     return varphi, idtvarphi
+
+def psi_to_rho(varphi, idtvarphi):
+
+    n,m = varphi.shape
+
+    psi = np.zeros((2,n,m)).astype(complex)
+    psi[0,...] = 1/np.sqrt(2)*(varphi+idtvarphi)
+    psi[1,...] = 1/np.sqrt(2)*(varphi-idtvarphi)
+
+    rho = np.abs(psi[0,...])**2 - np.abs(psi[1,...])**2
+    
+    return rho
+
 
 def phi_to_psi_interp(phi, spacef_jx, spacef_iy, factor):
     psi = np.zeros(phi.shape).astype(complex)
@@ -336,33 +347,75 @@ def colorpy(z, stretch = 1):
 print('Length: ',L)
 print('p_extent: ',p_extent_hi)
 
-x0 = L/5
-y0 = -L/3
-px0 = p_extent_hi*(1/4)
-py0 = -p_extent_hi*(2/4)
-a_gauss = 5
-phi = (1+space_l)*np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px - px0)**2 + (space_py - py0)**2))
-phi += (1-space_l)*np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px + px0)**2 + (space_py + py0)**2))
+x0 = -L/2
+y0 = -L/4
+px0 = -p_extent_hi*(1/4)
+py0 = -p_extent_hi*(1/16)
+a_gauss = 7
+phi = np.zeros((2,Ntot,Ntot)).astype(complex)
+phi[0,...] = (np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px + px0)**2 + (space_py + py0)**2)))[0,...]
+phi[1,...] = (np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px - px0)**2 + (space_py - py0)**2)))[0,...]
+
+# phi += (1-space_l)*np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px - px0)**2 + (space_py - py0)**2))
+
+# phi += (1-space_l)*np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px + px0)**2 + (space_py + py0)**2))
 
 # phi = np.exp(-1j*(4*space_px + 4*space_py))
 
 
-phi_bar = phi_to_phi_bar(phi)
+# phi_bar = phi_to_phi_bar(phi)
 phi_bar = phi
 
 pb_array = flatten_for_cy(phi_bar)
-coefs = array('d',[N2,L,m])
 
 t_init = 0.
-t_end = 300.0  # around 15 seconds per 1.0 on N2 = 100
-n_timesteps = 60
+t_end = 1500.0  # around 15 seconds per 1.0 on N2 = 100
+n_timesteps = 500
 
 t_span = (t_init, t_end)
 timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
 
 ###
+### Potential
+###
+
+pot_nx = 0
+pot_ny = 1
+pot_val = 0.1
+
+pot = np.zeros((Ntot,Ntot))
+pot[N2+pot_ny, N2 + pot_nx] = pot_val
+pot[N2-pot_ny, N2 - pot_nx] = pot_val
+
+pot_pos_space = np.zeros(phi.shape).astype(complex)
+pot_pos_space = Ntot**2*np.fft.ifft2(pot)*np.exp(1j*np.pi*(space_jx+space_iy)[0,...])
+pot_pos_space = np.roll(pot_pos_space,(N2,N2),(0,1))
+
+plt.imshow(pot_pos_space.real, origin='lower', extent=x_extent)
+plt.show()
+
+### vpot
+
+vpot_nx = 0
+vpot_ny = 0
+vpot_val = 0.0
+
+pot = np.zeros((Ntot,Ntot))
+pot[N2+vpot_ny, N2 + vpot_nx] = vpot_val
+pot[N2-vpot_ny, N2 - vpot_nx] = vpot_val
+
+pot_pos_space = np.zeros(phi.shape).astype(complex)
+pot_pos_space = Ntot**2*np.fft.ifft2(pot)*np.exp(1j*np.pi*(space_jx+space_iy)[0,...])
+pot_pos_space = np.roll(pot_pos_space,(N2,N2),(0,1))
+
+plt.imshow(pot_pos_space.real, origin='lower', extent=x_extent)
+plt.show()
+
+###
 ### Run solver
 ###
+
+coefs = array('d',[N2,pot_val, pot_ny, pot_nx, vpot_val, vpot_ny, vpot_nx])
 
 t0 = time()
 result = solver(t_span, pb_array, coefs, timesteps)
@@ -382,8 +435,9 @@ stretch = 1
 pb_complex_plot = False
 vp_complex_plot = False
 vp_abs_plot = False
+charge_plot = True
 fps = 30
-cmap1 = plt.get_cmap('binary')
+cmap1 = plt.get_cmap('seismic')
 t0 = time()
 
 p_linspace_interp = np.linspace(p_extent_lo,p_extent_hi,Ntot*factor)
@@ -404,6 +458,7 @@ for iy in interp_range:       # ROWS ARE Y,       FROM ROW     0 -> iy = -N2 -> 
 imagesa = []
 imagesb = []
 imagesc = []
+imagesd = []
 for i in range(n_timesteps):
 
     sol_phi_bar = cy_to_numpy(result.y[:,i])
@@ -415,8 +470,10 @@ for i in range(n_timesteps):
     if factor != 1:
         if pb_complex_plot:
             sol_phi_bar = complex_interp_phi(sol_phi_bar, py_interp, px_interp, factor)
-        if vp_complex_plot or vp_abs_plot:
+        if vp_complex_plot or vp_abs_plot or charge_plot:
             sol_varphi = complex_interp_varphi(sol_varphi, x_interp, y_interp, factor)
+        if charge_plot:
+            sol_idtvarphi = complex_interp_varphi(sol_idtvarphi, x_interp, y_interp, factor)
 
     if pb_complex_plot:
         datac_phi_bar = colorpy(sol_phi_bar[0,...], stretch)
@@ -445,17 +502,34 @@ for i in range(n_timesteps):
         imgc = ImageOps.flip(imgc)
         imgc.save('./ims/cfig%i.png'%i)
         imagesc.append(imgc)
+        # print(np.sum(abs(sol_varphi)))
 
-    if (i%10==0):
+    if charge_plot:
+        data_charge = psi_to_rho(sol_varphi, sol_idtvarphi)
+        data_charge += np.max(data_charge)
+        data_charge = data_charge/np.max(data_charge)
+        data_charge = cmap1(data_charge)
+        data_charge = np.repeat(np.repeat(data_charge,stretch, axis=0), stretch, axis=1)
+
+        imgd = Image.fromarray((data_charge[:, :, :3] * 255).astype(np.uint8))
+        imgd = ImageOps.flip(imgd)
+        imgd.save('./ims/dfig%i.png'%i)
+        imagesd.append(imgd)
+        # print('total charge: ',np.sum(data_charge))
+        # print('total abs charge: ',np.sum(np.abs(data_charge)))
+
+    if (i%20==0):
         print(i)
     
-gif_id = 8
+gif_id = 3
 if pb_complex_plot:
     imagesa[0].save("./gifs/anim%ia.gif"%gif_id, save_all = True, append_images=imagesa[1:], duration = 1/fps*1000, loop=0)
 if vp_complex_plot:
     imagesb[0].save("./gifs/anim%ib.gif"%gif_id, save_all = True, append_images=imagesb[1:], duration = 1/fps*1000, loop=0)
 if vp_abs_plot:
     imagesc[0].save("./gifs/anim%ic.gif"%gif_id, save_all = True, append_images=imagesc[1:], duration = 1/fps*1000, loop=0)
+if charge_plot:
+    imagesd[0].save("./gifs/anim%id.gif"%gif_id, save_all = True, append_images=imagesd[1:], duration = 1/fps*1000, loop=0)
 
 te = time()
 print("rendering images time: %f"%(te-t0))
