@@ -3,12 +3,10 @@ import matplotlib.pyplot as plt
 from fastccolor.colorize import colorize
 from array import array
 from cy_solver import solver
-from ftinterp import ftinterp
 # from cy_solver import phi_to_psi_interp_cy
 from PIL import Image, ImageOps
 from time import time
 from scipy import interpolate
-from barcy import barcy
 
 N2 = 100            # max positive/negative mode in px and py
 Ntot = 2*N2         # Total number of modes in any dimension
@@ -105,14 +103,6 @@ def phi_bar_to_phi(phi_bar):
 
     phi = np.einsum('ijnm,jnm->inm',u_mats,phi_bar)
 
-    return phi
-
-def phi_bar_to_phi_cy(phi_bar):
-    phi_bar = flatten_for_cy(phi_bar)
-
-    phi_bar = barcy.barcy(phi_bar, L, m, N2)
-
-    phi = cy_to_numpy(phi_bar)
     return phi
 
 def phi_bar_to_phi_interp(phi_bar, factor):

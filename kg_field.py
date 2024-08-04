@@ -6,9 +6,8 @@ from cy_solver_field import solver
 from PIL import Image, ImageOps
 from time import time
 from scipy import interpolate
-from barcy import barcy
 
-N2 = 100            # max positive/negative mode in px and py
+N2 = 70            # max positive/negative mode in px and py
 Ntot = 2*N2         # Total number of modes in any dimension
 
 ###
@@ -103,14 +102,6 @@ def phi_bar_to_phi(phi_bar):
 
     phi = np.einsum('ijnm,jnm->inm',u_mats,phi_bar)
 
-    return phi
-
-def phi_bar_to_phi_cy(phi_bar):
-    phi_bar = flatten_for_cy(phi_bar)
-
-    phi_bar = barcy.barcy(phi_bar, L, m, N2)
-
-    phi = cy_to_numpy(phi_bar)
     return phi
 
 def phi_bar_to_phi_interp(phi_bar, factor):
@@ -369,8 +360,8 @@ phi_bar = phi
 pb_array = flatten_for_cy(phi_bar)
 
 t_init = 0.
-t_end = 1500.0  # around 15 seconds per 1.0 on N2 = 100
-n_timesteps = 500
+t_end = 500.0  # around 15 seconds per 1.0 on N2 = 100
+n_timesteps = 50
 
 t_span = (t_init, t_end)
 timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
@@ -379,8 +370,8 @@ timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
 ### Potential
 ###
 
-pot_nx = 0
-pot_ny = 1
+pot_nx = 1
+pot_ny = 0
 pot_val = 0.1
 
 pot = np.zeros((Ntot,Ntot))
@@ -398,7 +389,7 @@ plt.show()
 
 vpot_nx = 0
 vpot_ny = 0
-vpot_val = 0.0
+vpot_val = 0.1
 
 pot = np.zeros((Ntot,Ntot))
 pot[N2+vpot_ny, N2 + vpot_nx] = vpot_val
@@ -430,11 +421,11 @@ print("Size of solution: ", result.size)
 ### Render pictures
 ###
 
-factor = 4
+factor = 2
 stretch = 1
 pb_complex_plot = False
 vp_complex_plot = False
-vp_abs_plot = False
+vp_abs_plot = True
 charge_plot = True
 fps = 30
 cmap1 = plt.get_cmap('seismic')
@@ -521,7 +512,7 @@ for i in range(n_timesteps):
     if (i%20==0):
         print(i)
     
-gif_id = 3
+gif_id = 1
 if pb_complex_plot:
     imagesa[0].save("./gifs/anim%ia.gif"%gif_id, save_all = True, append_images=imagesa[1:], duration = 1/fps*1000, loop=0)
 if vp_complex_plot:

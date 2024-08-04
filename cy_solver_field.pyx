@@ -5,6 +5,7 @@ from cpython cimport array
 import array
 from libc.math cimport sqrt, M_PI, fabs, sqrt
 from libc.stdio cimport printf
+from libc.stdlib cimport exit
   
 from mycyrk.cy.cysolverNew cimport cysolve_ivp, DiffeqFuncType, WrapCySolverResult, CySolveOutput, PreEvalFunc, RK45_METHOD_INT, RK23_METHOD_INT
 
@@ -66,25 +67,31 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
     # For the beginning, our potential will be a plane wave with modes nx, ny
     # Then 
 
-    # cdef double pot = args_as_dbls[1]
-    # cdef int pot_nx = <int>args_as_dbls[2]
-    # cdef int pot_ny = <int>args_as_dbls[3]
-
-    # # Vector potential for now is also a single mode in direction x
-
-    # cdef double vpot = args_as_dbls[4]
-    # cdef int vpot_nx = <int>args_as_dbls[5]
-    # cdef int vpot_ny = <int>args_as_dbls[6]
-
-    cdef double pot = 0.2
-    cdef int pot_nx = 1
-    cdef int pot_ny = 0
+    cdef double pot = <double>args_as_dbls[1]
+    cdef int pot_nx = <int>args_as_dbls[2]
+    cdef int pot_ny = <int>args_as_dbls[3]
 
     # Vector potential for now is also a single mode in direction x
 
-    cdef double vpot = 0.0
-    cdef int vpot_nx = 0
-    cdef int vpot_ny = 1
+    cdef double vpot = <double>args_as_dbls[4]
+    cdef int vpot_nx = <int>args_as_dbls[5]
+    cdef int vpot_ny = <int>args_as_dbls[6]
+
+    # cdef double pot = 0.1
+    # cdef int pot_nx = 1
+    # cdef int pot_ny = 0
+
+    # # Vector potential for now is also a single mode in direction x
+
+    # cdef double vpot = 0.1
+    # cdef int vpot_nx = 0
+    # cdef int vpot_ny = 0
+
+    # printf("%i \n", n2)
+    # printf("%f %f \n", pot, vpot)
+    # printf("%i %i %i %i \n", pot_nx, pot_ny, vpot_nx, vpot_ny)
+
+    # exit(0)
 
     ###
 
@@ -172,7 +179,7 @@ def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps):
     cdef double* timesteps_ptr = &c_timesteps[0]
 
     # Assume constant args
-    cdef double[3] args = [coef[0], coef[1], dbl_num_y]
+    cdef double[7] args = [coef[0], coef[1], coef[2], coef[3], coef[4], coef[5], coef[6]]
     cdef double* args_dbl_ptr = &args[0]
     # Need to cast the arg double pointer to void
     cdef void* args_ptr = <void*>args_dbl_ptr
