@@ -360,8 +360,8 @@ phi_bar = phi
 pb_array = flatten_for_cy(phi_bar)
 
 t_init = 0.
-t_end = 500.0  # around 15 seconds per 1.0 on N2 = 100
-n_timesteps = 50
+t_end = 1000.0  # around 15 seconds per 1.0 on N2 = 100
+n_timesteps = 160
 
 t_span = (t_init, t_end)
 timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
@@ -370,8 +370,8 @@ timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
 ### Potential
 ###
 
-pot_nx = 1
-pot_ny = 0
+pot_nx = 0
+pot_ny = 1
 pot_val = 0.1
 
 pot = np.zeros((Ntot,Ntot))
@@ -387,9 +387,9 @@ plt.show()
 
 ### vpot
 
-vpot_nx = 0
-vpot_ny = 0
-vpot_val = 0.1
+vpot_nx = 1
+vpot_ny = 1
+vpot_val = 0.0
 
 pot = np.zeros((Ntot,Ntot))
 pot[N2+vpot_ny, N2 + vpot_nx] = vpot_val
@@ -425,9 +425,9 @@ factor = 2
 stretch = 1
 pb_complex_plot = False
 vp_complex_plot = False
-vp_abs_plot = True
+vp_abs_plot = False
 charge_plot = True
-fps = 30
+fps = 26
 cmap1 = plt.get_cmap('seismic')
 t0 = time()
 

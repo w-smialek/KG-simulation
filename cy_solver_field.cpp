@@ -20840,7 +20840,7 @@ static double __pyx_f_15cy_solver_field_frac1(int __pyx_v_nx, int __pyx_v_ny, in
  * cdef double frac1(int nx, int ny, int potnx, int potny, int ntot)noexcept nogil:
  *     cdef double px = 2*M_PI/L*nx             # <<<<<<<<<<<<<<
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  */
   __pyx_v_px = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * __pyx_v_nx);
 
@@ -20848,7 +20848,7 @@ static double __pyx_f_15cy_solver_field_frac1(int __pyx_v_nx, int __pyx_v_ny, in
  * cdef double frac1(int nx, int ny, int potnx, int potny, int ntot)noexcept nogil:
  *     cdef double px = 2*M_PI/L*nx
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)             # <<<<<<<<<<<<<<
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
  */
   __pyx_v_pxshift = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * ((__pyx_v_nx - __pyx_v_potnx) % __pyx_v_ntot));
@@ -20856,15 +20856,15 @@ static double __pyx_f_15cy_solver_field_frac1(int __pyx_v_nx, int __pyx_v_ny, in
   /* "cy_solver_field.pyx":23
  *     cdef double px = 2*M_PI/L*nx
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
- *     cdef double py = 2*M_PI/L*nx             # <<<<<<<<<<<<<<
+ *     cdef double py = 2*M_PI/L*ny             # <<<<<<<<<<<<<<
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
  *     cdef double ene_val = ene(px,py)
  */
-  __pyx_v_py = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * __pyx_v_nx);
+  __pyx_v_py = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * __pyx_v_ny);
 
   /* "cy_solver_field.pyx":24
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)             # <<<<<<<<<<<<<<
  *     cdef double ene_val = ene(px,py)
  *     cdef double enemp0_val = ene(pxshift,pyshift)
@@ -20872,7 +20872,7 @@ static double __pyx_f_15cy_solver_field_frac1(int __pyx_v_nx, int __pyx_v_ny, in
   __pyx_v_pyshift = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * ((__pyx_v_ny - __pyx_v_potny) % __pyx_v_ntot));
 
   /* "cy_solver_field.pyx":25
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
  *     cdef double ene_val = ene(px,py)             # <<<<<<<<<<<<<<
  *     cdef double enemp0_val = ene(pxshift,pyshift)
@@ -20934,7 +20934,7 @@ static double __pyx_f_15cy_solver_field_frac2(int __pyx_v_nx, int __pyx_v_ny, in
  * cdef double frac2(int nx, int ny, int potnx, int potny, int ntot)noexcept nogil:
  *     cdef double px = 2*M_PI/L*nx             # <<<<<<<<<<<<<<
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  */
   __pyx_v_px = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * __pyx_v_nx);
 
@@ -20942,7 +20942,7 @@ static double __pyx_f_15cy_solver_field_frac2(int __pyx_v_nx, int __pyx_v_ny, in
  * cdef double frac2(int nx, int ny, int potnx, int potny, int ntot)noexcept nogil:
  *     cdef double px = 2*M_PI/L*nx
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)             # <<<<<<<<<<<<<<
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
  */
   __pyx_v_pxshift = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * ((__pyx_v_nx - __pyx_v_potnx) % __pyx_v_ntot));
@@ -20950,15 +20950,15 @@ static double __pyx_f_15cy_solver_field_frac2(int __pyx_v_nx, int __pyx_v_ny, in
   /* "cy_solver_field.pyx":33
  *     cdef double px = 2*M_PI/L*nx
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
- *     cdef double py = 2*M_PI/L*nx             # <<<<<<<<<<<<<<
+ *     cdef double py = 2*M_PI/L*ny             # <<<<<<<<<<<<<<
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
  *     cdef double ene_val = ene(px,py)
  */
-  __pyx_v_py = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * __pyx_v_nx);
+  __pyx_v_py = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * __pyx_v_ny);
 
   /* "cy_solver_field.pyx":34
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)             # <<<<<<<<<<<<<<
  *     cdef double ene_val = ene(px,py)
  *     cdef double enemp0_val = ene(pxshift,pyshift)
@@ -20966,7 +20966,7 @@ static double __pyx_f_15cy_solver_field_frac2(int __pyx_v_nx, int __pyx_v_ny, in
   __pyx_v_pyshift = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * ((__pyx_v_ny - __pyx_v_potny) % __pyx_v_ntot));
 
   /* "cy_solver_field.pyx":35
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
  *     cdef double ene_val = ene(px,py)             # <<<<<<<<<<<<<<
  *     cdef double enemp0_val = ene(pxshift,pyshift)
@@ -21032,7 +21032,7 @@ static double __pyx_f_15cy_solver_field_fracv(int __pyx_v_nx, int __pyx_v_ny, in
  * cdef double fracv(int nx, int ny, int potnx, int potny, int ntot, double vpot)noexcept nogil:
  *     cdef double px = 2*M_PI/L*nx             # <<<<<<<<<<<<<<
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  */
   __pyx_v_px = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * __pyx_v_nx);
 
@@ -21040,7 +21040,7 @@ static double __pyx_f_15cy_solver_field_fracv(int __pyx_v_nx, int __pyx_v_ny, in
  * cdef double fracv(int nx, int ny, int potnx, int potny, int ntot, double vpot)noexcept nogil:
  *     cdef double px = 2*M_PI/L*nx
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)             # <<<<<<<<<<<<<<
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
  */
   __pyx_v_pxshift = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * ((__pyx_v_nx - __pyx_v_potnx) % __pyx_v_ntot));
@@ -21048,15 +21048,15 @@ static double __pyx_f_15cy_solver_field_fracv(int __pyx_v_nx, int __pyx_v_ny, in
   /* "cy_solver_field.pyx":43
  *     cdef double px = 2*M_PI/L*nx
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
- *     cdef double py = 2*M_PI/L*nx             # <<<<<<<<<<<<<<
+ *     cdef double py = 2*M_PI/L*ny             # <<<<<<<<<<<<<<
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
  *     cdef double ene_val = ene(px,py)
  */
-  __pyx_v_py = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * __pyx_v_nx);
+  __pyx_v_py = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * __pyx_v_ny);
 
   /* "cy_solver_field.pyx":44
  *     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)             # <<<<<<<<<<<<<<
  *     cdef double ene_val = ene(px,py)
  *     cdef double enemp0_val = ene(pxshift,pyshift)
@@ -21064,7 +21064,7 @@ static double __pyx_f_15cy_solver_field_fracv(int __pyx_v_nx, int __pyx_v_ny, in
   __pyx_v_pyshift = (((2.0 * M_PI) / __pyx_v_15cy_solver_field_L) * ((__pyx_v_ny - __pyx_v_potny) % __pyx_v_ntot));
 
   /* "cy_solver_field.pyx":45
- *     cdef double py = 2*M_PI/L*nx
+ *     cdef double py = 2*M_PI/L*ny
  *     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
  *     cdef double ene_val = ene(px,py)             # <<<<<<<<<<<<<<
  *     cdef double enemp0_val = ene(pxshift,pyshift)

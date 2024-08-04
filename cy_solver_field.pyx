@@ -20,7 +20,7 @@ cdef double L = 200.0              # length of 1-sphere in x and y in multiples 
 cdef double frac1(int nx, int ny, int potnx, int potny, int ntot)noexcept nogil:
     cdef double px = 2*M_PI/L*nx
     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
-    cdef double py = 2*M_PI/L*nx
+    cdef double py = 2*M_PI/L*ny
     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
     cdef double ene_val = ene(px,py)
     cdef double enemp0_val = ene(pxshift,pyshift)
@@ -30,7 +30,7 @@ cdef double frac1(int nx, int ny, int potnx, int potny, int ntot)noexcept nogil:
 cdef double frac2(int nx, int ny, int potnx, int potny, int ntot)noexcept nogil:
     cdef double px = 2*M_PI/L*nx
     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
-    cdef double py = 2*M_PI/L*nx
+    cdef double py = 2*M_PI/L*ny
     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
     cdef double ene_val = ene(px,py)
     cdef double enemp0_val = ene(pxshift,pyshift)
@@ -40,7 +40,7 @@ cdef double frac2(int nx, int ny, int potnx, int potny, int ntot)noexcept nogil:
 cdef double fracv(int nx, int ny, int potnx, int potny, int ntot, double vpot)noexcept nogil:
     cdef double px = 2*M_PI/L*nx
     cdef double pxshift = 2*M_PI/L*((nx - potnx)%ntot)
-    cdef double py = 2*M_PI/L*nx
+    cdef double py = 2*M_PI/L*ny
     cdef double pyshift = 2*M_PI/L*((ny - potny)%ntot)
     cdef double ene_val = ene(px,py)
     cdef double enemp0_val = ene(pxshift,pyshift)
@@ -83,7 +83,7 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
 
     # # Vector potential for now is also a single mode in direction x
 
-    # cdef double vpot = 0.1
+    # cdef double vpot = 0.0
     # cdef int vpot_nx = 0
     # cdef int vpot_ny = 0
 
@@ -139,7 +139,7 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
             point = ix*ntot*2*2 + iy*2*2
             point_sh = ((ix-pot_nx)%ntot)*ntot*2*2 + ((iy-pot_ny)%ntot)*2*2
             point_sh2 = ((ix+pot_nx)%ntot)*ntot*2*2 + ((iy+pot_ny)%ntot)*2*2
-            
+
 
             dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1] + pot * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1]) + pot * (frac1_val2 * y[point_sh2 + 0*2 + 1] + frac2_val2 * y[point_sh2 + 1*2 + 1])
             dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0] - pot * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0]) - pot * (frac1_val2 * y[point_sh2 + 0*2 + 0] + frac2_val2 * y[point_sh2 + 1*2 + 0])
