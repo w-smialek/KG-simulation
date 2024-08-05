@@ -7,7 +7,7 @@ from PIL import Image, ImageOps
 from time import time
 from scipy import interpolate
 
-N2 = 70            # max positive/negative mode in px and py
+N2 = 20            # max positive/negative mode in px and py
 Ntot = 2*N2         # Total number of modes in any dimension
 
 ###
@@ -338,10 +338,10 @@ def colorpy(z, stretch = 1):
 print('Length: ',L)
 print('p_extent: ',p_extent_hi)
 
-x0 = -L/2
+x0 = -L/4
 y0 = -L/4
-px0 = -p_extent_hi*(1/4)
-py0 = -p_extent_hi*(1/16)
+px0 = 0#-p_extent_hi*(1/4)
+py0 = 0#-p_extent_hi*(1/4)
 a_gauss = 7
 phi = np.zeros((2,Ntot,Ntot)).astype(complex)
 phi[0,...] = (np.exp(-1j*(x0*space_px + y0*space_py) - a_gauss*10/p_extent_hi*((space_px + px0)**2 + (space_py + py0)**2)))[0,...]
@@ -360,8 +360,8 @@ phi_bar = phi
 pb_array = flatten_for_cy(phi_bar)
 
 t_init = 0.
-t_end = 1000.0  # around 15 seconds per 1.0 on N2 = 100
-n_timesteps = 160
+t_end = 200.0  # around 15 seconds per 1.0 on N2 = 100
+n_timesteps = 300
 
 t_span = (t_init, t_end)
 timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
@@ -370,9 +370,9 @@ timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
 ### Potential
 ###
 
-pot_nx = 0
+pot_nx = 1
 pot_ny = 1
-pot_val = 0.1
+pot_val = 0.2
 
 pot = np.zeros((Ntot,Ntot))
 pot[N2+pot_ny, N2 + pot_nx] = pot_val
@@ -382,8 +382,8 @@ pot_pos_space = np.zeros(phi.shape).astype(complex)
 pot_pos_space = Ntot**2*np.fft.ifft2(pot)*np.exp(1j*np.pi*(space_jx+space_iy)[0,...])
 pot_pos_space = np.roll(pot_pos_space,(N2,N2),(0,1))
 
-plt.imshow(pot_pos_space.real, origin='lower', extent=x_extent)
-plt.show()
+# plt.imshow(pot_pos_space.real, origin='lower', extent=x_extent)
+# plt.show()
 
 ### vpot
 
@@ -399,8 +399,8 @@ pot_pos_space = np.zeros(phi.shape).astype(complex)
 pot_pos_space = Ntot**2*np.fft.ifft2(pot)*np.exp(1j*np.pi*(space_jx+space_iy)[0,...])
 pot_pos_space = np.roll(pot_pos_space,(N2,N2),(0,1))
 
-plt.imshow(pot_pos_space.real, origin='lower', extent=x_extent)
-plt.show()
+# plt.imshow(pot_pos_space.real, origin='lower', extent=x_extent)
+# plt.show()
 
 ###
 ### Run solver

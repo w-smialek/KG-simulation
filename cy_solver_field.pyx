@@ -130,10 +130,13 @@ for iy in range(-nn2,nn2):      # ROWS ARE Y,       FROM ROW     0 -> iy = -N2 -
             space_x[row,col] = x(jx)
             space_y[row,col] = x(iy)
 
-a_gauss = 0.1
-x_0 = 1
-y_0 = 2
-pypotential = (np.exp(- a_gauss*10/el*((space_x + x_0)**2 + (space_y + y_0)**2)))
+a_gauss = 0.01
+x_0 = -50
+y_0 = -50
+pypotential = (np.exp(- a_gauss*10/el*((space_x - x_0)**2 + (space_y - y_0)**2)))
+# pypotential = np.cos(space_x/el*np.pi)
+plt.imshow(pypotential, origin='lower', extent=x_extent)
+plt.show()
 pypotential = psi_to_phi(pypotential)
 
 plt.imshow(pypotential.real, origin='lower', extent=x_extent)
@@ -224,21 +227,26 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
                 aiy = 0
                 while aiy < ntot:
 
-                    frac1_val = frac1(nx, ny, aix, aiy, ntot)
-                    frac2_val = frac2(nx, ny, aix, aiy, ntot)
-                    frac1_val2 = frac1(nx, ny, -aix, -aiy, ntot)
-                    frac2_val2 = frac2(nx, ny, -aix, -aiy, ntot)
+                    frac1_val = frac1(nx, ny, aix-n2, aiy-n2, ntot)
+                    frac2_val = frac2(nx, ny, aix-n2, aiy-n2, ntot)
+                    # frac1_val2 = frac1(nx, ny, -aix, -aiy, ntot)
+                    # frac2_val2 = frac2(nx, ny, -aix, -aiy, ntot)
 
-                    point_sh = ((ix-aix)%ntot)*ntot*2*2 + ((iy-aiy)%ntot)*2*2
-                    point_sh2 = ((ix+aix)%ntot)*ntot*2*2 + ((iy+aiy)%ntot)*2*2
+                    point_sh = ((ix-(aix-n2))%ntot)*ntot*2*2 + ((iy-(aiy-n2))%ntot)*2*2
+                    # point_sh2 = ((ix+aix)%ntot)*ntot*2*2 + ((iy+aiy)%ntot)*2*2
 
                     potr = pot0*potential_r[aix][aiy]
                     poti = pot0*potential_i[aix][aiy]
 
-                    dy[point + 0*2 + 0] +=  + potr * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1]) + potr * (frac1_val2 * y[point_sh2 + 0*2 + 1] + frac2_val2 * y[point_sh2 + 1*2 + 1]) + poti * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0]) + poti * (frac1_val2 * y[point_sh2 + 0*2 + 0] + frac2_val2 * y[point_sh2 + 1*2 + 0])
-                    dy[point + 0*2 + 1] +=  - potr * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0]) - potr * (frac1_val2 * y[point_sh2 + 0*2 + 0] + frac2_val2 * y[point_sh2 + 1*2 + 0]) + poti * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1]) + poti * (frac1_val2 * y[point_sh2 + 0*2 + 1] + frac2_val2 * y[point_sh2 + 1*2 + 1])
-                    dy[point + 1*2 + 0] +=  + potr * (frac1_val * y[point_sh + 1*2 + 1] + frac2_val * y[point_sh + 0*2 + 1]) + potr * (frac1_val2 * y[point_sh2 + 1*2 + 1] + frac2_val2 * y[point_sh2 + 0*2 + 1]) + poti * (frac1_val * y[point_sh + 1*2 + 0] + frac2_val * y[point_sh + 0*2 + 0]) + poti * (frac1_val2 * y[point_sh2 + 1*2 + 0] + frac2_val2 * y[point_sh2 + 0*2 + 0])
-                    dy[point + 1*2 + 1] +=  - potr * (frac1_val * y[point_sh + 1*2 + 0] + frac2_val * y[point_sh + 0*2 + 0]) - potr * (frac1_val2 * y[point_sh2 + 1*2 + 0] + frac2_val2 * y[point_sh2 + 0*2 + 0]) + poti * (frac1_val * y[point_sh + 1*2 + 1] + frac2_val * y[point_sh + 0*2 + 1]) + poti * (frac1_val2 * y[point_sh2 + 1*2 + 1] + frac2_val2 * y[point_sh2 + 0*2 + 1])
+                    # dy[point + 0*2 + 0] +=  + potr * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1]) + potr * (frac1_val2 * y[point_sh2 + 0*2 + 1] + frac2_val2 * y[point_sh2 + 1*2 + 1]) + poti * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0]) + poti * (frac1_val2 * y[point_sh2 + 0*2 + 0] + frac2_val2 * y[point_sh2 + 1*2 + 0])
+                    # dy[point + 0*2 + 1] +=  - potr * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0]) - potr * (frac1_val2 * y[point_sh2 + 0*2 + 0] + frac2_val2 * y[point_sh2 + 1*2 + 0]) + poti * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1]) + poti * (frac1_val2 * y[point_sh2 + 0*2 + 1] + frac2_val2 * y[point_sh2 + 1*2 + 1])
+                    # dy[point + 1*2 + 0] +=  + potr * (frac1_val * y[point_sh + 1*2 + 1] + frac2_val * y[point_sh + 0*2 + 1]) + potr * (frac1_val2 * y[point_sh2 + 1*2 + 1] + frac2_val2 * y[point_sh2 + 0*2 + 1]) + poti * (frac1_val * y[point_sh + 1*2 + 0] + frac2_val * y[point_sh + 0*2 + 0]) + poti * (frac1_val2 * y[point_sh2 + 1*2 + 0] + frac2_val2 * y[point_sh2 + 0*2 + 0])
+                    # dy[point + 1*2 + 1] +=  - potr * (frac1_val * y[point_sh + 1*2 + 0] + frac2_val * y[point_sh + 0*2 + 0]) - potr * (frac1_val2 * y[point_sh2 + 1*2 + 0] + frac2_val2 * y[point_sh2 + 0*2 + 0]) + poti * (frac1_val * y[point_sh + 1*2 + 1] + frac2_val * y[point_sh + 0*2 + 1]) + poti * (frac1_val2 * y[point_sh2 + 1*2 + 1] + frac2_val2 * y[point_sh2 + 0*2 + 1])
+
+                    dy[point + 0*2 + 0] +=  + potr * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1]) + poti * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0])
+                    dy[point + 0*2 + 1] +=  - potr * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0]) + poti * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1])
+                    dy[point + 1*2 + 0] +=  + potr * (frac1_val * y[point_sh + 1*2 + 1] + frac2_val * y[point_sh + 0*2 + 1]) + poti * (frac1_val * y[point_sh + 1*2 + 0] + frac2_val * y[point_sh + 0*2 + 0])
+                    dy[point + 1*2 + 1] +=  - potr * (frac1_val * y[point_sh + 1*2 + 0] + frac2_val * y[point_sh + 0*2 + 0]) + poti * (frac1_val * y[point_sh + 1*2 + 1] + frac2_val * y[point_sh + 0*2 + 1])
 
                     aiy+=1
                 aix+=1
