@@ -53,9 +53,98 @@ cdef double fracv(int nx, int ny, int potnx, int potny, int ntot, double vpot)no
 
     return retval
 
-
 cdef double ene(double px, double py) noexcept nogil:
     return sqrt(m*m + px*px + py*py)
+
+# cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEvalFunc pre_eval_func) noexcept nogil:
+    
+#     cdef double* args_as_dbls = <double*>args
+
+#     cdef int n2 = <int>args_as_dbls[0]
+
+#     cdef int ntot = 2*n2
+
+#     cdef double px = 0
+#     cdef double py = 0
+#     cdef double eclas = 0
+
+#     cdef int ix = 0
+#     cdef int iy = 0
+#     cdef double ene_val = 0.
+
+#     cdef int nx = 0
+#     cdef int ny = 0
+
+#     cdef int point = 0
+
+#     # nx * (Ntot x 2 x 2) + ny * (2 x 2) + l * 2 + c
+#     while ix < ntot:
+#         iy = 0
+#         while iy < ntot:
+#             nx = (ix - n2)
+#             ny = (iy - n2)
+#             px = 2*M_PI/L*nx
+#             py = 2*M_PI/L*ny
+#             eclas = (px*px + py*py)/(2*m)
+
+#             ene_val = ene(px,py)
+
+#             point = ix*ntot*2*2 + iy*2*2
+
+#             dy[point + 0*2 + 0] =     (eclas+m) * y[point + 0*2 + 1] +  eclas    * y[point + 1*2 + 1]
+#             dy[point + 0*2 + 1] =  - ((eclas+m) * y[point + 0*2 + 0] +  eclas    * y[point + 1*2 + 0])
+#             dy[point + 1*2 + 0] =        -eclas * y[point + 0*2 + 1] - (eclas+m) * y[point + 1*2 + 1]
+#             dy[point + 1*2 + 1] =  - (   -eclas * y[point + 0*2 + 0] - (eclas+m) * y[point + 1*2 + 0])
+
+#             iy += 1
+#         ix += 1
+
+import numpy as np
+import matplotlib.pyplot as plt
+nn2 = 20
+Ntott = 2*nn2
+cdef double[40][40] potential_r = 40*[40*[0.]]
+cdef double[40][40] potential_i = 40*[40*[0.]]
+el = 200
+def x(n):
+    return n/nn2*el
+
+space_x = np.zeros((Ntott,Ntott))
+space_y = np.zeros((Ntott,Ntott))
+x_extent = (-L,L,-L,L)
+
+def psi_to_phi(psi):
+    phi = np.zeros((Ntott,Ntott)).astype(complex)
+
+    psi = np.roll(psi,(-nn2,-nn2),(0,1))
+    phi = 1/Ntott**2*np.fft.fft2(psi)
+    phi = np.roll(phi,(nn2,nn2),(0,1))
+
+    return phi
+
+for iy in range(-nn2,nn2):      # ROWS ARE Y,       FROM ROW     0 -> iy = -N2 -> Y = -L
+    for jx in range(-nn2,nn2):  # COLLUNMS ARE X,   FROM COLLUMN 0 -> jx = -N2 -> X = -L
+            row = nn2 + iy 
+            col = nn2 + jx
+
+            space_x[row,col] = x(jx)
+            space_y[row,col] = x(iy)
+
+a_gauss = 0.1
+x_0 = 1
+y_0 = 2
+pypotential = (np.exp(- a_gauss*10/el*((space_x + x_0)**2 + (space_y + y_0)**2)))
+pypotential = psi_to_phi(pypotential)
+
+plt.imshow(pypotential.real, origin='lower', extent=x_extent)
+plt.show()
+plt.imshow(pypotential.imag, origin='lower', extent=x_extent)
+plt.show()
+
+for i1 in range(Ntott):
+    for i2 in range(Ntott):
+        potential_r[i1][i2] = pypotential.real[i1,i2]
+        potential_i[i1][i2] = pypotential.imag[i1,i2]
 
 cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEvalFunc pre_eval_func) noexcept nogil:
     
@@ -64,34 +153,15 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
     cdef int n2 = <int>args_as_dbls[0]
 
     ###
-    # For the beginning, our potential will be a plane wave with modes nx, ny
-    # Then 
 
-    cdef double pot = <double>args_as_dbls[1]
+    # cdef double pot = <double>args_as_dbls[1]
+    cdef double pot0 = <double>args_as_dbls[1]
     cdef int pot_nx = <int>args_as_dbls[2]
     cdef int pot_ny = <int>args_as_dbls[3]
-
-    # Vector potential for now is also a single mode in direction x
 
     cdef double vpot = <double>args_as_dbls[4]
     cdef int vpot_nx = <int>args_as_dbls[5]
     cdef int vpot_ny = <int>args_as_dbls[6]
-
-    # cdef double pot = 0.1
-    # cdef int pot_nx = 1
-    # cdef int pot_ny = 0
-
-    # # Vector potential for now is also a single mode in direction x
-
-    # cdef double vpot = 0.0
-    # cdef int vpot_nx = 0
-    # cdef int vpot_ny = 0
-
-    # printf("%i \n", n2)
-    # printf("%f %f \n", pot, vpot)
-    # printf("%i %i %i %i \n", pot_nx, pot_ny, vpot_nx, vpot_ny)
-
-    # exit(0)
 
     ###
 
@@ -117,6 +187,12 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
     cdef int point = 0
     cdef int point_sh = 0
     cdef int point_sh2 = 0
+
+    cdef int aix = 0
+    cdef int aiy = 0
+
+    cdef double potr = 0
+    cdef double poti = 0
     
     # nx * (Ntot x 2 x 2) + ny * (2 x 2) + l * 2 + c
     while ix < ntot:
@@ -129,32 +205,75 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
 
             ene_val = ene(px,py)
 
-            frac1_val = frac1(nx, ny, pot_nx, pot_ny, ntot)
-            frac2_val = frac2(nx, ny, pot_nx, pot_ny, ntot)
-            frac1_val2 = frac1(nx, ny, -pot_nx, -pot_ny, ntot)
-            frac2_val2 = frac2(nx, ny, -pot_nx, -pot_ny, ntot)
+            # frac1_val = frac1(nx, ny, pot_nx, pot_ny, ntot)
+            # frac2_val = frac2(nx, ny, pot_nx, pot_ny, ntot)
+            # frac1_val2 = frac1(nx, ny, -pot_nx, -pot_ny, ntot)
+            # frac2_val2 = frac2(nx, ny, -pot_nx, -pot_ny, ntot)
 
-            fracv_val = fracv(nx, ny, vpot_nx, vpot_ny, ntot, vpot)
+            # fracv_val = fracv(nx, ny, vpot_nx, vpot_ny, ntot, vpot)
 
             point = ix*ntot*2*2 + iy*2*2
-            point_sh = ((ix-pot_nx)%ntot)*ntot*2*2 + ((iy-pot_ny)%ntot)*2*2
-            point_sh2 = ((ix+pot_nx)%ntot)*ntot*2*2 + ((iy+pot_ny)%ntot)*2*2
+
+            dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1]
+            dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0]
+            dy[point + 1*2 + 0] =  ene_val * (-1.) * y[point + 1*2 + 1]
+            dy[point + 1*2 + 1] = -ene_val * (-1.) * y[point + 1*2 + 0]
+
+            aix = 0
+            while aix < ntot:
+                aiy = 0
+                while aiy < ntot:
+
+                    frac1_val = frac1(nx, ny, aix, aiy, ntot)
+                    frac2_val = frac2(nx, ny, aix, aiy, ntot)
+                    frac1_val2 = frac1(nx, ny, -aix, -aiy, ntot)
+                    frac2_val2 = frac2(nx, ny, -aix, -aiy, ntot)
+
+                    point_sh = ((ix-aix)%ntot)*ntot*2*2 + ((iy-aiy)%ntot)*2*2
+                    point_sh2 = ((ix+aix)%ntot)*ntot*2*2 + ((iy+aiy)%ntot)*2*2
+
+                    potr = pot0*potential_r[aix][aiy]
+                    poti = pot0*potential_i[aix][aiy]
+
+                    dy[point + 0*2 + 0] +=  + potr * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1]) + potr * (frac1_val2 * y[point_sh2 + 0*2 + 1] + frac2_val2 * y[point_sh2 + 1*2 + 1]) + poti * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0]) + poti * (frac1_val2 * y[point_sh2 + 0*2 + 0] + frac2_val2 * y[point_sh2 + 1*2 + 0])
+                    dy[point + 0*2 + 1] +=  - potr * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0]) - potr * (frac1_val2 * y[point_sh2 + 0*2 + 0] + frac2_val2 * y[point_sh2 + 1*2 + 0]) + poti * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1]) + poti * (frac1_val2 * y[point_sh2 + 0*2 + 1] + frac2_val2 * y[point_sh2 + 1*2 + 1])
+                    dy[point + 1*2 + 0] +=  + potr * (frac1_val * y[point_sh + 1*2 + 1] + frac2_val * y[point_sh + 0*2 + 1]) + potr * (frac1_val2 * y[point_sh2 + 1*2 + 1] + frac2_val2 * y[point_sh2 + 0*2 + 1]) + poti * (frac1_val * y[point_sh + 1*2 + 0] + frac2_val * y[point_sh + 0*2 + 0]) + poti * (frac1_val2 * y[point_sh2 + 1*2 + 0] + frac2_val2 * y[point_sh2 + 0*2 + 0])
+                    dy[point + 1*2 + 1] +=  - potr * (frac1_val * y[point_sh + 1*2 + 0] + frac2_val * y[point_sh + 0*2 + 0]) - potr * (frac1_val2 * y[point_sh2 + 1*2 + 0] + frac2_val2 * y[point_sh2 + 0*2 + 0]) + poti * (frac1_val * y[point_sh + 1*2 + 1] + frac2_val * y[point_sh + 0*2 + 1]) + poti * (frac1_val2 * y[point_sh2 + 1*2 + 1] + frac2_val2 * y[point_sh2 + 0*2 + 1])
+
+                    aiy+=1
+                aix+=1
+
+            # point_sh = ((ix-pot_nx)%ntot)*ntot*2*2 + ((iy-pot_ny)%ntot)*2*2
+            # point_sh2 = ((ix+pot_nx)%ntot)*ntot*2*2 + ((iy+pot_ny)%ntot)*2*2
 
 
-            dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1] + pot * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1]) + pot * (frac1_val2 * y[point_sh2 + 0*2 + 1] + frac2_val2 * y[point_sh2 + 1*2 + 1])
-            dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0] - pot * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0]) - pot * (frac1_val2 * y[point_sh2 + 0*2 + 0] + frac2_val2 * y[point_sh2 + 1*2 + 0])
-            dy[point + 1*2 + 0] =  ene_val * (-1.) * y[point + 1*2 + 1] + pot * (frac1_val * y[point_sh + 1*2 + 1] + frac2_val * y[point_sh + 0*2 + 1]) + pot * (frac1_val2 * y[point_sh2 + 1*2 + 1] + frac2_val2 * y[point_sh2 + 0*2 + 1])
-            dy[point + 1*2 + 1] = -ene_val * (-1.) * y[point + 1*2 + 0] - pot * (frac1_val * y[point_sh + 1*2 + 0] + frac2_val * y[point_sh + 0*2 + 0]) - pot * (frac1_val2 * y[point_sh2 + 1*2 + 0] + frac2_val2 * y[point_sh2 + 0*2 + 0])
+            # dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1] + pot * (frac1_val * y[point_sh + 0*2 + 1] + frac2_val * y[point_sh + 1*2 + 1]) + pot * (frac1_val2 * y[point_sh2 + 0*2 + 1] + frac2_val2 * y[point_sh2 + 1*2 + 1])
+            # dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0] - pot * (frac1_val * y[point_sh + 0*2 + 0] + frac2_val * y[point_sh + 1*2 + 0]) - pot * (frac1_val2 * y[point_sh2 + 0*2 + 0] + frac2_val2 * y[point_sh2 + 1*2 + 0])
+            # dy[point + 1*2 + 0] =  ene_val * (-1.) * y[point + 1*2 + 1] + pot * (frac1_val * y[point_sh + 1*2 + 1] + frac2_val * y[point_sh + 0*2 + 1]) + pot * (frac1_val2 * y[point_sh2 + 1*2 + 1] + frac2_val2 * y[point_sh2 + 0*2 + 1])
+            # dy[point + 1*2 + 1] = -ene_val * (-1.) * y[point + 1*2 + 0] - pot * (frac1_val * y[point_sh + 1*2 + 0] + frac2_val * y[point_sh + 0*2 + 0]) - pot * (frac1_val2 * y[point_sh2 + 1*2 + 0] + frac2_val2 * y[point_sh2 + 0*2 + 0])
 
             # vpot
 
-            dy[point + 0*2 + 0] += fracv_val*(y[point + 0*2 + 1] + y[point + 1*2 + 1])
-            dy[point + 0*2 + 1] -= fracv_val*(y[point + 0*2 + 0] + y[point + 1*2 + 0])
-            dy[point + 1*2 + 0] += fracv_val*(y[point + 0*2 + 1] + y[point + 1*2 + 1])
-            dy[point + 1*2 + 1] -= fracv_val*(y[point + 0*2 + 0] + y[point + 1*2 + 0])
+            # dy[point + 0*2 + 0] += fracv_val*(y[point + 0*2 + 1] + y[point + 1*2 + 1])
+            # dy[point + 0*2 + 1] -= fracv_val*(y[point + 0*2 + 0] + y[point + 1*2 + 0])
+            # dy[point + 1*2 + 0] += fracv_val*(y[point + 0*2 + 1] + y[point + 1*2 + 1])
+            # dy[point + 1*2 + 1] -= fracv_val*(y[point + 0*2 + 0] + y[point + 1*2 + 0])
 
             iy += 1
         ix += 1
+
+    # cdef double charge
+    # ix = 0
+    # iy = 0
+    # while ix < ntot:
+    #     iy = 0
+    #     while iy < ntot:
+    #         point = ix*ntot*2*2 + iy*2*2
+    #         charge += y[point + 0*2 + 0]*y[point + 0*2 + 0] + y[point + 0*2 + 1]*y[point + 0*2 + 1] - y[point + 1*2 + 0]*y[point + 1*2 + 0] - y[point + 1*2 + 1]*y[point + 1*2 + 1]
+    #         iy+=1
+    #     ix+=1
+    # printf("charge: %10f\n", charge)
+
         
 def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps):
             
@@ -190,8 +309,8 @@ def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps):
         y0_ptr,
         num_y,
         method = RK45_METHOD_INT,
-        rtol = 1.0e-5,
-        atol = 1.0e-6,
+        rtol = 1.0e-6,
+        atol = 1.0e-7,
         args_ptr = args_ptr,
         num_extra = 0,
         max_num_steps = 0,
