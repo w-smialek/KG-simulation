@@ -55,3 +55,29 @@ Consult the example kg_field.py for basic usage
 
 ## Examples
 
+1. Low - energy scattering off of the potential step
+
+In the low energy regime, the scattering works similarly to non-relativistic quantum mechanics.
+
+The following examples show simulations with mean momentum  $p_x = 0.5 mc$
+and potential step $V_0 = 0.10,0.11,0.12,0.13 \ mc^2/e$,
+near the transition from the bound to the free solution
+
+ ![](./gifs/anim_pot0.10_mom0.25_d.gif)
+ ![](./gifs/anim_pot0.11_mom0.25_d.gif)
+ ![](./gifs/anim_pot0.12_mom0.25_d.gif)
+ ![](./gifs/anim_pot0.13_mom0.25_d.gif)
+
+1. Klein paradox: high - energy scattering off of the potential step
+
+Above the limit $V_0 e = 2mc^2$, the transmission coefficient may become higher than 1, and develops a singularity for certain momenta. At the sharp potential step, positive and negative charges begin to be produced, the total charge however (up to the numerical accuracy) stays constant.
+You can see the [interactive graph](https://www.desmos.com/calculator/w4ljbuavg9) for the transmission coefficient with different values of the potential barrier.
+The Klein paradox in some way suggests the actual phenomena of the Quantum Field Theory, such as the Schwinger effect, which occur for similar range of values of the electric field.
+
+The following examples show simulations with mean momentum  $p_x = 0.5 mc$
+and potential step $V_0 = 2.10,2.13,2.90 \ mc^2/e$,
+near the transition between two scattering regimes
+
+ ![](./gifs/anim_pot2.10_mom0.25_d.gif)
+ ![](./gifs/anim_pot2.13_mom0.25_d.gif)
+ ![](./gifs/anim_pot2.90_mom0.25_d.gif)
