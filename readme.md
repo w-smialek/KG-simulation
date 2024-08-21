@@ -90,3 +90,5 @@ the klein paradox results in a sort of "vacuum polarization", however for a c-nu
 
  ![Gaussian potential well with |Vmax| = -4.0](./gifs/anim_pot-4.00_mom0.00_d.gif)
  ![Gaussian potential well with |Vmax| = -23.0](./gifs/anim_pot-23.00_mom0.00_d.gif)
+
+ Left: gaussian potential well with |Vmax| = -4.0, right: Gaussian potential well with |Vmax| = -23.0
