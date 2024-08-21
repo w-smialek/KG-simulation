@@ -1,6 +1,6 @@
 # Numerical simulation of the complex Klein-Gordon equation
 
-> **_NOTE:_  The project is currently work in progress! **
+> **_NOTE:_  The project is currently work in progress!**
 
 
 This project contains an implementation of cython-based
