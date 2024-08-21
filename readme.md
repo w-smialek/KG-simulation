@@ -6,7 +6,7 @@ solver for the time evolution of a complex Klein-Gordon field coupled to electro
 $$ \left( (\partial_\mu - ieA_\mu)^2 +m^2 \right) \varphi = 0 $$
 
 At this stage, the solver handles an electric potential constant in time:
-$$ A_\mu (t,\mathbf{x}) = (V(\mathbf{x}),0) $$
+$$A_\mu (t,\mathbf{x}) = (V(\mathbf{x}),0)$$
 
 The domain of the simulation is a 2-torus, i.e. a square with periodic boundary conditions. The advantage of such domain is that the only necessary approximation when storing the field value is introducing a momentum cutoff for a finite grid, while the discretization of momenta is exact.
 
