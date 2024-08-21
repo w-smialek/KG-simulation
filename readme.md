@@ -1,4 +1,4 @@
-# Klein-Gordon equation simulation
+# Numerical simulation of the complex Klein-Gordon equation
 
 This project contains an implementation of cython-based
 solver for the time evolution of a complex Klein-Gordon field coupled to electromagnetic potential:
@@ -13,6 +13,8 @@ The domain of the simulation is a 2-torus, i.e. a square with periodic boundary 
 The solver works in the Feshbach-Villars representation of Klein-Gordon field (cf. https://doi.org/10.1103/RevModPhys.30.24), but it provides tools for transforming between different representations.
 
 No finite difference method is used; when working in momentum space the integration step involves just point-wise multiplications and convolutions, which should greatly improve numerical accuracy.
+
+> **_NOTE:_**  The project is currently work in progress!
 
 ## Solver tools
 
@@ -44,3 +46,12 @@ Open the main folder and run
 ```
 python3 setup.py build_ext
 ```
+
+## Documentation
+
+(Section to be expanded...)
+
+Consult the example kg_field.py for basic usage
+
+## Examples
+

@@ -4,20 +4,20 @@
 {
     "distutils": {
         "depends": [
-            "cy/baseline_func.cpp",
-            "cy/common.cpp",
-            "cy/cysolverbase_class.cpp",
-            "cy/cysolverresult_class.cpp",
-            "cy/dense.cpp",
-            "cy/rk.cpp"
+            "mycyrk/cy/baseline_func.cpp",
+            "mycyrk/cy/common.cpp",
+            "mycyrk/cy/cysolverbase_class.cpp",
+            "mycyrk/cy/cysolverresult_class.cpp",
+            "mycyrk/cy/dense.cpp",
+            "mycyrk/cy/rk.cpp"
         ],
         "include_dirs": [
-            "cy"
+            "mycyrk/cy"
         ],
         "language": "c++",
         "name": "mycyrk.cy.cysolverNew",
         "sources": [
-            "/home/wojtek/kgsim/mycyrk/cy/cysolverNew.pyx"
+            "mycyrk/cy/cysolverNew.pyx"
         ]
     },
     "module_name": "mycyrk.cy.cysolverNew"
@@ -1550,7 +1550,7 @@ static const char *__pyx_filename;
 /* #### Code section: filename_table ### */
 
 static const char *__pyx_f[] = {
-  "cy/cysolverNew.pyx",
+  "mycyrk/cy/cysolverNew.pyx",
   "<stringsource>",
   "__init__.cython-30.pxd",
   "type.pxd",
@@ -3585,7 +3585,6 @@ static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
 static const char __pyx_k_WrapCySolverResult[] = "WrapCySolverResult";
 static const char __pyx_k_asyncio_coroutines[] = "asyncio.coroutines";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_cy_cysolverNew_pyx[] = "cy/cysolverNew.pyx";
 static const char __pyx_k_strided_and_direct[] = "<strided and direct>";
 static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_Invalid_shape_in_axis[] = "Invalid shape in axis ";
@@ -3597,6 +3596,7 @@ static const char __pyx_k_MemoryView_of_r_at_0x_x[] = "<MemoryView of %r at 0x%x
 static const char __pyx_k_WrapCySolverResult_call[] = "WrapCySolverResult.call";
 static const char __pyx_k_contiguous_and_indirect[] = "<contiguous and indirect>";
 static const char __pyx_k_Dimension_d_is_not_direct[] = "Dimension %d is not direct";
+static const char __pyx_k_mycyrk_cy_cysolverNew_pyx[] = "mycyrk/cy/cysolverNew.pyx";
 static const char __pyx_k_Index_out_of_bounds_axis_d[] = "Index out of bounds (axis %d)";
 static const char __pyx_k_Step_may_not_be_zero_axis_d[] = "Step may not be zero (axis %d)";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
@@ -3849,7 +3849,6 @@ typedef struct {
   PyObject *__pyx_kp_s_contiguous_and_direct;
   PyObject *__pyx_kp_s_contiguous_and_indirect;
   PyObject *__pyx_n_s_count;
-  PyObject *__pyx_kp_s_cy_cysolverNew_pyx;
   PyObject *__pyx_n_s_dict;
   PyObject *__pyx_n_s_diffeq_func;
   PyObject *__pyx_kp_u_disable;
@@ -3883,6 +3882,7 @@ typedef struct {
   PyObject *__pyx_n_s_memview;
   PyObject *__pyx_n_s_mode;
   PyObject *__pyx_n_s_mycyrk_cy_cysolverNew;
+  PyObject *__pyx_kp_s_mycyrk_cy_cysolverNew_pyx;
   PyObject *__pyx_n_s_name;
   PyObject *__pyx_n_s_name_2;
   PyObject *__pyx_n_s_ndim;
@@ -4122,7 +4122,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_s_contiguous_and_direct);
   Py_CLEAR(clear_module_state->__pyx_kp_s_contiguous_and_indirect);
   Py_CLEAR(clear_module_state->__pyx_n_s_count);
-  Py_CLEAR(clear_module_state->__pyx_kp_s_cy_cysolverNew_pyx);
   Py_CLEAR(clear_module_state->__pyx_n_s_dict);
   Py_CLEAR(clear_module_state->__pyx_n_s_diffeq_func);
   Py_CLEAR(clear_module_state->__pyx_kp_u_disable);
@@ -4156,6 +4155,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_memview);
   Py_CLEAR(clear_module_state->__pyx_n_s_mode);
   Py_CLEAR(clear_module_state->__pyx_n_s_mycyrk_cy_cysolverNew);
+  Py_CLEAR(clear_module_state->__pyx_kp_s_mycyrk_cy_cysolverNew_pyx);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
   Py_CLEAR(clear_module_state->__pyx_n_s_name_2);
   Py_CLEAR(clear_module_state->__pyx_n_s_ndim);
@@ -4371,7 +4371,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_s_contiguous_and_direct);
   Py_VISIT(traverse_module_state->__pyx_kp_s_contiguous_and_indirect);
   Py_VISIT(traverse_module_state->__pyx_n_s_count);
-  Py_VISIT(traverse_module_state->__pyx_kp_s_cy_cysolverNew_pyx);
   Py_VISIT(traverse_module_state->__pyx_n_s_dict);
   Py_VISIT(traverse_module_state->__pyx_n_s_diffeq_func);
   Py_VISIT(traverse_module_state->__pyx_kp_u_disable);
@@ -4405,6 +4404,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_memview);
   Py_VISIT(traverse_module_state->__pyx_n_s_mode);
   Py_VISIT(traverse_module_state->__pyx_n_s_mycyrk_cy_cysolverNew);
+  Py_VISIT(traverse_module_state->__pyx_kp_s_mycyrk_cy_cysolverNew_pyx);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
   Py_VISIT(traverse_module_state->__pyx_n_s_name_2);
   Py_VISIT(traverse_module_state->__pyx_n_s_ndim);
@@ -4658,7 +4658,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_s_contiguous_and_direct __pyx_mstate_global->__pyx_kp_s_contiguous_and_direct
 #define __pyx_kp_s_contiguous_and_indirect __pyx_mstate_global->__pyx_kp_s_contiguous_and_indirect
 #define __pyx_n_s_count __pyx_mstate_global->__pyx_n_s_count
-#define __pyx_kp_s_cy_cysolverNew_pyx __pyx_mstate_global->__pyx_kp_s_cy_cysolverNew_pyx
 #define __pyx_n_s_dict __pyx_mstate_global->__pyx_n_s_dict
 #define __pyx_n_s_diffeq_func __pyx_mstate_global->__pyx_n_s_diffeq_func
 #define __pyx_kp_u_disable __pyx_mstate_global->__pyx_kp_u_disable
@@ -4692,6 +4691,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_memview __pyx_mstate_global->__pyx_n_s_memview
 #define __pyx_n_s_mode __pyx_mstate_global->__pyx_n_s_mode
 #define __pyx_n_s_mycyrk_cy_cysolverNew __pyx_mstate_global->__pyx_n_s_mycyrk_cy_cysolverNew
+#define __pyx_kp_s_mycyrk_cy_cysolverNew_pyx __pyx_mstate_global->__pyx_kp_s_mycyrk_cy_cysolverNew_pyx
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
 #define __pyx_n_s_name_2 __pyx_mstate_global->__pyx_n_s_name_2
 #define __pyx_n_s_ndim __pyx_mstate_global->__pyx_n_s_ndim
@@ -24600,7 +24600,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_kp_s_contiguous_and_direct, __pyx_k_contiguous_and_direct, sizeof(__pyx_k_contiguous_and_direct), 0, 0, 1, 0},
     {&__pyx_kp_s_contiguous_and_indirect, __pyx_k_contiguous_and_indirect, sizeof(__pyx_k_contiguous_and_indirect), 0, 0, 1, 0},
     {&__pyx_n_s_count, __pyx_k_count, sizeof(__pyx_k_count), 0, 0, 1, 1},
-    {&__pyx_kp_s_cy_cysolverNew_pyx, __pyx_k_cy_cysolverNew_pyx, sizeof(__pyx_k_cy_cysolverNew_pyx), 0, 0, 1, 0},
     {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
     {&__pyx_n_s_diffeq_func, __pyx_k_diffeq_func, sizeof(__pyx_k_diffeq_func), 0, 0, 1, 1},
     {&__pyx_kp_u_disable, __pyx_k_disable, sizeof(__pyx_k_disable), 0, 1, 0, 0},
@@ -24634,6 +24633,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
     {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
     {&__pyx_n_s_mycyrk_cy_cysolverNew, __pyx_k_mycyrk_cy_cysolverNew, sizeof(__pyx_k_mycyrk_cy_cysolverNew), 0, 0, 1, 1},
+    {&__pyx_kp_s_mycyrk_cy_cysolverNew_pyx, __pyx_k_mycyrk_cy_cysolverNew_pyx, sizeof(__pyx_k_mycyrk_cy_cysolverNew_pyx), 0, 0, 1, 0},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
     {&__pyx_n_s_name_2, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},
     {&__pyx_n_s_ndim, __pyx_k_ndim, sizeof(__pyx_k_ndim), 0, 0, 1, 1},
@@ -24899,7 +24899,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__31 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_t, __pyx_n_s_y_interp_array, __pyx_n_s_y_interp_view, __pyx_n_s_y_interp_ptr); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__31);
   __Pyx_GIVEREF(__pyx_tuple__31);
-  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cy_cysolverNew_pyx, __pyx_n_s_call, 27, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_mycyrk_cy_cysolverNew_pyx, __pyx_n_s_call, 27, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 27, __pyx_L1_error)
 
   /* "mycyrk/cy/cysolverNew.pyx":40
  *         return y_interp_array
@@ -24911,7 +24911,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__33 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_t_view, __pyx_n_s_len_t, __pyx_n_s_y_interp_array, __pyx_n_s_y_interp_view, __pyx_n_s_y_interp_ptr, __pyx_n_s_t_array_ptr); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__33);
   __Pyx_GIVEREF(__pyx_tuple__33);
-  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cy_cysolverNew_pyx, __pyx_n_s_call_vectorize, 40, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_mycyrk_cy_cysolverNew_pyx, __pyx_n_s_call_vectorize, 40, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 40, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<

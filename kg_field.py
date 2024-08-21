@@ -25,49 +25,54 @@ L = 400             # torus half-diameter in x and y in multiples of hbar/(m_e *
 
 # Parameters
 
-pot0=-10.0
-x0=0.0
-y0=0.0
-r0=40
-vx0=0.0
-vy0=0.0
-px0=0.0
-py0=0.0
-px0=px0/2 #    SO THIS IS ACTUALLY HALF MOMENTUM, 
-py0=py0/2 #    NEED TO ANALYZE HOW THE UNITS AND FACTORS OF 2 PLAYS EXACTLY
+pot0=-10.0 # electric potential multiplicator
+x0=0.0     # position of the x-center of wavepacket
+y0=0.0     # position of the y-center of wavepacket
+r0=40      # optionally - ring-shaped initial field (commented parts of the code)
+vx0=0.0    # optionally - position of the x-center of potential field (commented parts of the code)
+vy0=0.0    # optionally - position of the y-center of potential field (commented parts of the code)
+px0=0.65   # mean x-momentum of the wavepacket
+py0=-0.65  # mean y-momentum of the wavepacket
+px0=px0/2  #    half-momentum have to be used in field configuration
+py0=py0/2  #    definition for the correct values
 
 sim = solver.kgsim(L,m,N2)
 
 print('Length: %.1f hbar/mc'%L)
-print('p_extent: %.3f mc'%sim.p_extent_hi)
+print('Momentum range: +-%.3f mc'%sim.p_extent_hi)
 
 # Initial KG field
 
 a_gauss = 50
 phi_bar = np.zeros((2,Ntot,Ntot)).astype(complex)
 
-# phi_bar[0,...] = (np.exp(-1j*(x0*sim.space_px + y0*sim.space_py) -a_gauss/sim.p_extent_hi*((sim.space_px - px0)**2 + (sim.space_py - py0)**2)))[0,...]
-# phi_bar[1,...] = (np.exp(-1j*(x0*sim.space_px + y0*sim.space_py) -a_gauss/sim.p_extent_hi*((sim.space_px - px0)**2 + (sim.space_py - py0)**2)))[0,...]
-# phi_bar[1,...] = (np.exp(-1j*(x0*sim.space_px + y0*sim.space_py) - a_gauss/sim.p_extent_hi*((sim.space_px + px0)**2 + (sim.space_py + py0)**2)))[0,...]
+phi_bar[0,...] = (np.exp(-1j*(x0*sim.space_px + y0*sim.space_py) -a_gauss/sim.p_extent_hi*((sim.space_px - px0)**2 + (sim.space_py - py0)**2)))[0,...]
+phi_bar[1,...] = (np.exp(-1j*(x0*sim.space_px + y0*sim.space_py) -a_gauss/sim.p_extent_hi*((sim.space_px + px0)**2 + (sim.space_py + py0)**2)))[0,...]
 
-# Transform between field representations.
+# OPTIONALLY - Transform between field representations.
 # Solver requires the Feshbach-Villard representation
 
-idtvarphi = np.exp(-0.01*( np.sqrt(sim.space_x**2 + sim.space_y**2)[0,...] - r0 )**2)
-varphi = np.exp(-0.01*( np.sqrt(sim.space_x**2 + sim.space_y**2)[0,...] - r0 )**2)
+# idtvarphi = np.exp(-0.01*( np.sqrt(sim.space_x**2 + sim.space_y**2)[0,...] - r0 )**2)
+# varphi = np.exp(-0.01*( np.sqrt(sim.space_x**2 + sim.space_y**2)[0,...] - r0 )**2)
 
-psi = np.zeros((2,Ntot,Ntot)).astype(complex)
-psi[0,...] = 1/np.sqrt(2)*(varphi+idtvarphi)
-psi[1,...] = 1/np.sqrt(2)*(varphi-idtvarphi)
+# psi = np.zeros((2,Ntot,Ntot)).astype(complex)
+# psi[0,...] = 1/np.sqrt(2)*(varphi+idtvarphi)
+# psi[1,...] = 1/np.sqrt(2)*(varphi-idtvarphi)
 
-phi = sim.psi_to_phi(psi)
-phi_bar = sim.phi_to_phi_bar(phi)    
+# phi = sim.psi_to_phi(psi)
+# phi_bar = sim.phi_to_phi_bar(phi)    
 
 # Normalize charges
 
 qp,qn,qt = sim.charges(phi_bar)
-phi_bar[0,...] *= np.sqrt(abs(0/qp))
-phi_bar[1,...] *= np.sqrt(abs(1/qn))
+
+# set magnitude of the initial positive- and negative charge
+
+relative_qneg = 1
+relative_qpos = 0
+
+phi_bar[0,...] *= np.sqrt(abs(relative_qpos/qp))
+phi_bar[1,...] *= np.sqrt(abs(relative_qneg/qn))
 
 plt.imshow(sim.psi_to_rho(*sim.phi_to_psi(sim.phi_bar_to_phi(phi_bar))))
 plt.show()
@@ -80,14 +85,20 @@ print("Wavepacket mean momentum: %.3f mc"%(2*np.sqrt(px0**2 + py0**2)))
 
 a_gauss = 0.0003
 
+pypotential = -pot0/(np.sqrt(sim.space_x[0,...]**2 + sim.space_y[0,...]**2)+20)
+
+#
+
 # pypotential = 0.3*(np.exp(- a_gauss*10/L*((sim.space_x[0,...] - x_0)**2 + (sim.space_y[0,...] - y_0)**2)))
 # pypotential += 0.3*(np.exp(- a_gauss*10/L*((sim.space_x[0,...] + x_0)**2 + (sim.space_y[0,...] + y_0)**2)))
 # pypotential = pot0/10*(np.exp(- a_gauss*((sim.space_x[0,...] - vx0)**2 + (sim.space_y[0,...] - vy0)**2)))
 
-pypotential = -pot0/(np.sqrt(sim.space_x[0,...]**2 + sim.space_y[0,...]**2)+20)
+#
 
 # pypotential = np.zeros((Ntot,Ntot))
 # pypotential[:,N2//2+25:3*N2//2-25] = pot0
+
+#
 
 print("Max. abs potential: %.3f mc^2/e"%np.max(abs(pypotential)))
 
@@ -98,8 +109,8 @@ plt.show()
 ### Run solver
 ###
 
-blocks = 10
-total_time = 1000
+blocks = 5
+total_time = 500
 total_timesteps = 500
 
 for iter in range(blocks):
@@ -121,7 +132,7 @@ for iter in range(blocks):
     phi_bar = sim.save('./solutions/sol%i.npy'%iter,destroy_cyrk=True)
     te = time()
     print("Saving time: %f"%(te-t0))
-    print(iter)
+    print("=== Block %i, current time: %i ===" %(iter, total_time//blocks * iter))
 
 ###
 ### Render pictures
@@ -141,11 +152,11 @@ pb_complex_plot = False     # complex plot of the Feshbach-Villard representatio
 vp_complex_plot = False     # complex plot of the Klein-Gordon field
 vp_abs_plot = False         # absolute value plot of the complex Klein-Gordon field
 charge_plot = True          # charge density plot
-fps = 20                    # gif frames per second
+fps = 40                    # gif frames per second
 
-gif_id = "_hydro_pot%.2f_mom%.2f_"%(pot0,px0)
+gif_id = "_test_hydro_pot%.2f_mom%.2f_"%(pot0,np.sqrt((2*px0)**2+(2*py0)**2))
 cmap_str = 'seismic'
-charge_satur_val = 30*max(abs(qp),abs(qn))*5/L**2   # value at which colormap of the charge plot should saturate,
+charge_satur_val = 10*max(abs(qp),abs(qn))*5/L**2   # value at which colormap of the charge plot should saturate,
                                                     # 0 -> automatic
 
 load_tsteps = np.linspace(0,total_time,total_timesteps)

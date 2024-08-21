@@ -9,7 +9,7 @@ from mycyrk.utils.memory cimport shared_ptr, make_shared
 from mycyrk.cy.pysolver_cyhook cimport DiffeqMethod
 
 cimport numpy as np
-
+ 
 # =====================================================================================================================
 # Import common functions and constants
 # =====================================================================================================================

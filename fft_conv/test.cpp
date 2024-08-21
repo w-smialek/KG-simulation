@@ -9,7 +9,7 @@
             "/home/wojtek/.local/lib/python3.8/site-packages/numpy/core/include/numpy/ndarrayobject.h",
             "/home/wojtek/.local/lib/python3.8/site-packages/numpy/core/include/numpy/ndarraytypes.h",
             "/home/wojtek/.local/lib/python3.8/site-packages/numpy/core/include/numpy/ufuncobject.h",
-            "src/fft_stuff.h"
+            "fft_conv/src/fft_stuff.h"
         ],
         "extra_compile_args": [
             "-std=c99"
@@ -18,7 +18,7 @@
             "-Wl,-rpath,lib"
         ],
         "include_dirs": [
-            "src",
+            "fft_conv/src",
             "/home/wojtek/.local/lib/python3.8/site-packages/numpy/core/include"
         ],
         "language": "c++",
@@ -31,8 +31,8 @@
         ],
         "name": "test",
         "sources": [
-            "test.pyx",
-            "src/fft_stuff.cpp"
+            "fft_conv/test.pyx",
+            "fft_conv/src/fft_stuff.cpp"
         ]
     },
     "module_name": "test"
@@ -1554,7 +1554,7 @@ static const char *__pyx_filename;
 /* #### Code section: filename_table ### */
 
 static const char *__pyx_f[] = {
-  "test.pyx",
+  "fft_conv/test.pyx",
   "__init__.cython-30.pxd",
   "type.pxd",
 };
