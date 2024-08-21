@@ -69,7 +69,7 @@ near the transition from the bound to the free solution
  ![](./gifs/anim_pot0.12_mom0.25_d.gif)
  ![](./gifs/anim_pot0.13_mom0.25_d.gif)
 
-1. Klein paradox: high - energy scattering off of the potential step
+2. Klein paradox: high - energy scattering off of the potential step
 
 Above the limit $V_0 e = 2mc^2$, the transmission may become singular for certain momenta. At the sharp potential step, positive and negative charges begin to be produced, while the total charge (up to the numerical accuracy) stays constant.
 You can see the [interactive graph](https://www.desmos.com/calculator/w4ljbuavg9) for the transmission coefficient with different values of the potential barrier.
@@ -82,3 +82,11 @@ near the transition between two scattering regimes
  ![](./gifs/anim_pot2.10_mom0.25_d.gif)
  ![](./gifs/anim_pot2.13_mom0.25_d.gif)
  ![](./gifs/anim_pot2.90_mom0.25_d.gif)
+
+3. Potential well
+
+We can also observe bound states in potential wells. With sufficiently strong potential gradient,
+the klein paradox results in a sort of "vacuum polarization", however for a c-number Klein - Gordon field it is an unstable effect.
+
+ ![Gaussian potential well with |Vmax| = -4.0](./gifs/anim_pot-4.00_mom0.00_d.gif)
+ ![Gaussian potential well with |Vmax| = -23.0](./gifs/anim_pot-23.00_mom0.00_d.gif)
