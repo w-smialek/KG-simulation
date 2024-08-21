@@ -1,8 +1,7 @@
 # Numerical simulation of the complex Klein-Gordon equation
 
-<span style="color:red"> 
-> **_NOTE:_**  The project is currently work in progress!
-</span>
+> **_NOTE:_  The project is currently work in progress! **
+
 
 This project contains an implementation of cython-based
 solver for the time evolution of a complex Klein-Gordon field coupled to electromagnetic potential:
