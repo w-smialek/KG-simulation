@@ -12,6 +12,8 @@ class kgsim:
         self.l = l
         self.m = m
         self.n2 = n2
+        if n2 > 150:
+            raise NotImplementedError("maximum lattice size is currently 300x300")
         self.ntot = 2*n2
         self.p = lambda n: 2*np.pi/(2*l)*n
         self.x = lambda n: l*n/n2
@@ -408,77 +410,3 @@ class kgsim:
             print('Total charge: %.4f e'%(Q_pos+Q_neg))
 
         return (Q_pos,Q_neg,Q_pos+Q_neg)
-
-
-
-# def phi_bar_to_phi_interp(phi_bar, factor):
-#     phi = np.zeros(phi_bar.shape).astype(complex)
-#     for iy in range(-N2*factor,N2*factor):
-#         for jx in range(-N2*factor,N2*factor):
-#             row = N2*factor + iy 
-#             col = N2*factor + jx
-#             phi[:,row,col] = t_space_rot(jx/factor,iy/factor)@phi_bar[:,row,col]
-#     return phi
-
-# def phi_to_psi_interp(phi, spacef_jx, spacef_iy, factor):
-#     psi = np.zeros(phi.shape).astype(complex)
-
-#     for d in range(2):
-#         psi[d,...] = (Ntot*factor)**2*np.fft.ifft2(phi[d,...])*np.exp(1j*np.pi*(spacef_jx+spacef_iy))
-#         psi[d,...] = np.roll(psi[d,...],(N2*factor,N2*factor),(0,1))
-
-#     varphi, idtvarphi = 1/np.sqrt(2)*(psi[0,:,:]+psi[1,:,:]), 1/np.sqrt(2)*(psi[0,:,:]-psi[1,:,:])
-#     return varphi, idtvarphi
-
-# def phi_to_psi_interp2(phi, px_interp, py_interp, factor):
-#     psi = np.zeros(phi.shape).astype(complex)
-#     for iy in range(-N2*factor,N2*factor):      # ROWS ARE Y,       FROM ROW     0 -> iy = -N2 -> Y = -L
-#         for jx in range(-N2*factor,N2*factor):  # COLLUNMS ARE X,   FROM COLLUMN 0 -> jx = -N2 -> X = -L
-#             for d in range(2):                  # DEPTH IS l,       d = 0 -> l = 1;  d = 1 -> q = -1
-#                 row = N2*factor + iy 
-#                 col = N2*factor + jx
-#                 xx = x(jx/factor)
-#                 yy = x(iy/factor)
-
-#                 ft_ar = phi[d,...] * np.exp(1j*(px_interp*xx + py_interp*yy))
-#                 psi_xy = np.sum(ft_ar)
-#                 psi[d,row,col] = psi_xy
-#         print(iy)
-#     varphi, idtvarphi = 1/np.sqrt(2)*(psi[0,:,:]+psi[1,:,:]), 1/np.sqrt(2)*(psi[0,:,:]-psi[1,:,:])
-#     return varphi, idtvarphi
-
-# def flatten_for_cy_interp(a,factor):
-#     '''Convert feshbach - villard representation 2d complex field into a 1D python array,
-#     with index = nx * (Ntot x 2 x 2) + ny * (2 x 2) + l * 2 + c '''
-
-#     a_re = a.real.astype(float)
-#     a_im = a.imag.astype(float)
-
-#     ntf = Ntot*factor
-
-#     a_out = np.zeros((2*2*ntf*ntf))
-
-#     for nx in range(ntf):
-#         for ny in range(ntf):
-#             for l in range(2):
-#                 a_out[nx*ntf*2*2 + ny*2*2 + l*2 +0] = a_re[l,nx,ny]
-#                 a_out[nx*ntf*2*2 + ny*2*2 + l*2 +1] = a_im[l,nx,ny]
-
-#     a_out = array('d',a_out)
-#     return a_out
-
-# def cy_to_numpy_interp(a,factor):
-#     '''inverse of flatten_for_cy'''
-
-#     ntf = Ntot*factor
-
-#     a_out_re = np.zeros((2,ntf,ntf)).astype(complex)
-#     a_out_im = np.zeros((2,ntf,ntf)).astype(complex)
-
-#     for nx in range(ntf):
-#         for ny in range(ntf):
-#             for l in range(2):
-#                 a_out_re[l,nx,ny] = a[nx*ntf*2*2 + ny*2*2 + l*2 +0]
-#                 a_out_im[l,nx,ny] = a[nx*ntf*2*2 + ny*2*2 + l*2 +1]
-
-#     return a_out_re + 1j*a_out_im
