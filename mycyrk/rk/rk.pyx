@@ -1,5 +1,5 @@
 # distutils: language = c
-# cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True, initializedcheck=False
+# cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True, initializedcheck=False, language_level=3
 
 from CyRK.rk.rk_constants cimport \
     order_RK23, error_order_RK23, n_stages_RK23, A_rows_RK23, A_cols_RK23, \

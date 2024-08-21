@@ -1,5 +1,5 @@
 # distutils: language = c++
-# cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True, initializedcheck=False
+# cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True, initializedcheck=False, language_level=3
 
 
 cdef public api void call_diffeq_from_cython(object py_instance, DiffeqMethod diffeq):

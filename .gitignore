@@ -1,4 +1,4 @@
-ims/
+/ims/
 /old/
 /gifs/
 /mycyrk — kopia/
@@ -6,3 +6,4 @@ ims/
 build/
 *.html
 .vscode/
+/solutions/

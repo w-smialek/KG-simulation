@@ -21,15 +21,12 @@ from Cython.Distutils import build_ext
 filesstr = ["cysolverNew"]
 
 extensions = [
-    Extension(fstr, [".\cy\%s.pyx"%fstr], include_dirs=[numpy.get_include(),"../array","../nb","../rk","../utils","../cy"], extra_compile_args=['/std:c++20'], language="c++")
+    Extension(fstr, ["./cy/%s.pyx"%fstr], include_dirs=[numpy.get_include()], extra_compile_args=['-std=c++2a'], language="c++")
     for fstr in filesstr
 ]
-
+#,"../array","../nb","../rk","../utils","../cy"
 setup(
     name="mycyrk",
     cmdclass = {'build_ext': build_ext},
-    ext_modules=cythonize(extensions, annotate=False)#, build_dir="./cy")
+    ext_modules=cythonize(extensions, compiler_directives={'language_level' : "3str"})#, build_dir="./cy")
 )
-
-import shutil
-shutil.move('./cysolverNew.cp310-win_amd64.pyd','./cy/cysolverNew.cp310-win_amd64.pyd')
