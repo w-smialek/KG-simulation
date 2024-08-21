@@ -70,7 +70,7 @@ near the transition from the bound to the free solution
 
 1. Klein paradox: high - energy scattering off of the potential step
 
-Above the limit $V_0 e = 2mc^2$, the transmission coefficient may become higher than 1, and develops a singularity for certain momenta. At the sharp potential step, positive and negative charges begin to be produced, the total charge however (up to the numerical accuracy) stays constant.
+Above the limit $V_0 e = 2mc^2$, the transmission may become singular for certain momenta. At the sharp potential step, positive and negative charges begin to be produced, while the total charge (up to the numerical accuracy) stays constant.
 You can see the [interactive graph](https://www.desmos.com/calculator/w4ljbuavg9) for the transmission coefficient with different values of the potential barrier.
 The Klein paradox in some way suggests the actual phenomena of the Quantum Field Theory, such as the Schwinger effect, which occur for similar range of values of the electric field.
 
