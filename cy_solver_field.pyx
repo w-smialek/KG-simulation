@@ -64,6 +64,7 @@ cdef struct parameters:
     double complex* field
     double* ene1_ptr
     double* ene2_ptr
+    int is_field
 
 ###
 ### CyRK
@@ -79,6 +80,7 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
     cdef double complex* potential_c = args_ptr.field
     cdef double* ene1_ptr = args_ptr.ene1_ptr
     cdef double* ene2_ptr = args_ptr.ene2_ptr
+    cdef int is_field = args_ptr.is_field
 
     cdef int ntot = 2*n2
     cdef double px = 0
@@ -119,16 +121,17 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
 
     cdef double complex* temp = <double complex*> malloc(ntot*ntot*sizeof(double complex))
 
-    ft.convolved(pdata, result1, temp, potential_c, kernel1, n2) 
-    ft.convolved(pdata, result2, temp, potential_c, kernel2, n2)
+    if is_field:
+        ft.convolved(pdata, result1, temp, potential_c, kernel1, n2) 
+        ft.convolved(pdata, result2, temp, potential_c, kernel2, n2)
 
     while ix < ntot:
         iy = 0
         while iy < ntot:
             nx = (ix - n2)
             ny = (iy - n2)
-            px = 2*M_PI/l*nx
-            py = 2*M_PI/l*ny
+            px = M_PI/l*nx
+            py = M_PI/l*ny
 
             ene_val = ene(m,px,py)
 
@@ -139,18 +142,19 @@ cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEv
             dy[point + 1*2 + 0] =  ene_val * (-1.) * y[point + 1*2 + 1]
             dy[point + 1*2 + 1] = -ene_val * (-1.) * y[point + 1*2 + 0]
 
-            point_ene = (ix)*ntot + (iy)
+            if is_field:
+                point_ene = (ix)*ntot + (iy)
 
-            conv1 = result1[ix*ntot+iy]
-            conv2 = result2[ix*ntot+iy]
+                conv1 = result1[ix*ntot+iy]
+                conv2 = result2[ix*ntot+iy]
 
-            temp1c = (-1j)*(ene1_ptr[point_ene]*conv1 + ene2_ptr[point_ene]*conv2)
-            temp2c = (-1j)*(ene1_ptr[point_ene]*conv1 - ene2_ptr[point_ene]*conv2)
+                temp1c = (-1j)*(ene1_ptr[point_ene]*conv1 + ene2_ptr[point_ene]*conv2)
+                temp2c = (-1j)*(ene1_ptr[point_ene]*conv1 - ene2_ptr[point_ene]*conv2)
 
-            dy[point + 0*2 + 0] += temp1c.real
-            dy[point + 0*2 + 1] += temp1c.imag
-            dy[point + 1*2 + 0] += temp2c.real
-            dy[point + 1*2 + 1] += temp2c.imag
+                dy[point + 0*2 + 0] += temp1c.real
+                dy[point + 0*2 + 1] += temp1c.imag
+                dy[point + 1*2 + 0] += temp2c.real
+                dy[point + 1*2 + 1] += temp2c.imag
 
             iy += 1
         ix += 1
@@ -195,6 +199,13 @@ def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps, doub
     args.pdata = &data
     args.m = coef[1]
     args.l = coef[2]
+
+    args.is_field = 0
+    for fi in field:
+        if fi != 0:
+            args.is_field = 1
+            break
+
     cdef parameters* args_param_ptr = &args
 
     cdef double complex* potential_c = <double complex*>malloc(ntot*ntot*sizeof(double complex))

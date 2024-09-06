@@ -7,3 +7,4 @@ build/
 *.html
 .vscode/
 /solutions/
+__pycache__/

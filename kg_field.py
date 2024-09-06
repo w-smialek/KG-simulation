@@ -46,8 +46,10 @@ print('Momentum range: +-%.3f mc'%sim.p_extent_hi)
 a_gauss = 50
 phi_bar = np.zeros((2,Ntot,Ntot)).astype(complex)
 
-phi_bar[0,...] = (np.exp(-1j*(x0*sim.space_px + y0*sim.space_py) -a_gauss/sim.p_extent_hi*((sim.space_px - px0)**2 + (sim.space_py - py0)**2)))[0,...]
-phi_bar[1,...] = (np.exp(-1j*(x0*sim.space_px + y0*sim.space_py) -a_gauss/sim.p_extent_hi*((sim.space_px + px0)**2 + (sim.space_py + py0)**2)))[0,...]
+phi_bar[0,...] = (np.exp(-1j*(x0*sim.space_px + y0*sim.space_py) \
+                          -a_gauss/sim.p_extent_hi*((sim.space_px - px0)**2 + (sim.space_py - py0)**2)))[0,...]
+phi_bar[1,...] = (np.exp(-1j*(x0*sim.space_px + y0*sim.space_py) \
+                          -a_gauss/sim.p_extent_hi*((sim.space_px + px0)**2 + (sim.space_py + py0)**2)))[0,...]
 
 # OPTIONALLY - Transform between field representations.
 # Solver requires the Feshbach-Villard representation

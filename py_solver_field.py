@@ -181,7 +181,7 @@ class kgsim:
         varphi_interp = intplt0re((y_interp,x_interp)) + 1j*intplt0im((y_interp,x_interp))
         return varphi_interp#, idtvarphi_interp
 
-    def colorpy(self,z, stretch = 1):
+    def colorpy(self,z):
         n,m = z.shape
 
         zar = self.flatten_for_cycol(z,n,m)
@@ -191,9 +191,6 @@ class kgsim:
         car = colorize(zar, car, n, m)
 
         c_out = self.cycol_rgb_to_np(car,n,m)
-
-        if stretch != 1:
-            c_out = np.repeat(np.repeat(c_out,stretch, axis=0), stretch, axis=1)
 
         return c_out
     
@@ -257,7 +254,6 @@ class kgsim:
     
     def render(self,
                factor=1,
-               stretch=1,
                fps=26,
                gif_id=1,
                pb_complex_plot=False,
@@ -314,8 +310,8 @@ class kgsim:
                 if charge_plot:
                     sol_idtvarphi = self.complex_interp_varphi(sol_idtvarphi, x_interp, y_interp, factor)
 
-            if pb_complex_plot:
-                datac_phi_bar = self.colorpy(sol_phi_bar_i[0,...], stretch)
+            if pb_complex_plot: ## THAT IS ONLY ONE CHARGE SIGN, ADD BOTH!
+                datac_phi_bar = self.colorpy(sol_phi_bar_i[1,...])
 
                 imga = Image.fromarray((datac_phi_bar[:, :, :3] * 255).astype(np.uint8))
                 imga = ImageOps.flip(imga)
@@ -323,7 +319,7 @@ class kgsim:
                 imagesa.append(imga)
 
             if vp_complex_plot:
-                datac_varphi = self.colorpy(sol_varphi, stretch)
+                datac_varphi = self.colorpy(sol_varphi)
 
                 imgb = Image.fromarray((datac_varphi[:, :, :3] * 255).astype(np.uint8))
                 imgb = ImageOps.flip(imgb)
@@ -335,7 +331,6 @@ class kgsim:
                 databs_varphi = abs(sol_varphi)
                 databs_varphi = databs_varphi/(np.sum(databs_varphi))*np.power(self.ntot*factor,2/1.25)
                 databs_varphi = cmap1(databs_varphi)
-                databs_varphi = np.repeat(np.repeat(databs_varphi,stretch, axis=0), stretch, axis=1)
 
                 imgc = Image.fromarray((databs_varphi[:, :, :3] * 255).astype(np.uint8))
                 imgc = ImageOps.flip(imgc)
@@ -352,7 +347,6 @@ class kgsim:
                     data_charge_c = data_charge/(5*np.average(np.abs(data_charge)))/2
                     data_charge_c += 1/2
                 data_charge_c = cmap1(data_charge_c)
-                data_charge_c = np.repeat(np.repeat(data_charge_c,stretch, axis=0), stretch, axis=1)
 
                 qdata = self.charges(sol_phi_bar)
 
@@ -363,11 +357,11 @@ class kgsim:
                             "Q+: %.4f\nQ-: %.4f\nQtotal: %.4f"%qdata,
                             fill=(0,0,0))
                 if fromloaded.any():
-                    Idraw.text((self.ntot*factor*stretch-75,20),
+                    Idraw.text((self.ntot*factor-75,20),
                                 "time: %.2f"%load_tsteps[i],
                                 fill=(0,0,0))
                 else:
-                    Idraw.text((self.ntot*factor*stretch-75,20),
+                    Idraw.text((self.ntot*factor-75,20),
                                 "time: %.2f"%self.timesteps[i],
                                 fill=(0,0,0))
                 imgd.save('./ims/dfig%i.png'%i)

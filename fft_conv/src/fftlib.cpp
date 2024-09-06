@@ -4,7 +4,7 @@
 {
     "distutils": {
         "depends": [
-            "src/fft_stuff.h"
+            "fft_conv/src/fft_stuff.h"
         ],
         "extra_compile_args": [
             "-std=c99",
@@ -14,8 +14,8 @@
             "-Wl,-rpath,lib"
         ],
         "include_dirs": [
-            "src",
-            "/home/wojtek/.local/lib/python3.8/site-packages/numpy/core/include"
+            "fft_conv/src",
+            "/home/wojtek/.local/lib/python3.10/site-packages/numpy/core/include"
         ],
         "language": "c++",
         "libraries": [
@@ -27,8 +27,8 @@
         ],
         "name": "fftlib",
         "sources": [
-            "src/fftlib.pyx",
-            "src/fft_stuff.cpp"
+            "fft_conv/src/fftlib.pyx",
+            "fft_conv/src/fft_stuff.cpp"
         ]
     },
     "module_name": "fftlib"
@@ -1542,7 +1542,7 @@ static const char *__pyx_filename;
 /* #### Code section: filename_table ### */
 
 static const char *__pyx_f[] = {
-  "src/fftlib.pyx",
+  "fft_conv/src/fftlib.pyx",
 };
 /* #### Code section: utility_code_proto_before_types ### */
 /* ForceInitThreads.proto */
