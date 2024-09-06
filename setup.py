@@ -38,10 +38,14 @@ extensions = [
               extra_compile_args=['-std=c99'],
               extra_link_args=['-Wl,-rpath,lib'],
               language='c++'),
-    Extension("colorize", 
-              sources=["fastccolor/colorize.pyx"], 
-              include_dirs=[numpy.get_include()], 
-              language="c"),
+    # Extension("colorize", 
+    #           sources=["fastccolor/colorize.pyx", "fastccolor/hsl.c"], 
+    #           include_dirs=[numpy.get_include()], 
+    #           libraries=['m', 'fftw3'],
+    #           library_dirs=['lib'],
+    #           extra_compile_args=['-std=c99'],
+    #           extra_link_args=['-Wl,-rpath,lib'],
+    #           language='c'),
     Extension("cysolverNew", 
               sources=['mycyrk/cy/cysolverNew.pyx'],
             #   ,'mycyrk/cy/baseline_func.cpp',
@@ -65,9 +69,10 @@ setup(
 compiler_directives={'language_level' : "3str"}
 )
 
-import shutil
+import shutil, os
+file_path = os.path.dirname(os.path.realpath(__file__))
 
-shutil.move("fftlib.cpython-38-x86_64-linux-gnu.so", "fft_conv/src/fftlib.cpython-38-x86_64-linux-gnu.so")
-shutil.move("test.cpython-38-x86_64-linux-gnu.so", "fft_conv/test.cpython-38-x86_64-linux-gnu.so")
-shutil.move("colorize.cpython-38-x86_64-linux-gnu.so", "fastccolor/colorize.cpython-38-x86_64-linux-gnu.so")
-shutil.move("cysolverNew.cpython-38-x86_64-linux-gnu.so", "mycyrk/cy/cysolverNew.cpython-38-x86_64-linux-gnu.so")
+shutil.move(file_path+"/fftlib.cpython-310-x86_64-linux-gnu.so", file_path+"/fft_conv/src/fftlib.cpython-310-x86_64-linux-gnu.so")
+shutil.move(file_path+"/test.cpython-310-x86_64-linux-gnu.so", file_path+"/fft_conv/test.cpython-310-x86_64-linux-gnu.so")
+# shutil.move(file_path+"/colorize.cpython-310-x86_64-linux-gnu.so", file_path+"/fastccolor/colorize.cpython-310-x86_64-linux-gnu.so")
+shutil.move(file_path+"/cysolverNew.cpython-310-x86_64-linux-gnu.so", file_path+"/mycyrk/cy/cysolverNew.cpython-310-x86_64-linux-gnu.so")
