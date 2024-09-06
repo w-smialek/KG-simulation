@@ -5,6 +5,7 @@ from array import array
 import matplotlib.pyplot as plt
 from cy_solver_field import solver
 from PIL import Image, ImageOps, ImageDraw
+import cv2
 
 class kgsim:
 
@@ -47,6 +48,35 @@ class kgsim:
         py = 2*np.pi/self.l*ny
         U = 1/(2*np.sqrt(self.m*self.ene(px,py)))*np.array([[self.m+self.ene(px,py),self.ene(px,py)-self.m],[self.ene(px,py)-self.m,self.m+self.ene(px,py)]])
         return U
+    
+    def repr_transform(self,in_field,forms):
+        in_form,_,out_form = forms.partition('->')
+        match in_form:
+            case 'phibar':
+                in_form = 0
+            case 'phi':
+                in_form = 1
+            case 'psi':
+                in_form = 2
+            case 'varphi':
+                in_form = 3
+            case _: 
+                raise NotImplementedError("wrong field form")
+            
+        match out_form:
+            case 'phibar':
+                in_form = 0
+            case 'phi':
+                in_form = 1
+            case 'psi':
+                in_form = 2
+            case 'varphi':
+                in_form = 3
+            case _: 
+                raise NotImplementedError("wrong field form")
+            
+        
+
 
     def phi_bar_to_phi(self,phi_bar):
 
@@ -252,6 +282,136 @@ class kgsim:
         loadedarr = np.load(path)
         self.loaded.append(loadedarr)
     
+    # def render(self,
+    #            factor=1,
+    #            fps=26,
+    #            gif_id=1,
+    #            pb_complex_plot=False,
+    #            vp_complex_plot=False,
+    #            vp_abs_plot=False,
+    #            charge_plot=True,
+    #            cmap_str='seismic',
+    #            charge_satur_val=0,
+    #            fromloaded=False):
+        
+    #     p_linspace_interp = np.linspace(self.p_extent_lo,self.p_extent_hi,self.ntot*factor)
+    #     x_linspace_interp = np.linspace(self.x_extent_lo,self.x_extent_hi,self.ntot*factor)
+    #     px_interp, py_interp = np.meshgrid(p_linspace_interp, p_linspace_interp, indexing='ij')
+    #     x_interp, y_interp = np.meshgrid(x_linspace_interp, x_linspace_interp, indexing='ij')
+    #     spacef_jx = np.zeros((factor*self.ntot,factor*self.ntot))
+    #     spacef_iy = np.zeros((factor*self.ntot,factor*self.ntot))
+    #     interp_range = range(-self.n2*factor,self.n2*factor)
+    #     for iy in interp_range:       # ROWS ARE Y,       FROM ROW     0 -> iy = -N2 -> Y = -L
+    #         for jx in interp_range:   # COLLUNMS ARE X,   FROM COLLUMN 0 -> jx = -N2 -> X = -L
+    #             row = self.n2 + iy 
+    #             col = self.n2 + jx
+
+    #             spacef_jx[row,col] = jx
+    #             spacef_iy[row,col] = iy
+
+    #     cmap1 = plt.get_cmap(cmap_str)
+
+    #     imagesa = []
+    #     imagesb = []
+    #     imagesc = []
+    #     imagesd = []
+
+    #     if fromloaded.any():
+    #         self.loaded = np.concatenate(self.loaded,axis=3)
+    #         load_tsteps = fromloaded
+    #         self.n_timesteps = len(fromloaded)
+
+    #     for i in range(self.n_timesteps):
+
+    #         if fromloaded.any():
+    #             sol_phi_bar = self.loaded[...,i]
+    #         else:
+    #             sol_phi_bar = self.cy_to_numpy(self.result.y[:,i])
+
+    #         sol_phi = self.phi_bar_to_phi(sol_phi_bar)
+
+    #         sol_varphi, sol_idtvarphi = self.phi_to_psi(sol_phi)
+
+    #         if factor != 1:
+    #             if pb_complex_plot:
+    #                 sol_phi_bar_i = self.complex_interp_phi(sol_phi_bar, py_interp, px_interp, factor)
+    #             if vp_complex_plot or vp_abs_plot or charge_plot:
+    #                 sol_varphi = self.complex_interp_varphi(sol_varphi, x_interp, y_interp, factor)
+    #             if charge_plot:
+    #                 sol_idtvarphi = self.complex_interp_varphi(sol_idtvarphi, x_interp, y_interp, factor)
+
+    #         if pb_complex_plot: ## THAT IS ONLY ONE CHARGE SIGN, ADD BOTH!
+    #             datac_phi_bar = self.colorpy(sol_phi_bar_i[1,...])
+
+    #             imga = Image.fromarray((datac_phi_bar[:, :, :3] * 255).astype(np.uint8))
+    #             imga = ImageOps.flip(imga)
+    #             imga.save('./ims/afig%i.png'%i)
+    #             imagesa.append(imga)
+
+    #         if vp_complex_plot:
+    #             datac_varphi = self.colorpy(sol_varphi)
+
+    #             imgb = Image.fromarray((datac_varphi[:, :, :3] * 255).astype(np.uint8))
+    #             imgb = ImageOps.flip(imgb)
+    #             imgb.save('./ims/bfig%i.png'%i)
+    #             imagesb.append(imgb)
+
+
+    #         if vp_abs_plot:
+    #             databs_varphi = abs(sol_varphi)
+    #             databs_varphi = databs_varphi/(np.sum(databs_varphi))*np.power(self.ntot*factor,2/1.25)
+    #             databs_varphi = cmap1(databs_varphi)
+
+    #             imgc = Image.fromarray((databs_varphi[:, :, :3] * 255).astype(np.uint8))
+    #             imgc = ImageOps.flip(imgc)
+    #             imgc.save('./ims/cfig%i.png'%i)
+    #             imagesc.append(imgc)
+    #             # print(np.sum(abs(sol_varphi)))
+
+    #         if charge_plot:
+    #             data_charge = self.psi_to_rho(sol_varphi, sol_idtvarphi)
+    #             if charge_satur_val != 0:
+    #                 data_charge_c = data_charge/charge_satur_val/2
+    #                 data_charge_c += 1/2
+    #             else:
+    #                 data_charge_c = data_charge/(5*np.average(np.abs(data_charge)))/2
+    #                 data_charge_c += 1/2
+    #             data_charge_c = cmap1(data_charge_c)
+
+    #             qdata = self.charges(sol_phi_bar)
+
+    #             imgd = Image.fromarray((data_charge_c[:, :, :3] * 255).astype(np.uint8))
+    #             imgd = ImageOps.flip(imgd)
+    #             Idraw = ImageDraw.Draw(imgd)
+    #             Idraw.text((20,20),
+    #                         "Q+: %.4f\nQ-: %.4f\nQtotal: %.4f"%qdata,
+    #                         fill=(0,0,0))
+    #             if fromloaded.any():
+    #                 Idraw.text((self.ntot*factor-75,20),
+    #                             "time: %.2f"%load_tsteps[i],
+    #                             fill=(0,0,0))
+    #             else:
+    #                 Idraw.text((self.ntot*factor-75,20),
+    #                             "time: %.2f"%self.timesteps[i],
+    #                             fill=(0,0,0))
+    #             imgd.save('./ims/dfig%i.png'%i)
+    #             imagesd.append(imgd)
+
+    #         if (i%20==0):
+    #             # print('average absolute charge: ',np.average(np.abs(data_charge)))
+    #             print(i)
+
+    #     if pb_complex_plot:
+    #         imagesa[0].save("./gifs/anim%sa.gif"%gif_id, save_all = True, append_images=imagesa[1:], duration = 1/fps*1000, loop=0)
+    #     if vp_complex_plot:
+    #         imagesb[0].save("./gifs/anim%sb.gif"%gif_id, save_all = True, append_images=imagesb[1:], duration = 1/fps*1000, loop=0)
+    #     if vp_abs_plot:
+    #         imagesc[0].save("./gifs/anim%sc.gif"%gif_id, save_all = True, append_images=imagesc[1:], duration = 1/fps*1000, loop=0)
+    #     if charge_plot:
+    #         imagesd[0].save("./gifs/anim%sd.gif"%gif_id, save_all = True, append_images=imagesd[1:], duration = 1/fps*1000, loop=0)
+
+    #     return
+
     def render(self,
                factor=1,
                fps=26,
@@ -281,10 +441,17 @@ class kgsim:
 
         cmap1 = plt.get_cmap(cmap_str)
 
-        imagesa = []
-        imagesb = []
-        imagesc = []
-        imagesd = []
+        videodims = (self.ntot*factor,self.ntot*factor)
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')    
+
+        if pb_complex_plot:
+            videoa = cv2.VideoWriter("./gifs/anim%sa.mp4"%gif_id,fourcc,fps,videodims)
+        if vp_complex_plot:
+            videob = cv2.VideoWriter("./gifs/anim%sb.mp4"%gif_id,fourcc,fps,videodims)
+        if vp_abs_plot:
+            videoc = cv2.VideoWriter("./gifs/anim%sc.mp4"%gif_id,fourcc,fps,videodims)
+        if charge_plot:
+            videod = cv2.VideoWriter("./gifs/anim%sd.mp4"%gif_id,fourcc,fps,videodims)
 
         if fromloaded.any():
             self.loaded = np.concatenate(self.loaded,axis=3)
@@ -315,17 +482,14 @@ class kgsim:
 
                 imga = Image.fromarray((datac_phi_bar[:, :, :3] * 255).astype(np.uint8))
                 imga = ImageOps.flip(imga)
-                imga.save('./ims/afig%i.png'%i)
-                imagesa.append(imga)
+                videoa.write(cv2.cvtColor(np.array(imga), cv2.COLOR_RGB2BGR))                
 
             if vp_complex_plot:
                 datac_varphi = self.colorpy(sol_varphi)
 
                 imgb = Image.fromarray((datac_varphi[:, :, :3] * 255).astype(np.uint8))
                 imgb = ImageOps.flip(imgb)
-                imgb.save('./ims/bfig%i.png'%i)
-                imagesb.append(imgb)
-
+                videob.write(cv2.cvtColor(np.array(imgb), cv2.COLOR_RGB2BGR))                
 
             if vp_abs_plot:
                 databs_varphi = abs(sol_varphi)
@@ -334,9 +498,7 @@ class kgsim:
 
                 imgc = Image.fromarray((databs_varphi[:, :, :3] * 255).astype(np.uint8))
                 imgc = ImageOps.flip(imgc)
-                imgc.save('./ims/cfig%i.png'%i)
-                imagesc.append(imgc)
-                # print(np.sum(abs(sol_varphi)))
+                videoc.write(cv2.cvtColor(np.array(imgc), cv2.COLOR_RGB2BGR))                
 
             if charge_plot:
                 data_charge = self.psi_to_rho(sol_varphi, sol_idtvarphi)
@@ -364,21 +526,20 @@ class kgsim:
                     Idraw.text((self.ntot*factor-75,20),
                                 "time: %.2f"%self.timesteps[i],
                                 fill=(0,0,0))
-                imgd.save('./ims/dfig%i.png'%i)
-                imagesd.append(imgd)
+                videod.write(cv2.cvtColor(np.array(imgd), cv2.COLOR_RGB2BGR))   
 
             if (i%20==0):
                 # print('average absolute charge: ',np.average(np.abs(data_charge)))
                 print(i)
 
-        if pb_complex_plot:
-            imagesa[0].save("./gifs/anim%sa.gif"%gif_id, save_all = True, append_images=imagesa[1:], duration = 1/fps*1000, loop=0)
-        if vp_complex_plot:
-            imagesb[0].save("./gifs/anim%sb.gif"%gif_id, save_all = True, append_images=imagesb[1:], duration = 1/fps*1000, loop=0)
-        if vp_abs_plot:
-            imagesc[0].save("./gifs/anim%sc.gif"%gif_id, save_all = True, append_images=imagesc[1:], duration = 1/fps*1000, loop=0)
-        if charge_plot:
-            imagesd[0].save("./gifs/anim%sd.gif"%gif_id, save_all = True, append_images=imagesd[1:], duration = 1/fps*1000, loop=0)
+        try: videoa.release() 
+        except: pass
+        try: videob.release() 
+        except: pass
+        try: videoc.release() 
+        except: pass
+        try: videod.release() 
+        except: pass
 
         return
     
@@ -404,3 +565,4 @@ class kgsim:
             print('Total charge: %.4f e'%(Q_pos+Q_neg))
 
         return (Q_pos,Q_neg,Q_pos+Q_neg)
+    
