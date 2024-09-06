@@ -1,20 +1,21 @@
 # Numerical simulation of the complex Klein-Gordon equation
 
+> **_NOTE:_  The project is currently work in progress!**
+
+
 This project contains an implementation of cython-based
 solver for the time evolution of a complex Klein-Gordon field coupled to electromagnetic potential:
 
 $$ \left( (\partial_\mu - ieA_\mu)^2 +m^2 \right) \varphi = 0 $$
 
 At this stage, the solver handles an electric potential constant in time:
-$$ A_\mu (t,\vec{x}) = (V(\vec{x}),0) $$
+$$A_\mu (t,\mathbf{x}) = (V(\mathbf{x}),0)$$
 
 The domain of the simulation is a 2-torus, i.e. a square with periodic boundary conditions. The advantage of such domain is that the only necessary approximation when storing the field value is introducing a momentum cutoff for a finite grid, while the discretization of momenta is exact.
 
 The solver works in the Feshbach-Villars representation of Klein-Gordon field (cf. https://doi.org/10.1103/RevModPhys.30.24), but it provides tools for transforming between different representations.
 
 No finite difference method is used; when working in momentum space the integration step involves just point-wise multiplications and convolutions, which should greatly improve numerical accuracy.
-
-> **_NOTE:_**  The project is currently work in progress!
 
 ## Solver tools
 
@@ -68,9 +69,9 @@ near the transition from the bound to the free solution
  ![](./gifs/anim_pot0.12_mom0.25_d.gif)
  ![](./gifs/anim_pot0.13_mom0.25_d.gif)
 
-1. Klein paradox: high - energy scattering off of the potential step
+2. Klein paradox: high - energy scattering off of the potential step
 
-Above the limit $V_0 e = 2mc^2$, the transmission coefficient may become higher than 1, and develops a singularity for certain momenta. At the sharp potential step, positive and negative charges begin to be produced, the total charge however (up to the numerical accuracy) stays constant.
+Above the limit $V_0 e = 2mc^2$, the transmission may become singular for certain momenta. At the sharp potential step, positive and negative charges begin to be produced, while the total charge (up to the numerical accuracy) stays constant.
 You can see the [interactive graph](https://www.desmos.com/calculator/w4ljbuavg9) for the transmission coefficient with different values of the potential barrier.
 The Klein paradox in some way suggests the actual phenomena of the Quantum Field Theory, such as the Schwinger effect, which occur for similar range of values of the electric field.
 
@@ -81,3 +82,13 @@ near the transition between two scattering regimes
  ![](./gifs/anim_pot2.10_mom0.25_d.gif)
  ![](./gifs/anim_pot2.13_mom0.25_d.gif)
  ![](./gifs/anim_pot2.90_mom0.25_d.gif)
+
+3. Potential well
+
+We can also observe bound states in potential wells. With sufficiently strong potential gradient,
+the klein paradox results in a sort of "vacuum polarization", however for a c-number Klein - Gordon field it is an unstable effect.
+
+ ![Gaussian potential well with |Vmax| = -4.0](./gifs/anim_pot-4.00_mom0.00_d.gif)
+ ![Gaussian potential well with |Vmax| = -23.0](./gifs/anim_pot-23.00_mom0.00_d.gif)
+
+ Left: gaussian potential well with |Vmax| = -4.0, right: Gaussian potential well with |Vmax| = -23.0
