@@ -241,7 +241,7 @@ class kgsim:
         potential_arr = array('d', potential_lst)
         return potential_arr
     
-    def solve(self, potfield, kgfield, t_span, n_timesteps, kgform = 'phibar'):
+    def solve(self, potfield, potfield_a1, potfield_a2, potfield_a0, kgfield, t_span, n_timesteps, kgform = 'phibar'):
         if kgform == 'phi':
             kgfield = self.phi_to_phi_bar(kgfield)
         elif kgform == 'psi':
@@ -258,6 +258,12 @@ class kgsim:
         # I guess no need to consider other input form
         potfield = self.psi_to_phi_pot(potfield)
         potarr = self.flatten_for_cy_pot(potfield)
+        potfield_a1 = self.psi_to_phi_pot(potfield_a1)
+        potarr_a1 = self.flatten_for_cy_pot(potfield_a1)
+        potfield_a2 = self.psi_to_phi_pot(potfield_a2)
+        potarr_a2 = self.flatten_for_cy_pot(potfield_a2)
+        potfield_a0 = self.psi_to_phi_pot(potfield_a0)
+        potarr_a0 = self.flatten_for_cy_pot(potfield_a0)
 
         t_init, t_end = t_span
         self.time_tot = t_end - t_init
@@ -265,7 +271,7 @@ class kgsim:
         timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
         self.timesteps = np.linspace(t_init, t_end, n_timesteps)
         coefs = array('d',[self.n2,self.m,self.l])
-        self.result = solver(t_span, kgarr, coefs, timesteps, potarr)      # around 15 seconds per 1.0 on N2 = 100
+        self.result = solver(t_span, kgarr, coefs, timesteps, potarr, potarr_a1, potarr_a2, potarr_a0)      # around 15 seconds per 1.0 on N2 = 100
         self.n_timesteps = n_timesteps
         return
     
