@@ -2098,8 +2098,9 @@ struct __pyx_opt_args_6mycyrk_2cy_11cysolverNew_cysolve_ivp_gil {
   size_t expected_size;
 };
 struct __pyx_t_15cy_solver_field_parameters;
+struct __pyx_t_15cy_solver_field_parameters_t;
 
-/* "cy_solver_field.pyx":60
+/* "cy_solver_field.pyx":65
  * ###
  * 
  * cdef struct parameters:             # <<<<<<<<<<<<<<
@@ -2115,6 +2116,32 @@ struct __pyx_t_15cy_solver_field_parameters {
   __pyx_t_double_complex *field_a1;
   __pyx_t_double_complex *field_a2;
   __pyx_t_double_complex *field_a0;
+  double *ene1_ptr;
+  double *ene2_ptr;
+};
+
+/* "cy_solver_field.pyx":77
+ *     double* ene2_ptr
+ * 
+ * cdef struct parameters_t:             # <<<<<<<<<<<<<<
+ *     int n2
+ *     int n_t
+ */
+struct __pyx_t_15cy_solver_field_parameters_t {
+  int n2;
+  int n_t;
+  double m;
+  double l;
+  struct fft_data *pdata;
+  __pyx_t_double_complex *field_interp;
+  __pyx_t_double_complex *field_a1_interp;
+  __pyx_t_double_complex *field_a2_interp;
+  __pyx_t_double_complex *field_a0_interp;
+  double *t_knots;
+  int is_field;
+  int is_field_a1;
+  int is_field_a2;
+  int is_field_a0;
   double *ene1_ptr;
   double *ene2_ptr;
 };
@@ -3467,14 +3494,14 @@ static CYTHON_INLINE void __Pyx_XCLEAR_MEMVIEW(__Pyx_memviewslice *, int, int);
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *);
@@ -3657,6 +3684,7 @@ static double __pyx_f_15cy_solver_field_ene(double, double, double); /*proto*/
 static double *__pyx_f_15cy_solver_field_create_ene1(int, double, double); /*proto*/
 static double *__pyx_f_15cy_solver_field_create_ene2(int, double, double); /*proto*/
 static void __pyx_f_15cy_solver_field_cython_diffeq(double *, double, double *, void const *, PreEvalFunc); /*proto*/
+static void __pyx_f_15cy_solver_field_cython_diffeq_t(double *, double, double *, void const *, PreEvalFunc); /*proto*/
 static int __pyx_array_allocate_buffer(struct __pyx_array_obj *); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -3723,15 +3751,25 @@ static const char __pyx_k__6[] = "'";
 static const char __pyx_k__7[] = ")";
 static const char __pyx_k_gc[] = "gc";
 static const char __pyx_k_id[] = "id";
+static const char __pyx_k_ip[] = "ip";
+static const char __pyx_k_it[] = "it";
+static const char __pyx_k_ix[] = "ix";
+static const char __pyx_k_iy[] = "iy";
 static const char __pyx_k_n2[] = "n2";
+static const char __pyx_k_np[] = "np";
 static const char __pyx_k_y0[] = "y0";
-static const char __pyx_k__24[] = "?";
+static const char __pyx_k__28[] = "?";
 static const char __pyx_k_abc[] = "abc";
 static const char __pyx_k_and[] = " and ";
 static const char __pyx_k_got[] = " (got ";
+static const char __pyx_k_mpl[] = "mpl";
+static const char __pyx_k_n_k[] = "n_k";
+static const char __pyx_k_n_t[] = "n_t";
 static const char __pyx_k_new[] = "__new__";
 static const char __pyx_k_obj[] = "obj";
+static const char __pyx_k_plt[] = "plt";
 static const char __pyx_k_sys[] = "sys";
+static const char __pyx_k_use[] = "use";
 static const char __pyx_k_args[] = "args";
 static const char __pyx_k_base[] = "base";
 static const char __pyx_k_coef[] = "coef";
@@ -3757,9 +3795,11 @@ static const char __pyx_k_field[] = "field";
 static const char __pyx_k_flags[] = "flags";
 static const char __pyx_k_index[] = "index";
 static const char __pyx_k_num_y[] = "num_y";
+static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_shape[] = "shape";
 static const char __pyx_k_start[] = "start";
+static const char __pyx_k_tkagg[] = "tkagg";
 static const char __pyx_k_diffeq[] = "diffeq";
 static const char __pyx_k_enable[] = "enable";
 static const char __pyx_k_encode[] = "encode";
@@ -3767,6 +3807,7 @@ static const char __pyx_k_format[] = "format";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_name_2[] = "__name__";
 static const char __pyx_k_pickle[] = "pickle";
+static const char __pyx_k_pyplot[] = "pyplot";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_result[] = "result";
 static const char __pyx_k_solver[] = "solver";
@@ -3778,6 +3819,7 @@ static const char __pyx_k_y0_ptr[] = "y0_ptr";
 static const char __pyx_k_disable[] = "disable";
 static const char __pyx_k_fortran[] = "fortran";
 static const char __pyx_k_memview[] = "memview";
+static const char __pyx_k_t_knots[] = "t_knots";
 static const char __pyx_k_Ellipsis[] = "Ellipsis";
 static const char __pyx_k_Sequence[] = "Sequence";
 static const char __pyx_k_args_ptr[] = "args_ptr";
@@ -3785,11 +3827,13 @@ static const char __pyx_k_field_a0[] = "field_a0";
 static const char __pyx_k_field_a1[] = "field_a1";
 static const char __pyx_k_field_a2[] = "field_a2";
 static const char __pyx_k_getstate[] = "__getstate__";
+static const char __pyx_k_is_field[] = "is_field";
 static const char __pyx_k_itemsize[] = "itemsize";
 static const char __pyx_k_n_tsteps[] = "n_tsteps";
 static const char __pyx_k_pyx_type[] = "__pyx_type";
 static const char __pyx_k_register[] = "register";
 static const char __pyx_k_setstate[] = "__setstate__";
+static const char __pyx_k_solver_t[] = "solver_t";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_isenabled[] = "isenabled";
@@ -3798,6 +3842,7 @@ static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
 static const char __pyx_k_timesteps[] = "timesteps";
 static const char __pyx_k_IndexError[] = "IndexError";
 static const char __pyx_k_ValueError[] = "ValueError";
+static const char __pyx_k_matplotlib[] = "matplotlib";
 static const char __pyx_k_pyx_result[] = "__pyx_result";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_t_span_arr[] = "t_span_arr";
@@ -3807,6 +3852,9 @@ static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_PickleError[] = "PickleError";
 static const char __pyx_k_c_timesteps[] = "c_timesteps";
 static const char __pyx_k_collections[] = "collections";
+static const char __pyx_k_is_field_a0[] = "is_field_a0";
+static const char __pyx_k_is_field_a1[] = "is_field_a1";
+static const char __pyx_k_is_field_a2[] = "is_field_a2";
 static const char __pyx_k_potential_c[] = "potential_c";
 static const char __pyx_k_initializing[] = "_initializing";
 static const char __pyx_k_is_coroutine[] = "_is_coroutine";
@@ -3829,11 +3877,16 @@ static const char __pyx_k_cy_solver_field[] = "cy_solver_field";
 static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
+static const char __pyx_k_matplotlib_pyplot[] = "matplotlib.pyplot";
 static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
 static const char __pyx_k_asyncio_coroutines[] = "asyncio.coroutines";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_potential_c_interp[] = "potential_c_interp";
 static const char __pyx_k_strided_and_direct[] = "<strided and direct>";
 static const char __pyx_k_cy_solver_field_pyx[] = "cy_solver_field.pyx";
+static const char __pyx_k_potential_ca0_interp[] = "potential_ca0_interp";
+static const char __pyx_k_potential_ca1_interp[] = "potential_ca1_interp";
+static const char __pyx_k_potential_ca2_interp[] = "potential_ca2_interp";
 static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_Invalid_shape_in_axis[] = "Invalid shape in axis ";
 static const char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
@@ -3909,6 +3962,7 @@ static PyObject *__pyx_pf_15View_dot_MemoryView___pyx_unpickle_Enum(CYTHON_UNUSE
 static int __pyx_pf_7cpython_5array_5array___getbuffer__(arrayobject *__pyx_v_self, Py_buffer *__pyx_v_info, CYTHON_UNUSED int __pyx_v_flags); /* proto */
 static void __pyx_pf_7cpython_5array_5array_2__releasebuffer__(CYTHON_UNUSED arrayobject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_t_span, __Pyx_memviewslice __pyx_v_y0, __Pyx_memviewslice __pyx_v_coef, __Pyx_memviewslice __pyx_v_timesteps, __Pyx_memviewslice __pyx_v_field, __Pyx_memviewslice __pyx_v_field_a1, __Pyx_memviewslice __pyx_v_field_a2, __Pyx_memviewslice __pyx_v_field_a0); /* proto */
+static PyObject *__pyx_pf_15cy_solver_field_2solver_t(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_t_span, __Pyx_memviewslice __pyx_v_y0, __Pyx_memviewslice __pyx_v_coef, __Pyx_memviewslice __pyx_v_timesteps, __Pyx_memviewslice __pyx_v_field, __Pyx_memviewslice __pyx_v_field_a1, __Pyx_memviewslice __pyx_v_field_a2, __Pyx_memviewslice __pyx_v_field_a0); /* proto */
 static PyObject *__pyx_tp_new_array(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_Enum(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_memoryview(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -4120,7 +4174,7 @@ typedef struct {
   PyObject *__pyx_n_s_ValueError;
   PyObject *__pyx_n_s_View_MemoryView;
   PyObject *__pyx_kp_u__2;
-  PyObject *__pyx_n_s__24;
+  PyObject *__pyx_n_s__28;
   PyObject *__pyx_n_s__3;
   PyObject *__pyx_kp_u__6;
   PyObject *__pyx_kp_u__7;
@@ -4173,32 +4227,53 @@ typedef struct {
   PyObject *__pyx_n_s_import;
   PyObject *__pyx_n_s_index;
   PyObject *__pyx_n_s_initializing;
+  PyObject *__pyx_n_s_ip;
   PyObject *__pyx_n_s_is_coroutine;
+  PyObject *__pyx_n_s_is_field;
+  PyObject *__pyx_n_s_is_field_a0;
+  PyObject *__pyx_n_s_is_field_a1;
+  PyObject *__pyx_n_s_is_field_a2;
   PyObject *__pyx_kp_u_isenabled;
+  PyObject *__pyx_n_s_it;
   PyObject *__pyx_n_s_itemsize;
   PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
+  PyObject *__pyx_n_s_ix;
+  PyObject *__pyx_n_s_iy;
   PyObject *__pyx_n_s_j;
   PyObject *__pyx_n_s_main;
+  PyObject *__pyx_n_s_matplotlib;
+  PyObject *__pyx_n_s_matplotlib_pyplot;
   PyObject *__pyx_n_s_memview;
   PyObject *__pyx_n_s_mode;
+  PyObject *__pyx_n_s_mpl;
   PyObject *__pyx_n_s_n2;
+  PyObject *__pyx_n_s_n_k;
+  PyObject *__pyx_n_s_n_t;
   PyObject *__pyx_n_s_n_tsteps;
   PyObject *__pyx_n_s_name;
   PyObject *__pyx_n_s_name_2;
   PyObject *__pyx_n_s_ndim;
   PyObject *__pyx_n_s_new;
   PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
+  PyObject *__pyx_n_s_np;
   PyObject *__pyx_n_s_ntot;
   PyObject *__pyx_n_s_num_y;
+  PyObject *__pyx_n_s_numpy;
   PyObject *__pyx_kp_u_numpy_core_multiarray_failed_to;
   PyObject *__pyx_kp_u_numpy_core_umath_failed_to_impor;
   PyObject *__pyx_n_s_obj;
   PyObject *__pyx_n_s_pack;
   PyObject *__pyx_n_s_pickle;
+  PyObject *__pyx_n_s_plt;
   PyObject *__pyx_n_s_potential_c;
+  PyObject *__pyx_n_s_potential_c_interp;
   PyObject *__pyx_n_s_potential_ca0;
+  PyObject *__pyx_n_s_potential_ca0_interp;
   PyObject *__pyx_n_s_potential_ca1;
+  PyObject *__pyx_n_s_potential_ca1_interp;
   PyObject *__pyx_n_s_potential_ca2;
+  PyObject *__pyx_n_s_potential_ca2_interp;
+  PyObject *__pyx_n_s_pyplot;
   PyObject *__pyx_n_s_pysafe_result;
   PyObject *__pyx_n_s_pyx_PickleError;
   PyObject *__pyx_n_s_pyx_checksum;
@@ -4218,6 +4293,7 @@ typedef struct {
   PyObject *__pyx_n_s_shape;
   PyObject *__pyx_n_s_size;
   PyObject *__pyx_n_s_solver;
+  PyObject *__pyx_n_s_solver_t;
   PyObject *__pyx_n_s_spec;
   PyObject *__pyx_n_s_start;
   PyObject *__pyx_n_s_step;
@@ -4228,16 +4304,19 @@ typedef struct {
   PyObject *__pyx_kp_s_stringsource;
   PyObject *__pyx_n_s_struct;
   PyObject *__pyx_n_s_sys;
+  PyObject *__pyx_n_s_t_knots;
   PyObject *__pyx_n_s_t_span;
   PyObject *__pyx_n_s_t_span_arr;
   PyObject *__pyx_n_s_t_span_ptr;
   PyObject *__pyx_n_s_test;
   PyObject *__pyx_n_s_timesteps;
   PyObject *__pyx_n_s_timesteps_ptr;
+  PyObject *__pyx_n_u_tkagg;
   PyObject *__pyx_kp_s_unable_to_allocate_array_data;
   PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
   PyObject *__pyx_n_s_unpack;
   PyObject *__pyx_n_s_update;
+  PyObject *__pyx_n_s_use;
   PyObject *__pyx_n_s_version_info;
   PyObject *__pyx_n_s_y0;
   PyObject *__pyx_n_s_y0_ptr;
@@ -4264,8 +4343,12 @@ typedef struct {
   PyObject *__pyx_tuple__19;
   PyObject *__pyx_tuple__20;
   PyObject *__pyx_tuple__22;
+  PyObject *__pyx_tuple__23;
+  PyObject *__pyx_tuple__24;
+  PyObject *__pyx_tuple__26;
   PyObject *__pyx_codeobj__21;
-  PyObject *__pyx_codeobj__23;
+  PyObject *__pyx_codeobj__25;
+  PyObject *__pyx_codeobj__27;
 } __pyx_mstate;
 
 #if CYTHON_USE_MODULE_STATE
@@ -4370,7 +4453,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_ValueError);
   Py_CLEAR(clear_module_state->__pyx_n_s_View_MemoryView);
   Py_CLEAR(clear_module_state->__pyx_kp_u__2);
-  Py_CLEAR(clear_module_state->__pyx_n_s__24);
+  Py_CLEAR(clear_module_state->__pyx_n_s__28);
   Py_CLEAR(clear_module_state->__pyx_n_s__3);
   Py_CLEAR(clear_module_state->__pyx_kp_u__6);
   Py_CLEAR(clear_module_state->__pyx_kp_u__7);
@@ -4423,32 +4506,53 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_import);
   Py_CLEAR(clear_module_state->__pyx_n_s_index);
   Py_CLEAR(clear_module_state->__pyx_n_s_initializing);
+  Py_CLEAR(clear_module_state->__pyx_n_s_ip);
   Py_CLEAR(clear_module_state->__pyx_n_s_is_coroutine);
+  Py_CLEAR(clear_module_state->__pyx_n_s_is_field);
+  Py_CLEAR(clear_module_state->__pyx_n_s_is_field_a0);
+  Py_CLEAR(clear_module_state->__pyx_n_s_is_field_a1);
+  Py_CLEAR(clear_module_state->__pyx_n_s_is_field_a2);
   Py_CLEAR(clear_module_state->__pyx_kp_u_isenabled);
+  Py_CLEAR(clear_module_state->__pyx_n_s_it);
   Py_CLEAR(clear_module_state->__pyx_n_s_itemsize);
   Py_CLEAR(clear_module_state->__pyx_kp_s_itemsize_0_for_cython_array);
+  Py_CLEAR(clear_module_state->__pyx_n_s_ix);
+  Py_CLEAR(clear_module_state->__pyx_n_s_iy);
   Py_CLEAR(clear_module_state->__pyx_n_s_j);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
+  Py_CLEAR(clear_module_state->__pyx_n_s_matplotlib);
+  Py_CLEAR(clear_module_state->__pyx_n_s_matplotlib_pyplot);
   Py_CLEAR(clear_module_state->__pyx_n_s_memview);
   Py_CLEAR(clear_module_state->__pyx_n_s_mode);
+  Py_CLEAR(clear_module_state->__pyx_n_s_mpl);
   Py_CLEAR(clear_module_state->__pyx_n_s_n2);
+  Py_CLEAR(clear_module_state->__pyx_n_s_n_k);
+  Py_CLEAR(clear_module_state->__pyx_n_s_n_t);
   Py_CLEAR(clear_module_state->__pyx_n_s_n_tsteps);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
   Py_CLEAR(clear_module_state->__pyx_n_s_name_2);
   Py_CLEAR(clear_module_state->__pyx_n_s_ndim);
   Py_CLEAR(clear_module_state->__pyx_n_s_new);
   Py_CLEAR(clear_module_state->__pyx_kp_s_no_default___reduce___due_to_non);
+  Py_CLEAR(clear_module_state->__pyx_n_s_np);
   Py_CLEAR(clear_module_state->__pyx_n_s_ntot);
   Py_CLEAR(clear_module_state->__pyx_n_s_num_y);
+  Py_CLEAR(clear_module_state->__pyx_n_s_numpy);
   Py_CLEAR(clear_module_state->__pyx_kp_u_numpy_core_multiarray_failed_to);
   Py_CLEAR(clear_module_state->__pyx_kp_u_numpy_core_umath_failed_to_impor);
   Py_CLEAR(clear_module_state->__pyx_n_s_obj);
   Py_CLEAR(clear_module_state->__pyx_n_s_pack);
   Py_CLEAR(clear_module_state->__pyx_n_s_pickle);
+  Py_CLEAR(clear_module_state->__pyx_n_s_plt);
   Py_CLEAR(clear_module_state->__pyx_n_s_potential_c);
+  Py_CLEAR(clear_module_state->__pyx_n_s_potential_c_interp);
   Py_CLEAR(clear_module_state->__pyx_n_s_potential_ca0);
+  Py_CLEAR(clear_module_state->__pyx_n_s_potential_ca0_interp);
   Py_CLEAR(clear_module_state->__pyx_n_s_potential_ca1);
+  Py_CLEAR(clear_module_state->__pyx_n_s_potential_ca1_interp);
   Py_CLEAR(clear_module_state->__pyx_n_s_potential_ca2);
+  Py_CLEAR(clear_module_state->__pyx_n_s_potential_ca2_interp);
+  Py_CLEAR(clear_module_state->__pyx_n_s_pyplot);
   Py_CLEAR(clear_module_state->__pyx_n_s_pysafe_result);
   Py_CLEAR(clear_module_state->__pyx_n_s_pyx_PickleError);
   Py_CLEAR(clear_module_state->__pyx_n_s_pyx_checksum);
@@ -4468,6 +4572,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_shape);
   Py_CLEAR(clear_module_state->__pyx_n_s_size);
   Py_CLEAR(clear_module_state->__pyx_n_s_solver);
+  Py_CLEAR(clear_module_state->__pyx_n_s_solver_t);
   Py_CLEAR(clear_module_state->__pyx_n_s_spec);
   Py_CLEAR(clear_module_state->__pyx_n_s_start);
   Py_CLEAR(clear_module_state->__pyx_n_s_step);
@@ -4478,16 +4583,19 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_s_stringsource);
   Py_CLEAR(clear_module_state->__pyx_n_s_struct);
   Py_CLEAR(clear_module_state->__pyx_n_s_sys);
+  Py_CLEAR(clear_module_state->__pyx_n_s_t_knots);
   Py_CLEAR(clear_module_state->__pyx_n_s_t_span);
   Py_CLEAR(clear_module_state->__pyx_n_s_t_span_arr);
   Py_CLEAR(clear_module_state->__pyx_n_s_t_span_ptr);
   Py_CLEAR(clear_module_state->__pyx_n_s_test);
   Py_CLEAR(clear_module_state->__pyx_n_s_timesteps);
   Py_CLEAR(clear_module_state->__pyx_n_s_timesteps_ptr);
+  Py_CLEAR(clear_module_state->__pyx_n_u_tkagg);
   Py_CLEAR(clear_module_state->__pyx_kp_s_unable_to_allocate_array_data);
   Py_CLEAR(clear_module_state->__pyx_kp_s_unable_to_allocate_shape_and_str);
   Py_CLEAR(clear_module_state->__pyx_n_s_unpack);
   Py_CLEAR(clear_module_state->__pyx_n_s_update);
+  Py_CLEAR(clear_module_state->__pyx_n_s_use);
   Py_CLEAR(clear_module_state->__pyx_n_s_version_info);
   Py_CLEAR(clear_module_state->__pyx_n_s_y0);
   Py_CLEAR(clear_module_state->__pyx_n_s_y0_ptr);
@@ -4514,8 +4622,12 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_tuple__19);
   Py_CLEAR(clear_module_state->__pyx_tuple__20);
   Py_CLEAR(clear_module_state->__pyx_tuple__22);
+  Py_CLEAR(clear_module_state->__pyx_tuple__23);
+  Py_CLEAR(clear_module_state->__pyx_tuple__24);
+  Py_CLEAR(clear_module_state->__pyx_tuple__26);
   Py_CLEAR(clear_module_state->__pyx_codeobj__21);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__23);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__25);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__27);
   return 0;
 }
 #endif
@@ -4598,7 +4710,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_ValueError);
   Py_VISIT(traverse_module_state->__pyx_n_s_View_MemoryView);
   Py_VISIT(traverse_module_state->__pyx_kp_u__2);
-  Py_VISIT(traverse_module_state->__pyx_n_s__24);
+  Py_VISIT(traverse_module_state->__pyx_n_s__28);
   Py_VISIT(traverse_module_state->__pyx_n_s__3);
   Py_VISIT(traverse_module_state->__pyx_kp_u__6);
   Py_VISIT(traverse_module_state->__pyx_kp_u__7);
@@ -4651,32 +4763,53 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_import);
   Py_VISIT(traverse_module_state->__pyx_n_s_index);
   Py_VISIT(traverse_module_state->__pyx_n_s_initializing);
+  Py_VISIT(traverse_module_state->__pyx_n_s_ip);
   Py_VISIT(traverse_module_state->__pyx_n_s_is_coroutine);
+  Py_VISIT(traverse_module_state->__pyx_n_s_is_field);
+  Py_VISIT(traverse_module_state->__pyx_n_s_is_field_a0);
+  Py_VISIT(traverse_module_state->__pyx_n_s_is_field_a1);
+  Py_VISIT(traverse_module_state->__pyx_n_s_is_field_a2);
   Py_VISIT(traverse_module_state->__pyx_kp_u_isenabled);
+  Py_VISIT(traverse_module_state->__pyx_n_s_it);
   Py_VISIT(traverse_module_state->__pyx_n_s_itemsize);
   Py_VISIT(traverse_module_state->__pyx_kp_s_itemsize_0_for_cython_array);
+  Py_VISIT(traverse_module_state->__pyx_n_s_ix);
+  Py_VISIT(traverse_module_state->__pyx_n_s_iy);
   Py_VISIT(traverse_module_state->__pyx_n_s_j);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
+  Py_VISIT(traverse_module_state->__pyx_n_s_matplotlib);
+  Py_VISIT(traverse_module_state->__pyx_n_s_matplotlib_pyplot);
   Py_VISIT(traverse_module_state->__pyx_n_s_memview);
   Py_VISIT(traverse_module_state->__pyx_n_s_mode);
+  Py_VISIT(traverse_module_state->__pyx_n_s_mpl);
   Py_VISIT(traverse_module_state->__pyx_n_s_n2);
+  Py_VISIT(traverse_module_state->__pyx_n_s_n_k);
+  Py_VISIT(traverse_module_state->__pyx_n_s_n_t);
   Py_VISIT(traverse_module_state->__pyx_n_s_n_tsteps);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
   Py_VISIT(traverse_module_state->__pyx_n_s_name_2);
   Py_VISIT(traverse_module_state->__pyx_n_s_ndim);
   Py_VISIT(traverse_module_state->__pyx_n_s_new);
   Py_VISIT(traverse_module_state->__pyx_kp_s_no_default___reduce___due_to_non);
+  Py_VISIT(traverse_module_state->__pyx_n_s_np);
   Py_VISIT(traverse_module_state->__pyx_n_s_ntot);
   Py_VISIT(traverse_module_state->__pyx_n_s_num_y);
+  Py_VISIT(traverse_module_state->__pyx_n_s_numpy);
   Py_VISIT(traverse_module_state->__pyx_kp_u_numpy_core_multiarray_failed_to);
   Py_VISIT(traverse_module_state->__pyx_kp_u_numpy_core_umath_failed_to_impor);
   Py_VISIT(traverse_module_state->__pyx_n_s_obj);
   Py_VISIT(traverse_module_state->__pyx_n_s_pack);
   Py_VISIT(traverse_module_state->__pyx_n_s_pickle);
+  Py_VISIT(traverse_module_state->__pyx_n_s_plt);
   Py_VISIT(traverse_module_state->__pyx_n_s_potential_c);
+  Py_VISIT(traverse_module_state->__pyx_n_s_potential_c_interp);
   Py_VISIT(traverse_module_state->__pyx_n_s_potential_ca0);
+  Py_VISIT(traverse_module_state->__pyx_n_s_potential_ca0_interp);
   Py_VISIT(traverse_module_state->__pyx_n_s_potential_ca1);
+  Py_VISIT(traverse_module_state->__pyx_n_s_potential_ca1_interp);
   Py_VISIT(traverse_module_state->__pyx_n_s_potential_ca2);
+  Py_VISIT(traverse_module_state->__pyx_n_s_potential_ca2_interp);
+  Py_VISIT(traverse_module_state->__pyx_n_s_pyplot);
   Py_VISIT(traverse_module_state->__pyx_n_s_pysafe_result);
   Py_VISIT(traverse_module_state->__pyx_n_s_pyx_PickleError);
   Py_VISIT(traverse_module_state->__pyx_n_s_pyx_checksum);
@@ -4696,6 +4829,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_shape);
   Py_VISIT(traverse_module_state->__pyx_n_s_size);
   Py_VISIT(traverse_module_state->__pyx_n_s_solver);
+  Py_VISIT(traverse_module_state->__pyx_n_s_solver_t);
   Py_VISIT(traverse_module_state->__pyx_n_s_spec);
   Py_VISIT(traverse_module_state->__pyx_n_s_start);
   Py_VISIT(traverse_module_state->__pyx_n_s_step);
@@ -4706,16 +4840,19 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_s_stringsource);
   Py_VISIT(traverse_module_state->__pyx_n_s_struct);
   Py_VISIT(traverse_module_state->__pyx_n_s_sys);
+  Py_VISIT(traverse_module_state->__pyx_n_s_t_knots);
   Py_VISIT(traverse_module_state->__pyx_n_s_t_span);
   Py_VISIT(traverse_module_state->__pyx_n_s_t_span_arr);
   Py_VISIT(traverse_module_state->__pyx_n_s_t_span_ptr);
   Py_VISIT(traverse_module_state->__pyx_n_s_test);
   Py_VISIT(traverse_module_state->__pyx_n_s_timesteps);
   Py_VISIT(traverse_module_state->__pyx_n_s_timesteps_ptr);
+  Py_VISIT(traverse_module_state->__pyx_n_u_tkagg);
   Py_VISIT(traverse_module_state->__pyx_kp_s_unable_to_allocate_array_data);
   Py_VISIT(traverse_module_state->__pyx_kp_s_unable_to_allocate_shape_and_str);
   Py_VISIT(traverse_module_state->__pyx_n_s_unpack);
   Py_VISIT(traverse_module_state->__pyx_n_s_update);
+  Py_VISIT(traverse_module_state->__pyx_n_s_use);
   Py_VISIT(traverse_module_state->__pyx_n_s_version_info);
   Py_VISIT(traverse_module_state->__pyx_n_s_y0);
   Py_VISIT(traverse_module_state->__pyx_n_s_y0_ptr);
@@ -4742,8 +4879,12 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_tuple__19);
   Py_VISIT(traverse_module_state->__pyx_tuple__20);
   Py_VISIT(traverse_module_state->__pyx_tuple__22);
+  Py_VISIT(traverse_module_state->__pyx_tuple__23);
+  Py_VISIT(traverse_module_state->__pyx_tuple__24);
+  Py_VISIT(traverse_module_state->__pyx_tuple__26);
   Py_VISIT(traverse_module_state->__pyx_codeobj__21);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__23);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__25);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__27);
   return 0;
 }
 #endif
@@ -4952,7 +5093,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_ValueError __pyx_mstate_global->__pyx_n_s_ValueError
 #define __pyx_n_s_View_MemoryView __pyx_mstate_global->__pyx_n_s_View_MemoryView
 #define __pyx_kp_u__2 __pyx_mstate_global->__pyx_kp_u__2
-#define __pyx_n_s__24 __pyx_mstate_global->__pyx_n_s__24
+#define __pyx_n_s__28 __pyx_mstate_global->__pyx_n_s__28
 #define __pyx_n_s__3 __pyx_mstate_global->__pyx_n_s__3
 #define __pyx_kp_u__6 __pyx_mstate_global->__pyx_kp_u__6
 #define __pyx_kp_u__7 __pyx_mstate_global->__pyx_kp_u__7
@@ -5005,32 +5146,53 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_import __pyx_mstate_global->__pyx_n_s_import
 #define __pyx_n_s_index __pyx_mstate_global->__pyx_n_s_index
 #define __pyx_n_s_initializing __pyx_mstate_global->__pyx_n_s_initializing
+#define __pyx_n_s_ip __pyx_mstate_global->__pyx_n_s_ip
 #define __pyx_n_s_is_coroutine __pyx_mstate_global->__pyx_n_s_is_coroutine
+#define __pyx_n_s_is_field __pyx_mstate_global->__pyx_n_s_is_field
+#define __pyx_n_s_is_field_a0 __pyx_mstate_global->__pyx_n_s_is_field_a0
+#define __pyx_n_s_is_field_a1 __pyx_mstate_global->__pyx_n_s_is_field_a1
+#define __pyx_n_s_is_field_a2 __pyx_mstate_global->__pyx_n_s_is_field_a2
 #define __pyx_kp_u_isenabled __pyx_mstate_global->__pyx_kp_u_isenabled
+#define __pyx_n_s_it __pyx_mstate_global->__pyx_n_s_it
 #define __pyx_n_s_itemsize __pyx_mstate_global->__pyx_n_s_itemsize
 #define __pyx_kp_s_itemsize_0_for_cython_array __pyx_mstate_global->__pyx_kp_s_itemsize_0_for_cython_array
+#define __pyx_n_s_ix __pyx_mstate_global->__pyx_n_s_ix
+#define __pyx_n_s_iy __pyx_mstate_global->__pyx_n_s_iy
 #define __pyx_n_s_j __pyx_mstate_global->__pyx_n_s_j
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
+#define __pyx_n_s_matplotlib __pyx_mstate_global->__pyx_n_s_matplotlib
+#define __pyx_n_s_matplotlib_pyplot __pyx_mstate_global->__pyx_n_s_matplotlib_pyplot
 #define __pyx_n_s_memview __pyx_mstate_global->__pyx_n_s_memview
 #define __pyx_n_s_mode __pyx_mstate_global->__pyx_n_s_mode
+#define __pyx_n_s_mpl __pyx_mstate_global->__pyx_n_s_mpl
 #define __pyx_n_s_n2 __pyx_mstate_global->__pyx_n_s_n2
+#define __pyx_n_s_n_k __pyx_mstate_global->__pyx_n_s_n_k
+#define __pyx_n_s_n_t __pyx_mstate_global->__pyx_n_s_n_t
 #define __pyx_n_s_n_tsteps __pyx_mstate_global->__pyx_n_s_n_tsteps
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
 #define __pyx_n_s_name_2 __pyx_mstate_global->__pyx_n_s_name_2
 #define __pyx_n_s_ndim __pyx_mstate_global->__pyx_n_s_ndim
 #define __pyx_n_s_new __pyx_mstate_global->__pyx_n_s_new
 #define __pyx_kp_s_no_default___reduce___due_to_non __pyx_mstate_global->__pyx_kp_s_no_default___reduce___due_to_non
+#define __pyx_n_s_np __pyx_mstate_global->__pyx_n_s_np
 #define __pyx_n_s_ntot __pyx_mstate_global->__pyx_n_s_ntot
 #define __pyx_n_s_num_y __pyx_mstate_global->__pyx_n_s_num_y
+#define __pyx_n_s_numpy __pyx_mstate_global->__pyx_n_s_numpy
 #define __pyx_kp_u_numpy_core_multiarray_failed_to __pyx_mstate_global->__pyx_kp_u_numpy_core_multiarray_failed_to
 #define __pyx_kp_u_numpy_core_umath_failed_to_impor __pyx_mstate_global->__pyx_kp_u_numpy_core_umath_failed_to_impor
 #define __pyx_n_s_obj __pyx_mstate_global->__pyx_n_s_obj
 #define __pyx_n_s_pack __pyx_mstate_global->__pyx_n_s_pack
 #define __pyx_n_s_pickle __pyx_mstate_global->__pyx_n_s_pickle
+#define __pyx_n_s_plt __pyx_mstate_global->__pyx_n_s_plt
 #define __pyx_n_s_potential_c __pyx_mstate_global->__pyx_n_s_potential_c
+#define __pyx_n_s_potential_c_interp __pyx_mstate_global->__pyx_n_s_potential_c_interp
 #define __pyx_n_s_potential_ca0 __pyx_mstate_global->__pyx_n_s_potential_ca0
+#define __pyx_n_s_potential_ca0_interp __pyx_mstate_global->__pyx_n_s_potential_ca0_interp
 #define __pyx_n_s_potential_ca1 __pyx_mstate_global->__pyx_n_s_potential_ca1
+#define __pyx_n_s_potential_ca1_interp __pyx_mstate_global->__pyx_n_s_potential_ca1_interp
 #define __pyx_n_s_potential_ca2 __pyx_mstate_global->__pyx_n_s_potential_ca2
+#define __pyx_n_s_potential_ca2_interp __pyx_mstate_global->__pyx_n_s_potential_ca2_interp
+#define __pyx_n_s_pyplot __pyx_mstate_global->__pyx_n_s_pyplot
 #define __pyx_n_s_pysafe_result __pyx_mstate_global->__pyx_n_s_pysafe_result
 #define __pyx_n_s_pyx_PickleError __pyx_mstate_global->__pyx_n_s_pyx_PickleError
 #define __pyx_n_s_pyx_checksum __pyx_mstate_global->__pyx_n_s_pyx_checksum
@@ -5050,6 +5212,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_shape __pyx_mstate_global->__pyx_n_s_shape
 #define __pyx_n_s_size __pyx_mstate_global->__pyx_n_s_size
 #define __pyx_n_s_solver __pyx_mstate_global->__pyx_n_s_solver
+#define __pyx_n_s_solver_t __pyx_mstate_global->__pyx_n_s_solver_t
 #define __pyx_n_s_spec __pyx_mstate_global->__pyx_n_s_spec
 #define __pyx_n_s_start __pyx_mstate_global->__pyx_n_s_start
 #define __pyx_n_s_step __pyx_mstate_global->__pyx_n_s_step
@@ -5060,16 +5223,19 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_s_stringsource __pyx_mstate_global->__pyx_kp_s_stringsource
 #define __pyx_n_s_struct __pyx_mstate_global->__pyx_n_s_struct
 #define __pyx_n_s_sys __pyx_mstate_global->__pyx_n_s_sys
+#define __pyx_n_s_t_knots __pyx_mstate_global->__pyx_n_s_t_knots
 #define __pyx_n_s_t_span __pyx_mstate_global->__pyx_n_s_t_span
 #define __pyx_n_s_t_span_arr __pyx_mstate_global->__pyx_n_s_t_span_arr
 #define __pyx_n_s_t_span_ptr __pyx_mstate_global->__pyx_n_s_t_span_ptr
 #define __pyx_n_s_test __pyx_mstate_global->__pyx_n_s_test
 #define __pyx_n_s_timesteps __pyx_mstate_global->__pyx_n_s_timesteps
 #define __pyx_n_s_timesteps_ptr __pyx_mstate_global->__pyx_n_s_timesteps_ptr
+#define __pyx_n_u_tkagg __pyx_mstate_global->__pyx_n_u_tkagg
 #define __pyx_kp_s_unable_to_allocate_array_data __pyx_mstate_global->__pyx_kp_s_unable_to_allocate_array_data
 #define __pyx_kp_s_unable_to_allocate_shape_and_str __pyx_mstate_global->__pyx_kp_s_unable_to_allocate_shape_and_str
 #define __pyx_n_s_unpack __pyx_mstate_global->__pyx_n_s_unpack
 #define __pyx_n_s_update __pyx_mstate_global->__pyx_n_s_update
+#define __pyx_n_s_use __pyx_mstate_global->__pyx_n_s_use
 #define __pyx_n_s_version_info __pyx_mstate_global->__pyx_n_s_version_info
 #define __pyx_n_s_y0 __pyx_mstate_global->__pyx_n_s_y0
 #define __pyx_n_s_y0_ptr __pyx_mstate_global->__pyx_n_s_y0_ptr
@@ -5096,8 +5262,12 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_tuple__19 __pyx_mstate_global->__pyx_tuple__19
 #define __pyx_tuple__20 __pyx_mstate_global->__pyx_tuple__20
 #define __pyx_tuple__22 __pyx_mstate_global->__pyx_tuple__22
+#define __pyx_tuple__23 __pyx_mstate_global->__pyx_tuple__23
+#define __pyx_tuple__24 __pyx_mstate_global->__pyx_tuple__24
+#define __pyx_tuple__26 __pyx_mstate_global->__pyx_tuple__26
 #define __pyx_codeobj__21 __pyx_mstate_global->__pyx_codeobj__21
-#define __pyx_codeobj__23 __pyx_mstate_global->__pyx_codeobj__23
+#define __pyx_codeobj__25 __pyx_mstate_global->__pyx_codeobj__25
+#define __pyx_codeobj__27 __pyx_mstate_global->__pyx_codeobj__27
 /* #### Code section: module_code ### */
 
 /* "View.MemoryView":131
@@ -20924,7 +21094,7 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
   return __pyx_r;
 }
 
-/* "cy_solver_field.pyx":15
+/* "cy_solver_field.pyx":20
  * ###
  * 
  * cdef double ene(double m, double px, double py) noexcept nogil:             # <<<<<<<<<<<<<<
@@ -20935,7 +21105,7 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
 static double __pyx_f_15cy_solver_field_ene(double __pyx_v_m, double __pyx_v_px, double __pyx_v_py) {
   double __pyx_r;
 
-  /* "cy_solver_field.pyx":16
+  /* "cy_solver_field.pyx":21
  * 
  * cdef double ene(double m, double px, double py) noexcept nogil:
  *     return sqrt(m*m + px*px + py*py)             # <<<<<<<<<<<<<<
@@ -20945,7 +21115,7 @@ static double __pyx_f_15cy_solver_field_ene(double __pyx_v_m, double __pyx_v_px,
   __pyx_r = sqrt((((__pyx_v_m * __pyx_v_m) + (__pyx_v_px * __pyx_v_px)) + (__pyx_v_py * __pyx_v_py)));
   goto __pyx_L0;
 
-  /* "cy_solver_field.pyx":15
+  /* "cy_solver_field.pyx":20
  * ###
  * 
  * cdef double ene(double m, double px, double py) noexcept nogil:             # <<<<<<<<<<<<<<
@@ -20958,7 +21128,7 @@ static double __pyx_f_15cy_solver_field_ene(double __pyx_v_m, double __pyx_v_px,
   return __pyx_r;
 }
 
-/* "cy_solver_field.pyx":18
+/* "cy_solver_field.pyx":23
  *     return sqrt(m*m + px*px + py*py)
  * 
  * cdef double* create_ene1(int n2, double m, double l) noexcept nogil:             # <<<<<<<<<<<<<<
@@ -20976,7 +21146,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
   double *__pyx_r;
   int __pyx_t_1;
 
-  /* "cy_solver_field.pyx":19
+  /* "cy_solver_field.pyx":24
  * 
  * cdef double* create_ene1(int n2, double m, double l) noexcept nogil:
  *     cdef int ntot = 2*n2             # <<<<<<<<<<<<<<
@@ -20985,7 +21155,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
  */
   __pyx_v_ntot = (2 * __pyx_v_n2);
 
-  /* "cy_solver_field.pyx":20
+  /* "cy_solver_field.pyx":25
  * cdef double* create_ene1(int n2, double m, double l) noexcept nogil:
  *     cdef int ntot = 2*n2
  *     cdef int ix = 0             # <<<<<<<<<<<<<<
@@ -20994,7 +21164,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
  */
   __pyx_v_ix = 0;
 
-  /* "cy_solver_field.pyx":21
+  /* "cy_solver_field.pyx":26
  *     cdef int ntot = 2*n2
  *     cdef int ix = 0
  *     cdef int iy = 0             # <<<<<<<<<<<<<<
@@ -21003,7 +21173,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
  */
   __pyx_v_iy = 0;
 
-  /* "cy_solver_field.pyx":22
+  /* "cy_solver_field.pyx":27
  *     cdef int ix = 0
  *     cdef int iy = 0
  *     cdef double *ene1 = <double*>malloc(sizeof(double) * ntot*ntot)             # <<<<<<<<<<<<<<
@@ -21012,7 +21182,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
  */
   __pyx_v_ene1 = ((double *)malloc((((sizeof(double)) * __pyx_v_ntot) * __pyx_v_ntot)));
 
-  /* "cy_solver_field.pyx":25
+  /* "cy_solver_field.pyx":30
  *     cdef double px
  *     cdef double py
  *     while ix < ntot:             # <<<<<<<<<<<<<<
@@ -21023,7 +21193,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
     __pyx_t_1 = (__pyx_v_ix < __pyx_v_ntot);
     if (!__pyx_t_1) break;
 
-    /* "cy_solver_field.pyx":26
+    /* "cy_solver_field.pyx":31
  *     cdef double py
  *     while ix < ntot:
  *         iy = 0             # <<<<<<<<<<<<<<
@@ -21032,7 +21202,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
  */
     __pyx_v_iy = 0;
 
-    /* "cy_solver_field.pyx":27
+    /* "cy_solver_field.pyx":32
  *     while ix < ntot:
  *         iy = 0
  *         px = 2*M_PI/l*(ix-n2)             # <<<<<<<<<<<<<<
@@ -21041,7 +21211,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
  */
     __pyx_v_px = (((2.0 * M_PI) / __pyx_v_l) * (__pyx_v_ix - __pyx_v_n2));
 
-    /* "cy_solver_field.pyx":28
+    /* "cy_solver_field.pyx":33
  *         iy = 0
  *         px = 2*M_PI/l*(ix-n2)
  *         while iy < ntot:             # <<<<<<<<<<<<<<
@@ -21052,7 +21222,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
       __pyx_t_1 = (__pyx_v_iy < __pyx_v_ntot);
       if (!__pyx_t_1) break;
 
-      /* "cy_solver_field.pyx":30
+      /* "cy_solver_field.pyx":35
  *         while iy < ntot:
  * 
  *             py = 2*M_PI/l*(iy-n2)             # <<<<<<<<<<<<<<
@@ -21061,7 +21231,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
  */
       __pyx_v_py = (((2.0 * M_PI) / __pyx_v_l) * (__pyx_v_iy - __pyx_v_n2));
 
-      /* "cy_solver_field.pyx":31
+      /* "cy_solver_field.pyx":36
  * 
  *             py = 2*M_PI/l*(iy-n2)
  *             ene1[ix*ntot + iy] = sqrt(ene(m,px,py))             # <<<<<<<<<<<<<<
@@ -21070,7 +21240,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
  */
       (__pyx_v_ene1[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]) = sqrt(__pyx_f_15cy_solver_field_ene(__pyx_v_m, __pyx_v_px, __pyx_v_py));
 
-      /* "cy_solver_field.pyx":33
+      /* "cy_solver_field.pyx":38
  *             ene1[ix*ntot + iy] = sqrt(ene(m,px,py))
  * 
  *             iy+=1             # <<<<<<<<<<<<<<
@@ -21080,7 +21250,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
       __pyx_v_iy = (__pyx_v_iy + 1);
     }
 
-    /* "cy_solver_field.pyx":34
+    /* "cy_solver_field.pyx":39
  * 
  *             iy+=1
  *         ix+=1             # <<<<<<<<<<<<<<
@@ -21090,7 +21260,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
     __pyx_v_ix = (__pyx_v_ix + 1);
   }
 
-  /* "cy_solver_field.pyx":35
+  /* "cy_solver_field.pyx":40
  *             iy+=1
  *         ix+=1
  *     return &ene1[0]             # <<<<<<<<<<<<<<
@@ -21100,7 +21270,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
   __pyx_r = (&(__pyx_v_ene1[0]));
   goto __pyx_L0;
 
-  /* "cy_solver_field.pyx":18
+  /* "cy_solver_field.pyx":23
  *     return sqrt(m*m + px*px + py*py)
  * 
  * cdef double* create_ene1(int n2, double m, double l) noexcept nogil:             # <<<<<<<<<<<<<<
@@ -21113,7 +21283,7 @@ static double *__pyx_f_15cy_solver_field_create_ene1(int __pyx_v_n2, double __py
   return __pyx_r;
 }
 
-/* "cy_solver_field.pyx":37
+/* "cy_solver_field.pyx":42
  *     return &ene1[0]
  * 
  * cdef double* create_ene2(int n2, double m, double l) noexcept nogil:             # <<<<<<<<<<<<<<
@@ -21131,7 +21301,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
   double *__pyx_r;
   int __pyx_t_1;
 
-  /* "cy_solver_field.pyx":38
+  /* "cy_solver_field.pyx":43
  * 
  * cdef double* create_ene2(int n2, double m, double l) noexcept nogil:
  *     cdef int ntot = 2*n2             # <<<<<<<<<<<<<<
@@ -21140,7 +21310,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
  */
   __pyx_v_ntot = (2 * __pyx_v_n2);
 
-  /* "cy_solver_field.pyx":39
+  /* "cy_solver_field.pyx":44
  * cdef double* create_ene2(int n2, double m, double l) noexcept nogil:
  *     cdef int ntot = 2*n2
  *     cdef int ix = 0             # <<<<<<<<<<<<<<
@@ -21149,7 +21319,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
  */
   __pyx_v_ix = 0;
 
-  /* "cy_solver_field.pyx":40
+  /* "cy_solver_field.pyx":45
  *     cdef int ntot = 2*n2
  *     cdef int ix = 0
  *     cdef int iy = 0             # <<<<<<<<<<<<<<
@@ -21158,7 +21328,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
  */
   __pyx_v_iy = 0;
 
-  /* "cy_solver_field.pyx":41
+  /* "cy_solver_field.pyx":46
  *     cdef int ix = 0
  *     cdef int iy = 0
  *     cdef double *ene2 = <double*>malloc(sizeof(double) * ntot*ntot)             # <<<<<<<<<<<<<<
@@ -21167,7 +21337,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
  */
   __pyx_v_ene2 = ((double *)malloc((((sizeof(double)) * __pyx_v_ntot) * __pyx_v_ntot)));
 
-  /* "cy_solver_field.pyx":44
+  /* "cy_solver_field.pyx":49
  *     cdef double px
  *     cdef double py
  *     while ix < ntot:             # <<<<<<<<<<<<<<
@@ -21178,7 +21348,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
     __pyx_t_1 = (__pyx_v_ix < __pyx_v_ntot);
     if (!__pyx_t_1) break;
 
-    /* "cy_solver_field.pyx":45
+    /* "cy_solver_field.pyx":50
  *     cdef double py
  *     while ix < ntot:
  *         iy = 0             # <<<<<<<<<<<<<<
@@ -21187,7 +21357,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
  */
     __pyx_v_iy = 0;
 
-    /* "cy_solver_field.pyx":46
+    /* "cy_solver_field.pyx":51
  *     while ix < ntot:
  *         iy = 0
  *         px = 2*M_PI/l*(ix-n2)             # <<<<<<<<<<<<<<
@@ -21196,7 +21366,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
  */
     __pyx_v_px = (((2.0 * M_PI) / __pyx_v_l) * (__pyx_v_ix - __pyx_v_n2));
 
-    /* "cy_solver_field.pyx":47
+    /* "cy_solver_field.pyx":52
  *         iy = 0
  *         px = 2*M_PI/l*(ix-n2)
  *         while iy < ntot:             # <<<<<<<<<<<<<<
@@ -21207,7 +21377,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
       __pyx_t_1 = (__pyx_v_iy < __pyx_v_ntot);
       if (!__pyx_t_1) break;
 
-      /* "cy_solver_field.pyx":49
+      /* "cy_solver_field.pyx":54
  *         while iy < ntot:
  * 
  *             py = 2*M_PI/l*(iy-n2)             # <<<<<<<<<<<<<<
@@ -21216,7 +21386,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
  */
       __pyx_v_py = (((2.0 * M_PI) / __pyx_v_l) * (__pyx_v_iy - __pyx_v_n2));
 
-      /* "cy_solver_field.pyx":50
+      /* "cy_solver_field.pyx":55
  * 
  *             py = 2*M_PI/l*(iy-n2)
  *             ene2[ix*ntot + iy] = 1/(2*sqrt(ene(m,px,py)))             # <<<<<<<<<<<<<<
@@ -21225,7 +21395,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
  */
       (__pyx_v_ene2[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]) = (1.0 / (2.0 * sqrt(__pyx_f_15cy_solver_field_ene(__pyx_v_m, __pyx_v_px, __pyx_v_py))));
 
-      /* "cy_solver_field.pyx":52
+      /* "cy_solver_field.pyx":57
  *             ene2[ix*ntot + iy] = 1/(2*sqrt(ene(m,px,py)))
  * 
  *             iy+=1             # <<<<<<<<<<<<<<
@@ -21235,7 +21405,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
       __pyx_v_iy = (__pyx_v_iy + 1);
     }
 
-    /* "cy_solver_field.pyx":53
+    /* "cy_solver_field.pyx":58
  * 
  *             iy+=1
  *         ix+=1             # <<<<<<<<<<<<<<
@@ -21245,7 +21415,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
     __pyx_v_ix = (__pyx_v_ix + 1);
   }
 
-  /* "cy_solver_field.pyx":54
+  /* "cy_solver_field.pyx":59
  *             iy+=1
  *         ix+=1
  *     return &ene2[0]             # <<<<<<<<<<<<<<
@@ -21255,7 +21425,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
   __pyx_r = (&(__pyx_v_ene2[0]));
   goto __pyx_L0;
 
-  /* "cy_solver_field.pyx":37
+  /* "cy_solver_field.pyx":42
  *     return &ene1[0]
  * 
  * cdef double* create_ene2(int n2, double m, double l) noexcept nogil:             # <<<<<<<<<<<<<<
@@ -21268,7 +21438,7 @@ static double *__pyx_f_15cy_solver_field_create_ene2(int __pyx_v_n2, double __py
   return __pyx_r;
 }
 
-/* "cy_solver_field.pyx":76
+/* "cy_solver_field.pyx":99
  * ###
  * 
  * cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEvalFunc pre_eval_func) noexcept nogil:             # <<<<<<<<<<<<<<
@@ -21334,7 +21504,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   int __pyx_t_6;
   long __pyx_t_7;
 
-  /* "cy_solver_field.pyx":78
+  /* "cy_solver_field.pyx":101
  * cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEvalFunc pre_eval_func) noexcept nogil:
  * 
  *     cdef parameters* args_ptr = <parameters*>args             # <<<<<<<<<<<<<<
@@ -21343,7 +21513,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_args_ptr = ((struct __pyx_t_15cy_solver_field_parameters *)__pyx_v_args);
 
-  /* "cy_solver_field.pyx":79
+  /* "cy_solver_field.pyx":102
  * 
  *     cdef parameters* args_ptr = <parameters*>args
  *     cdef int n2 = args_ptr.n2             # <<<<<<<<<<<<<<
@@ -21353,7 +21523,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   __pyx_t_1 = __pyx_v_args_ptr->n2;
   __pyx_v_n2 = __pyx_t_1;
 
-  /* "cy_solver_field.pyx":80
+  /* "cy_solver_field.pyx":103
  *     cdef parameters* args_ptr = <parameters*>args
  *     cdef int n2 = args_ptr.n2
  *     cdef double m = args_ptr.m             # <<<<<<<<<<<<<<
@@ -21363,7 +21533,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   __pyx_t_2 = __pyx_v_args_ptr->m;
   __pyx_v_m = __pyx_t_2;
 
-  /* "cy_solver_field.pyx":81
+  /* "cy_solver_field.pyx":104
  *     cdef int n2 = args_ptr.n2
  *     cdef double m = args_ptr.m
  *     cdef double l = args_ptr.l             # <<<<<<<<<<<<<<
@@ -21373,7 +21543,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   __pyx_t_2 = __pyx_v_args_ptr->l;
   __pyx_v_l = __pyx_t_2;
 
-  /* "cy_solver_field.pyx":82
+  /* "cy_solver_field.pyx":105
  *     cdef double m = args_ptr.m
  *     cdef double l = args_ptr.l
  *     cdef ft.fft_data* pdata = args_ptr.pdata             # <<<<<<<<<<<<<<
@@ -21383,7 +21553,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   __pyx_t_3 = __pyx_v_args_ptr->pdata;
   __pyx_v_pdata = __pyx_t_3;
 
-  /* "cy_solver_field.pyx":83
+  /* "cy_solver_field.pyx":106
  *     cdef double l = args_ptr.l
  *     cdef ft.fft_data* pdata = args_ptr.pdata
  *     cdef double complex* potential_c = args_ptr.field             # <<<<<<<<<<<<<<
@@ -21393,7 +21563,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   __pyx_t_4 = __pyx_v_args_ptr->field;
   __pyx_v_potential_c = __pyx_t_4;
 
-  /* "cy_solver_field.pyx":84
+  /* "cy_solver_field.pyx":107
  *     cdef ft.fft_data* pdata = args_ptr.pdata
  *     cdef double complex* potential_c = args_ptr.field
  *     cdef double complex* potential_ca1 = args_ptr.field_a1             # <<<<<<<<<<<<<<
@@ -21403,7 +21573,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   __pyx_t_4 = __pyx_v_args_ptr->field_a1;
   __pyx_v_potential_ca1 = __pyx_t_4;
 
-  /* "cy_solver_field.pyx":85
+  /* "cy_solver_field.pyx":108
  *     cdef double complex* potential_c = args_ptr.field
  *     cdef double complex* potential_ca1 = args_ptr.field_a1
  *     cdef double complex* potential_ca2 = args_ptr.field_a2             # <<<<<<<<<<<<<<
@@ -21413,7 +21583,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   __pyx_t_4 = __pyx_v_args_ptr->field_a2;
   __pyx_v_potential_ca2 = __pyx_t_4;
 
-  /* "cy_solver_field.pyx":86
+  /* "cy_solver_field.pyx":109
  *     cdef double complex* potential_ca1 = args_ptr.field_a1
  *     cdef double complex* potential_ca2 = args_ptr.field_a2
  *     cdef double complex* potential_ca0 = args_ptr.field_a0             # <<<<<<<<<<<<<<
@@ -21423,7 +21593,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   __pyx_t_4 = __pyx_v_args_ptr->field_a0;
   __pyx_v_potential_ca0 = __pyx_t_4;
 
-  /* "cy_solver_field.pyx":87
+  /* "cy_solver_field.pyx":110
  *     cdef double complex* potential_ca2 = args_ptr.field_a2
  *     cdef double complex* potential_ca0 = args_ptr.field_a0
  *     cdef double* ene1_ptr = args_ptr.ene1_ptr             # <<<<<<<<<<<<<<
@@ -21433,7 +21603,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   __pyx_t_5 = __pyx_v_args_ptr->ene1_ptr;
   __pyx_v_ene1_ptr = __pyx_t_5;
 
-  /* "cy_solver_field.pyx":88
+  /* "cy_solver_field.pyx":111
  *     cdef double complex* potential_ca0 = args_ptr.field_a0
  *     cdef double* ene1_ptr = args_ptr.ene1_ptr
  *     cdef double* ene2_ptr = args_ptr.ene2_ptr             # <<<<<<<<<<<<<<
@@ -21443,7 +21613,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   __pyx_t_5 = __pyx_v_args_ptr->ene2_ptr;
   __pyx_v_ene2_ptr = __pyx_t_5;
 
-  /* "cy_solver_field.pyx":90
+  /* "cy_solver_field.pyx":113
  *     cdef double* ene2_ptr = args_ptr.ene2_ptr
  * 
  *     cdef int ntot = 2*n2             # <<<<<<<<<<<<<<
@@ -21452,7 +21622,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_ntot = (2 * __pyx_v_n2);
 
-  /* "cy_solver_field.pyx":91
+  /* "cy_solver_field.pyx":114
  * 
  *     cdef int ntot = 2*n2
  *     cdef double px = 0             # <<<<<<<<<<<<<<
@@ -21461,7 +21631,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_px = 0.0;
 
-  /* "cy_solver_field.pyx":92
+  /* "cy_solver_field.pyx":115
  *     cdef int ntot = 2*n2
  *     cdef double px = 0
  *     cdef double py = 0             # <<<<<<<<<<<<<<
@@ -21470,7 +21640,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_py = 0.0;
 
-  /* "cy_solver_field.pyx":93
+  /* "cy_solver_field.pyx":116
  *     cdef double px = 0
  *     cdef double py = 0
  *     cdef int ix = 0             # <<<<<<<<<<<<<<
@@ -21479,7 +21649,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_ix = 0;
 
-  /* "cy_solver_field.pyx":94
+  /* "cy_solver_field.pyx":117
  *     cdef double py = 0
  *     cdef int ix = 0
  *     cdef int iy = 0             # <<<<<<<<<<<<<<
@@ -21488,7 +21658,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_iy = 0;
 
-  /* "cy_solver_field.pyx":95
+  /* "cy_solver_field.pyx":118
  *     cdef int ix = 0
  *     cdef int iy = 0
  *     cdef double ene_val = 0.             # <<<<<<<<<<<<<<
@@ -21497,7 +21667,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_ene_val = 0.;
 
-  /* "cy_solver_field.pyx":96
+  /* "cy_solver_field.pyx":119
  *     cdef int iy = 0
  *     cdef double ene_val = 0.
  *     cdef int nx = 0             # <<<<<<<<<<<<<<
@@ -21506,7 +21676,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_nx = 0;
 
-  /* "cy_solver_field.pyx":97
+  /* "cy_solver_field.pyx":120
  *     cdef double ene_val = 0.
  *     cdef int nx = 0
  *     cdef int ny = 0             # <<<<<<<<<<<<<<
@@ -21515,7 +21685,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_ny = 0;
 
-  /* "cy_solver_field.pyx":98
+  /* "cy_solver_field.pyx":121
  *     cdef int nx = 0
  *     cdef int ny = 0
  *     cdef int point = 0             # <<<<<<<<<<<<<<
@@ -21524,17 +21694,17 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_point = 0;
 
-  /* "cy_solver_field.pyx":99
+  /* "cy_solver_field.pyx":122
  *     cdef int ny = 0
  *     cdef int point = 0
  *     cdef int point_ene = 0             # <<<<<<<<<<<<<<
  * 
- *     cdef double complex conv1 = 0
+ *     # ix = 0
  */
   __pyx_v_point_ene = 0;
 
-  /* "cy_solver_field.pyx":101
- *     cdef int point_ene = 0
+  /* "cy_solver_field.pyx":135
+ *     # iy = 0
  * 
  *     cdef double complex conv1 = 0             # <<<<<<<<<<<<<<
  *     cdef double complex conv2 = 0
@@ -21542,7 +21712,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_conv1 = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":102
+  /* "cy_solver_field.pyx":136
  * 
  *     cdef double complex conv1 = 0
  *     cdef double complex conv2 = 0             # <<<<<<<<<<<<<<
@@ -21551,7 +21721,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_conv2 = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":103
+  /* "cy_solver_field.pyx":137
  *     cdef double complex conv1 = 0
  *     cdef double complex conv2 = 0
  *     cdef double complex temp1c = 0             # <<<<<<<<<<<<<<
@@ -21560,7 +21730,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_temp1c = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":104
+  /* "cy_solver_field.pyx":138
  *     cdef double complex conv2 = 0
  *     cdef double complex temp1c = 0
  *     cdef double complex temp2c = 0             # <<<<<<<<<<<<<<
@@ -21569,7 +21739,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_temp2c = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":106
+  /* "cy_solver_field.pyx":140
  *     cdef double complex temp2c = 0
  * 
  *     cdef double complex conv_a0 = 0             # <<<<<<<<<<<<<<
@@ -21578,7 +21748,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_conv_a0 = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":107
+  /* "cy_solver_field.pyx":141
  * 
  *     cdef double complex conv_a0 = 0
  *     cdef double complex conv_a1 = 0             # <<<<<<<<<<<<<<
@@ -21587,7 +21757,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_conv_a1 = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":108
+  /* "cy_solver_field.pyx":142
  *     cdef double complex conv_a0 = 0
  *     cdef double complex conv_a1 = 0
  *     cdef double complex conv_a2 = 0             # <<<<<<<<<<<<<<
@@ -21596,7 +21766,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_conv_a2 = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":109
+  /* "cy_solver_field.pyx":143
  *     cdef double complex conv_a1 = 0
  *     cdef double complex conv_a2 = 0
  *     cdef double complex tempa0c = 0             # <<<<<<<<<<<<<<
@@ -21605,7 +21775,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_tempa0c = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":110
+  /* "cy_solver_field.pyx":144
  *     cdef double complex conv_a2 = 0
  *     cdef double complex tempa0c = 0
  *     cdef double complex tempa1c = 0             # <<<<<<<<<<<<<<
@@ -21614,7 +21784,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_tempa1c = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":111
+  /* "cy_solver_field.pyx":145
  *     cdef double complex tempa0c = 0
  *     cdef double complex tempa1c = 0
  *     cdef double complex tempa2c = 0             # <<<<<<<<<<<<<<
@@ -21623,7 +21793,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_tempa2c = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":112
+  /* "cy_solver_field.pyx":146
  *     cdef double complex tempa1c = 0
  *     cdef double complex tempa2c = 0
  *     cdef double complex kgfieldc = 0             # <<<<<<<<<<<<<<
@@ -21632,7 +21802,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_kgfieldc = __pyx_t_double_complex_from_parts(0, 0);
 
-  /* "cy_solver_field.pyx":114
+  /* "cy_solver_field.pyx":148
  *     cdef double complex kgfieldc = 0
  * 
  *     cdef double complex* kernel1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21641,7 +21811,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_kernel1 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":115
+  /* "cy_solver_field.pyx":149
  * 
  *     cdef double complex* kernel1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* kernel2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21650,7 +21820,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_kernel2 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":116
+  /* "cy_solver_field.pyx":150
  *     cdef double complex* kernel1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* kernel2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* result1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21659,7 +21829,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_result1 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":117
+  /* "cy_solver_field.pyx":151
  *     cdef double complex* kernel2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* result1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* result2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21668,7 +21838,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_result2 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":119
+  /* "cy_solver_field.pyx":153
  *     cdef double complex* result2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  * 
  *     cdef double complex* kernel0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21677,7 +21847,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_kernel0_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":120
+  /* "cy_solver_field.pyx":154
  * 
  *     cdef double complex* kernel0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* kernel1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21686,7 +21856,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_kernel1_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":121
+  /* "cy_solver_field.pyx":155
  *     cdef double complex* kernel0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* kernel1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* kernel2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21695,7 +21865,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_kernel2_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":122
+  /* "cy_solver_field.pyx":156
  *     cdef double complex* kernel1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* kernel2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* result0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21704,7 +21874,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_result0_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":123
+  /* "cy_solver_field.pyx":157
  *     cdef double complex* kernel2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* result0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* result1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21713,7 +21883,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_result1_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":124
+  /* "cy_solver_field.pyx":158
  *     cdef double complex* result0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* result1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* result2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21722,7 +21892,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_result2_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":126
+  /* "cy_solver_field.pyx":160
  *     cdef double complex* result2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  * 
  *     cdef int point_q = 0             # <<<<<<<<<<<<<<
@@ -21731,7 +21901,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_point_q = 0;
 
-  /* "cy_solver_field.pyx":127
+  /* "cy_solver_field.pyx":161
  * 
  *     cdef int point_q = 0
  *     cdef int point_q_y = 0             # <<<<<<<<<<<<<<
@@ -21740,7 +21910,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_point_q_y = 0;
 
-  /* "cy_solver_field.pyx":128
+  /* "cy_solver_field.pyx":162
  *     cdef int point_q = 0
  *     cdef int point_q_y = 0
  *     cdef int aix = 0             # <<<<<<<<<<<<<<
@@ -21749,7 +21919,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_aix = 0;
 
-  /* "cy_solver_field.pyx":129
+  /* "cy_solver_field.pyx":163
  *     cdef int point_q_y = 0
  *     cdef int aix = 0
  *     cdef int aiy = 0             # <<<<<<<<<<<<<<
@@ -21758,7 +21928,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_aiy = 0;
 
-  /* "cy_solver_field.pyx":130
+  /* "cy_solver_field.pyx":164
  *     cdef int aix = 0
  *     cdef int aiy = 0
  *     cdef double px_aix = 0             # <<<<<<<<<<<<<<
@@ -21767,7 +21937,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_px_aix = 0.0;
 
-  /* "cy_solver_field.pyx":131
+  /* "cy_solver_field.pyx":165
  *     cdef int aiy = 0
  *     cdef double px_aix = 0
  *     cdef double py_aiy = 0             # <<<<<<<<<<<<<<
@@ -21776,7 +21946,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_py_aiy = 0.0;
 
-  /* "cy_solver_field.pyx":132
+  /* "cy_solver_field.pyx":166
  *     cdef double px_aix = 0
  *     cdef double py_aiy = 0
  *     while aix<ntot:             # <<<<<<<<<<<<<<
@@ -21787,7 +21957,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
     __pyx_t_6 = (__pyx_v_aix < __pyx_v_ntot);
     if (!__pyx_t_6) break;
 
-    /* "cy_solver_field.pyx":133
+    /* "cy_solver_field.pyx":167
  *     cdef double py_aiy = 0
  *     while aix<ntot:
  *         aiy=0             # <<<<<<<<<<<<<<
@@ -21796,7 +21966,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
     __pyx_v_aiy = 0;
 
-    /* "cy_solver_field.pyx":134
+    /* "cy_solver_field.pyx":168
  *     while aix<ntot:
  *         aiy=0
  *         while aiy<ntot:             # <<<<<<<<<<<<<<
@@ -21807,7 +21977,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_t_6 = (__pyx_v_aiy < __pyx_v_ntot);
       if (!__pyx_t_6) break;
 
-      /* "cy_solver_field.pyx":135
+      /* "cy_solver_field.pyx":169
  *         aiy=0
  *         while aiy<ntot:
  *             point_q_y = (aix)*ntot*2*2 + (aiy)*2*2             # <<<<<<<<<<<<<<
@@ -21816,7 +21986,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_point_q_y = ((((__pyx_v_aix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_aiy * 2) * 2));
 
-      /* "cy_solver_field.pyx":136
+      /* "cy_solver_field.pyx":170
  *         while aiy<ntot:
  *             point_q_y = (aix)*ntot*2*2 + (aiy)*2*2
  *             point_q = (aix)*ntot + (aiy)             # <<<<<<<<<<<<<<
@@ -21825,7 +21995,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_point_q = ((__pyx_v_aix * __pyx_v_ntot) + __pyx_v_aiy);
 
-      /* "cy_solver_field.pyx":137
+      /* "cy_solver_field.pyx":171
  *             point_q_y = (aix)*ntot*2*2 + (aiy)*2*2
  *             point_q = (aix)*ntot + (aiy)
  *             px_aix = 2*M_PI/l*(aix-n2)             # <<<<<<<<<<<<<<
@@ -21834,7 +22004,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_px_aix = (((2.0 * M_PI) / __pyx_v_l) * (__pyx_v_aix - __pyx_v_n2));
 
-      /* "cy_solver_field.pyx":138
+      /* "cy_solver_field.pyx":172
  *             point_q = (aix)*ntot + (aiy)
  *             px_aix = 2*M_PI/l*(aix-n2)
  *             py_aiy = 2*M_PI/l*(aiy-n2)             # <<<<<<<<<<<<<<
@@ -21843,7 +22013,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_py_aiy = (((2.0 * M_PI) / __pyx_v_l) * (__pyx_v_aiy - __pyx_v_n2));
 
-      /* "cy_solver_field.pyx":140
+      /* "cy_solver_field.pyx":174
  *             py_aiy = 2*M_PI/l*(aiy-n2)
  * 
  *             kernel1[point_q] = ene2_ptr[point_q]*(y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])             # <<<<<<<<<<<<<<
@@ -21852,7 +22022,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       (__pyx_v_kernel1[__pyx_v_point_q]) = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene2_ptr[__pyx_v_point_q]), 0), __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[__pyx_v_point_q_y]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 2)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 3)]), 0))));
 
-      /* "cy_solver_field.pyx":141
+      /* "cy_solver_field.pyx":175
  * 
  *             kernel1[point_q] = ene2_ptr[point_q]*(y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
  *             kernel2[point_q] = ene1_ptr[point_q]*(y[point_q_y] + 1j*y[point_q_y+1] - y[point_q_y+2] - 1j*y[point_q_y+3])             # <<<<<<<<<<<<<<
@@ -21861,7 +22031,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       (__pyx_v_kernel2[__pyx_v_point_q]) = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene1_ptr[__pyx_v_point_q]), 0), __Pyx_c_diff_double(__Pyx_c_diff_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[__pyx_v_point_q_y]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 2)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 3)]), 0))));
 
-      /* "cy_solver_field.pyx":143
+      /* "cy_solver_field.pyx":177
  *             kernel2[point_q] = ene1_ptr[point_q]*(y[point_q_y] + 1j*y[point_q_y+1] - y[point_q_y+2] - 1j*y[point_q_y+3])
  * 
  *             kernel0_a[point_q] = ene2_ptr[point_q] * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])             # <<<<<<<<<<<<<<
@@ -21870,7 +22040,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       (__pyx_v_kernel0_a[__pyx_v_point_q]) = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene2_ptr[__pyx_v_point_q]), 0), __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[__pyx_v_point_q_y]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 2)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 3)]), 0))));
 
-      /* "cy_solver_field.pyx":144
+      /* "cy_solver_field.pyx":178
  * 
  *             kernel0_a[point_q] = ene2_ptr[point_q] * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
  *             kernel1_a[point_q] = ene2_ptr[point_q] * px * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])             # <<<<<<<<<<<<<<
@@ -21879,7 +22049,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       (__pyx_v_kernel1_a[__pyx_v_point_q]) = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(((__pyx_v_ene2_ptr[__pyx_v_point_q]) * __pyx_v_px), 0), __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[__pyx_v_point_q_y]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 2)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 3)]), 0))));
 
-      /* "cy_solver_field.pyx":145
+      /* "cy_solver_field.pyx":179
  *             kernel0_a[point_q] = ene2_ptr[point_q] * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
  *             kernel1_a[point_q] = ene2_ptr[point_q] * px * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
  *             kernel2_a[point_q] = ene2_ptr[point_q] * py * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])             # <<<<<<<<<<<<<<
@@ -21888,7 +22058,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       (__pyx_v_kernel2_a[__pyx_v_point_q]) = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(((__pyx_v_ene2_ptr[__pyx_v_point_q]) * __pyx_v_py), 0), __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[__pyx_v_point_q_y]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 2)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 3)]), 0))));
 
-      /* "cy_solver_field.pyx":147
+      /* "cy_solver_field.pyx":181
  *             kernel2_a[point_q] = ene2_ptr[point_q] * py * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
  * 
  *             aiy+=1             # <<<<<<<<<<<<<<
@@ -21898,7 +22068,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_v_aiy = (__pyx_v_aiy + 1);
     }
 
-    /* "cy_solver_field.pyx":148
+    /* "cy_solver_field.pyx":182
  * 
  *             aiy+=1
  *         aix+=1             # <<<<<<<<<<<<<<
@@ -21908,7 +22078,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
     __pyx_v_aix = (__pyx_v_aix + 1);
   }
 
-  /* "cy_solver_field.pyx":150
+  /* "cy_solver_field.pyx":184
  *         aix+=1
  * 
  *     cdef double complex* temp = <double complex*> malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -21917,7 +22087,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_v_temp = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":152
+  /* "cy_solver_field.pyx":186
  *     cdef double complex* temp = <double complex*> malloc(ntot*ntot*sizeof(double complex))
  * 
  *     ft.convolved(pdata, result1, temp, potential_c, kernel1, n2)             # <<<<<<<<<<<<<<
@@ -21926,7 +22096,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_f_8fft_conv_3src_6fftlib_convolved(__pyx_v_pdata, __pyx_v_result1, __pyx_v_temp, __pyx_v_potential_c, __pyx_v_kernel1, __pyx_v_n2);
 
-  /* "cy_solver_field.pyx":153
+  /* "cy_solver_field.pyx":187
  * 
  *     ft.convolved(pdata, result1, temp, potential_c, kernel1, n2)
  *     ft.convolved(pdata, result2, temp, potential_c, kernel2, n2)             # <<<<<<<<<<<<<<
@@ -21935,7 +22105,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_f_8fft_conv_3src_6fftlib_convolved(__pyx_v_pdata, __pyx_v_result2, __pyx_v_temp, __pyx_v_potential_c, __pyx_v_kernel2, __pyx_v_n2);
 
-  /* "cy_solver_field.pyx":155
+  /* "cy_solver_field.pyx":189
  *     ft.convolved(pdata, result2, temp, potential_c, kernel2, n2)
  * 
  *     ft.convolved(pdata, result1_a, temp, potential_ca1, kernel1_a, n2)             # <<<<<<<<<<<<<<
@@ -21944,7 +22114,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_f_8fft_conv_3src_6fftlib_convolved(__pyx_v_pdata, __pyx_v_result1_a, __pyx_v_temp, __pyx_v_potential_ca1, __pyx_v_kernel1_a, __pyx_v_n2);
 
-  /* "cy_solver_field.pyx":156
+  /* "cy_solver_field.pyx":190
  * 
  *     ft.convolved(pdata, result1_a, temp, potential_ca1, kernel1_a, n2)
  *     ft.convolved(pdata, result2_a, temp, potential_ca2, kernel2_a, n2)             # <<<<<<<<<<<<<<
@@ -21953,7 +22123,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_f_8fft_conv_3src_6fftlib_convolved(__pyx_v_pdata, __pyx_v_result2_a, __pyx_v_temp, __pyx_v_potential_ca2, __pyx_v_kernel2_a, __pyx_v_n2);
 
-  /* "cy_solver_field.pyx":157
+  /* "cy_solver_field.pyx":191
  *     ft.convolved(pdata, result1_a, temp, potential_ca1, kernel1_a, n2)
  *     ft.convolved(pdata, result2_a, temp, potential_ca2, kernel2_a, n2)
  *     ft.convolved(pdata, result0_a, temp, potential_ca0, kernel0_a, n2)             # <<<<<<<<<<<<<<
@@ -21962,7 +22132,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   __pyx_f_8fft_conv_3src_6fftlib_convolved(__pyx_v_pdata, __pyx_v_result0_a, __pyx_v_temp, __pyx_v_potential_ca0, __pyx_v_kernel0_a, __pyx_v_n2);
 
-  /* "cy_solver_field.pyx":159
+  /* "cy_solver_field.pyx":193
  *     ft.convolved(pdata, result0_a, temp, potential_ca0, kernel0_a, n2)
  * 
  *     while ix < ntot:             # <<<<<<<<<<<<<<
@@ -21973,7 +22143,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
     __pyx_t_6 = (__pyx_v_ix < __pyx_v_ntot);
     if (!__pyx_t_6) break;
 
-    /* "cy_solver_field.pyx":160
+    /* "cy_solver_field.pyx":194
  * 
  *     while ix < ntot:
  *         iy = 0             # <<<<<<<<<<<<<<
@@ -21982,7 +22152,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
     __pyx_v_iy = 0;
 
-    /* "cy_solver_field.pyx":161
+    /* "cy_solver_field.pyx":195
  *     while ix < ntot:
  *         iy = 0
  *         while iy < ntot:             # <<<<<<<<<<<<<<
@@ -21993,7 +22163,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_t_6 = (__pyx_v_iy < __pyx_v_ntot);
       if (!__pyx_t_6) break;
 
-      /* "cy_solver_field.pyx":162
+      /* "cy_solver_field.pyx":196
  *         iy = 0
  *         while iy < ntot:
  *             nx = (ix - n2)             # <<<<<<<<<<<<<<
@@ -22002,7 +22172,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_nx = (__pyx_v_ix - __pyx_v_n2);
 
-      /* "cy_solver_field.pyx":163
+      /* "cy_solver_field.pyx":197
  *         while iy < ntot:
  *             nx = (ix - n2)
  *             ny = (iy - n2)             # <<<<<<<<<<<<<<
@@ -22011,7 +22181,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_ny = (__pyx_v_iy - __pyx_v_n2);
 
-      /* "cy_solver_field.pyx":164
+      /* "cy_solver_field.pyx":198
  *             nx = (ix - n2)
  *             ny = (iy - n2)
  *             px = M_PI/l*nx             # <<<<<<<<<<<<<<
@@ -22020,7 +22190,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_px = ((((double)M_PI) / __pyx_v_l) * __pyx_v_nx);
 
-      /* "cy_solver_field.pyx":165
+      /* "cy_solver_field.pyx":199
  *             ny = (iy - n2)
  *             px = M_PI/l*nx
  *             py = M_PI/l*ny             # <<<<<<<<<<<<<<
@@ -22029,7 +22199,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_py = ((((double)M_PI) / __pyx_v_l) * __pyx_v_ny);
 
-      /* "cy_solver_field.pyx":167
+      /* "cy_solver_field.pyx":201
  *             py = M_PI/l*ny
  * 
  *             ene_val = ene(m,px,py)             # <<<<<<<<<<<<<<
@@ -22038,7 +22208,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_ene_val = __pyx_f_15cy_solver_field_ene(__pyx_v_m, __pyx_v_px, __pyx_v_py);
 
-      /* "cy_solver_field.pyx":169
+      /* "cy_solver_field.pyx":203
  *             ene_val = ene(m,px,py)
  * 
  *             point = ix*ntot*2*2 + iy*2*2             # <<<<<<<<<<<<<<
@@ -22047,7 +22217,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_point = ((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2));
 
-      /* "cy_solver_field.pyx":171
+      /* "cy_solver_field.pyx":205
  *             point = ix*ntot*2*2 + iy*2*2
  * 
  *             dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1]             # <<<<<<<<<<<<<<
@@ -22056,7 +22226,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       (__pyx_v_dy[((__pyx_v_point + 0x0) + 0)]) = ((__pyx_v_ene_val * 1.) * (__pyx_v_y[((__pyx_v_point + 0x0) + 1)]));
 
-      /* "cy_solver_field.pyx":172
+      /* "cy_solver_field.pyx":206
  * 
  *             dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1]
  *             dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0]             # <<<<<<<<<<<<<<
@@ -22065,7 +22235,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       (__pyx_v_dy[((__pyx_v_point + 0x0) + 1)]) = (((-__pyx_v_ene_val) * 1.) * (__pyx_v_y[((__pyx_v_point + 0x0) + 0)]));
 
-      /* "cy_solver_field.pyx":173
+      /* "cy_solver_field.pyx":207
  *             dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1]
  *             dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0]
  *             dy[point + 1*2 + 0] =  ene_val * (-1.) * y[point + 1*2 + 1]             # <<<<<<<<<<<<<<
@@ -22074,7 +22244,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       (__pyx_v_dy[((__pyx_v_point + 0x2) + 0)]) = ((__pyx_v_ene_val * -1.) * (__pyx_v_y[((__pyx_v_point + 0x2) + 1)]));
 
-      /* "cy_solver_field.pyx":174
+      /* "cy_solver_field.pyx":208
  *             dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0]
  *             dy[point + 1*2 + 0] =  ene_val * (-1.) * y[point + 1*2 + 1]
  *             dy[point + 1*2 + 1] = -ene_val * (-1.) * y[point + 1*2 + 0]             # <<<<<<<<<<<<<<
@@ -22083,7 +22253,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       (__pyx_v_dy[((__pyx_v_point + 0x2) + 1)]) = (((-__pyx_v_ene_val) * -1.) * (__pyx_v_y[((__pyx_v_point + 0x2) + 0)]));
 
-      /* "cy_solver_field.pyx":176
+      /* "cy_solver_field.pyx":210
  *             dy[point + 1*2 + 1] = -ene_val * (-1.) * y[point + 1*2 + 0]
  * 
  *             point_ene = (ix)*ntot + (iy)             # <<<<<<<<<<<<<<
@@ -22092,7 +22262,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_point_ene = ((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy);
 
-      /* "cy_solver_field.pyx":178
+      /* "cy_solver_field.pyx":212
  *             point_ene = (ix)*ntot + (iy)
  * 
  *             conv1 = result1[ix*ntot+iy]             # <<<<<<<<<<<<<<
@@ -22101,7 +22271,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_conv1 = (__pyx_v_result1[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]);
 
-      /* "cy_solver_field.pyx":179
+      /* "cy_solver_field.pyx":213
  * 
  *             conv1 = result1[ix*ntot+iy]
  *             conv2 = result2[ix*ntot+iy]             # <<<<<<<<<<<<<<
@@ -22110,7 +22280,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_conv2 = (__pyx_v_result2[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]);
 
-      /* "cy_solver_field.pyx":181
+      /* "cy_solver_field.pyx":215
  *             conv2 = result2[ix*ntot+iy]
  * 
  *             temp1c = (-1j)*(ene1_ptr[point_ene]*conv1 + ene2_ptr[point_ene]*conv2)             # <<<<<<<<<<<<<<
@@ -22119,7 +22289,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_temp1c = __Pyx_c_prod_double(__Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0)), __Pyx_c_sum_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene1_ptr[__pyx_v_point_ene]), 0), __pyx_v_conv1), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene2_ptr[__pyx_v_point_ene]), 0), __pyx_v_conv2)));
 
-      /* "cy_solver_field.pyx":182
+      /* "cy_solver_field.pyx":216
  * 
  *             temp1c = (-1j)*(ene1_ptr[point_ene]*conv1 + ene2_ptr[point_ene]*conv2)
  *             temp2c = (-1j)*(ene1_ptr[point_ene]*conv1 - ene2_ptr[point_ene]*conv2)             # <<<<<<<<<<<<<<
@@ -22128,7 +22298,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_temp2c = __Pyx_c_prod_double(__Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0)), __Pyx_c_diff_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene1_ptr[__pyx_v_point_ene]), 0), __pyx_v_conv1), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene2_ptr[__pyx_v_point_ene]), 0), __pyx_v_conv2)));
 
-      /* "cy_solver_field.pyx":184
+      /* "cy_solver_field.pyx":218
  *             temp2c = (-1j)*(ene1_ptr[point_ene]*conv1 - ene2_ptr[point_ene]*conv2)
  * 
  *             dy[point + 0*2 + 0] += temp1c.real             # <<<<<<<<<<<<<<
@@ -22138,7 +22308,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_t_7 = ((__pyx_v_point + 0x0) + 0);
       (__pyx_v_dy[__pyx_t_7]) = ((__pyx_v_dy[__pyx_t_7]) + __Pyx_CREAL(__pyx_v_temp1c));
 
-      /* "cy_solver_field.pyx":185
+      /* "cy_solver_field.pyx":219
  * 
  *             dy[point + 0*2 + 0] += temp1c.real
  *             dy[point + 0*2 + 1] += temp1c.imag             # <<<<<<<<<<<<<<
@@ -22148,7 +22318,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_t_7 = ((__pyx_v_point + 0x0) + 1);
       (__pyx_v_dy[__pyx_t_7]) = ((__pyx_v_dy[__pyx_t_7]) + __Pyx_CIMAG(__pyx_v_temp1c));
 
-      /* "cy_solver_field.pyx":186
+      /* "cy_solver_field.pyx":220
  *             dy[point + 0*2 + 0] += temp1c.real
  *             dy[point + 0*2 + 1] += temp1c.imag
  *             dy[point + 1*2 + 0] += temp2c.real             # <<<<<<<<<<<<<<
@@ -22158,7 +22328,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_t_7 = ((__pyx_v_point + 0x2) + 0);
       (__pyx_v_dy[__pyx_t_7]) = ((__pyx_v_dy[__pyx_t_7]) + __Pyx_CREAL(__pyx_v_temp2c));
 
-      /* "cy_solver_field.pyx":187
+      /* "cy_solver_field.pyx":221
  *             dy[point + 0*2 + 1] += temp1c.imag
  *             dy[point + 1*2 + 0] += temp2c.real
  *             dy[point + 1*2 + 1] += temp2c.imag             # <<<<<<<<<<<<<<
@@ -22168,7 +22338,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_t_7 = ((__pyx_v_point + 0x2) + 1);
       (__pyx_v_dy[__pyx_t_7]) = ((__pyx_v_dy[__pyx_t_7]) + __Pyx_CIMAG(__pyx_v_temp2c));
 
-      /* "cy_solver_field.pyx":189
+      /* "cy_solver_field.pyx":223
  *             dy[point + 1*2 + 1] += temp2c.imag
  * 
  *             point_ene = (ix)*ntot + (iy)             # <<<<<<<<<<<<<<
@@ -22177,7 +22347,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_point_ene = ((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy);
 
-      /* "cy_solver_field.pyx":190
+      /* "cy_solver_field.pyx":224
  * 
  *             point_ene = (ix)*ntot + (iy)
  *             kgfieldc = (y[point + 0*2 + 0] + 1j*y[point + 0*2 + 1] + y[point + 1*2 + 0] + 1j*y[point + 0*2 + 1])             # <<<<<<<<<<<<<<
@@ -22186,7 +22356,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_kgfieldc = __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[((__pyx_v_point + 0x0) + 0)]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[((__pyx_v_point + 0x0) + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[((__pyx_v_point + 0x2) + 0)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[((__pyx_v_point + 0x0) + 1)]), 0)));
 
-      /* "cy_solver_field.pyx":192
+      /* "cy_solver_field.pyx":226
  *             kgfieldc = (y[point + 0*2 + 0] + 1j*y[point + 0*2 + 1] + y[point + 1*2 + 0] + 1j*y[point + 0*2 + 1])
  * 
  *             conv_a0 = ene2_ptr[point_ene]*result0_a[ix*ntot+iy]             # <<<<<<<<<<<<<<
@@ -22195,7 +22365,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_conv_a0 = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene2_ptr[__pyx_v_point_ene]), 0), (__pyx_v_result0_a[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]));
 
-      /* "cy_solver_field.pyx":193
+      /* "cy_solver_field.pyx":227
  * 
  *             conv_a0 = ene2_ptr[point_ene]*result0_a[ix*ntot+iy]
  *             conv_a1 = -2*ene2_ptr[point_ene]*result1_a[ix*ntot+iy]             # <<<<<<<<<<<<<<
@@ -22204,7 +22374,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_conv_a1 = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((-2.0 * (__pyx_v_ene2_ptr[__pyx_v_point_ene])), 0), (__pyx_v_result1_a[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]));
 
-      /* "cy_solver_field.pyx":194
+      /* "cy_solver_field.pyx":228
  *             conv_a0 = ene2_ptr[point_ene]*result0_a[ix*ntot+iy]
  *             conv_a1 = -2*ene2_ptr[point_ene]*result1_a[ix*ntot+iy]
  *             conv_a2 = -2*ene2_ptr[point_ene]*result2_a[ix*ntot+iy]             # <<<<<<<<<<<<<<
@@ -22213,7 +22383,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_conv_a2 = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((-2.0 * (__pyx_v_ene2_ptr[__pyx_v_point_ene])), 0), (__pyx_v_result2_a[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]));
 
-      /* "cy_solver_field.pyx":196
+      /* "cy_solver_field.pyx":230
  *             conv_a2 = -2*ene2_ptr[point_ene]*result2_a[ix*ntot+iy]
  * 
  *             tempa0c = (-1j)*(conv_a0+conv_a1+conv_a2)             # <<<<<<<<<<<<<<
@@ -22222,7 +22392,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_tempa0c = __Pyx_c_prod_double(__Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0)), __Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_v_conv_a0, __pyx_v_conv_a1), __pyx_v_conv_a2));
 
-      /* "cy_solver_field.pyx":197
+      /* "cy_solver_field.pyx":231
  * 
  *             tempa0c = (-1j)*(conv_a0+conv_a1+conv_a2)
  *             tempa1c = (-1j)*(conv_a0+conv_a1+conv_a2)             # <<<<<<<<<<<<<<
@@ -22231,7 +22401,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
       __pyx_v_tempa1c = __Pyx_c_prod_double(__Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0)), __Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_v_conv_a0, __pyx_v_conv_a1), __pyx_v_conv_a2));
 
-      /* "cy_solver_field.pyx":199
+      /* "cy_solver_field.pyx":233
  *             tempa1c = (-1j)*(conv_a0+conv_a1+conv_a2)
  * 
  *             dy[point + 0*2 + 0] += tempa0c.real             # <<<<<<<<<<<<<<
@@ -22241,7 +22411,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_t_7 = ((__pyx_v_point + 0x0) + 0);
       (__pyx_v_dy[__pyx_t_7]) = ((__pyx_v_dy[__pyx_t_7]) + __Pyx_CREAL(__pyx_v_tempa0c));
 
-      /* "cy_solver_field.pyx":200
+      /* "cy_solver_field.pyx":234
  * 
  *             dy[point + 0*2 + 0] += tempa0c.real
  *             dy[point + 0*2 + 1] += tempa0c.imag             # <<<<<<<<<<<<<<
@@ -22251,7 +22421,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_t_7 = ((__pyx_v_point + 0x0) + 1);
       (__pyx_v_dy[__pyx_t_7]) = ((__pyx_v_dy[__pyx_t_7]) + __Pyx_CIMAG(__pyx_v_tempa0c));
 
-      /* "cy_solver_field.pyx":201
+      /* "cy_solver_field.pyx":235
  *             dy[point + 0*2 + 0] += tempa0c.real
  *             dy[point + 0*2 + 1] += tempa0c.imag
  *             dy[point + 1*2 + 0] += tempa1c.real             # <<<<<<<<<<<<<<
@@ -22261,7 +22431,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_t_7 = ((__pyx_v_point + 0x2) + 0);
       (__pyx_v_dy[__pyx_t_7]) = ((__pyx_v_dy[__pyx_t_7]) + __Pyx_CREAL(__pyx_v_tempa1c));
 
-      /* "cy_solver_field.pyx":202
+      /* "cy_solver_field.pyx":236
  *             dy[point + 0*2 + 1] += tempa0c.imag
  *             dy[point + 1*2 + 0] += tempa1c.real
  *             dy[point + 1*2 + 1] += tempa1c.imag             # <<<<<<<<<<<<<<
@@ -22271,7 +22441,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_t_7 = ((__pyx_v_point + 0x2) + 1);
       (__pyx_v_dy[__pyx_t_7]) = ((__pyx_v_dy[__pyx_t_7]) + __Pyx_CIMAG(__pyx_v_tempa1c));
 
-      /* "cy_solver_field.pyx":204
+      /* "cy_solver_field.pyx":238
  *             dy[point + 1*2 + 1] += tempa1c.imag
  * 
  *             iy += 1             # <<<<<<<<<<<<<<
@@ -22281,7 +22451,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
       __pyx_v_iy = (__pyx_v_iy + 1);
     }
 
-    /* "cy_solver_field.pyx":205
+    /* "cy_solver_field.pyx":239
  * 
  *             iy += 1
  *         ix += 1             # <<<<<<<<<<<<<<
@@ -22291,7 +22461,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
     __pyx_v_ix = (__pyx_v_ix + 1);
   }
 
-  /* "cy_solver_field.pyx":207
+  /* "cy_solver_field.pyx":241
  *         ix += 1
  * 
  *     free(kernel1)             # <<<<<<<<<<<<<<
@@ -22300,7 +22470,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_kernel1);
 
-  /* "cy_solver_field.pyx":208
+  /* "cy_solver_field.pyx":242
  * 
  *     free(kernel1)
  *     free(kernel2)             # <<<<<<<<<<<<<<
@@ -22309,7 +22479,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_kernel2);
 
-  /* "cy_solver_field.pyx":209
+  /* "cy_solver_field.pyx":243
  *     free(kernel1)
  *     free(kernel2)
  *     free(result1)             # <<<<<<<<<<<<<<
@@ -22318,7 +22488,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_result1);
 
-  /* "cy_solver_field.pyx":210
+  /* "cy_solver_field.pyx":244
  *     free(kernel2)
  *     free(result1)
  *     free(result2)             # <<<<<<<<<<<<<<
@@ -22327,7 +22497,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_result2);
 
-  /* "cy_solver_field.pyx":211
+  /* "cy_solver_field.pyx":245
  *     free(result1)
  *     free(result2)
  *     free(kernel0_a)             # <<<<<<<<<<<<<<
@@ -22336,7 +22506,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_kernel0_a);
 
-  /* "cy_solver_field.pyx":212
+  /* "cy_solver_field.pyx":246
  *     free(result2)
  *     free(kernel0_a)
  *     free(kernel1_a)             # <<<<<<<<<<<<<<
@@ -22345,7 +22515,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_kernel1_a);
 
-  /* "cy_solver_field.pyx":213
+  /* "cy_solver_field.pyx":247
  *     free(kernel0_a)
  *     free(kernel1_a)
  *     free(kernel2_a)             # <<<<<<<<<<<<<<
@@ -22354,7 +22524,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_kernel2_a);
 
-  /* "cy_solver_field.pyx":214
+  /* "cy_solver_field.pyx":248
  *     free(kernel1_a)
  *     free(kernel2_a)
  *     free(result0_a)             # <<<<<<<<<<<<<<
@@ -22363,7 +22533,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_result0_a);
 
-  /* "cy_solver_field.pyx":215
+  /* "cy_solver_field.pyx":249
  *     free(kernel2_a)
  *     free(result0_a)
  *     free(result1_a)             # <<<<<<<<<<<<<<
@@ -22372,7 +22542,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_result1_a);
 
-  /* "cy_solver_field.pyx":216
+  /* "cy_solver_field.pyx":250
  *     free(result0_a)
  *     free(result1_a)
  *     free(result2_a)             # <<<<<<<<<<<<<<
@@ -22381,7 +22551,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_result2_a);
 
-  /* "cy_solver_field.pyx":217
+  /* "cy_solver_field.pyx":251
  *     free(result1_a)
  *     free(result2_a)
  *     free(temp)             # <<<<<<<<<<<<<<
@@ -22390,7 +22560,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
  */
   free(__pyx_v_temp);
 
-  /* "cy_solver_field.pyx":76
+  /* "cy_solver_field.pyx":99
  * ###
  * 
  * cdef void cython_diffeq(double* dy, double t, double* y, const void* args, PreEvalFunc pre_eval_func) noexcept nogil:             # <<<<<<<<<<<<<<
@@ -22401,7 +22571,7 @@ static void __pyx_f_15cy_solver_field_cython_diffeq(double *__pyx_v_dy, CYTHON_U
   /* function exit code */
 }
 
-/* "cy_solver_field.pyx":220
+/* "cy_solver_field.pyx":254
  * 
  * 
  * def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps,             # <<<<<<<<<<<<<<
@@ -22483,7 +22653,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 220, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -22491,9 +22661,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 220, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 1); __PYX_ERR(1, 220, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 1); __PYX_ERR(1, 254, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -22501,9 +22671,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 220, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 2); __PYX_ERR(1, 220, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 2); __PYX_ERR(1, 254, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -22511,9 +22681,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[3]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 220, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 3); __PYX_ERR(1, 220, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 3); __PYX_ERR(1, 254, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -22521,9 +22691,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[4]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 220, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 4); __PYX_ERR(1, 220, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 4); __PYX_ERR(1, 254, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
@@ -22531,9 +22701,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[5]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 220, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 5); __PYX_ERR(1, 220, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 5); __PYX_ERR(1, 254, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
@@ -22541,9 +22711,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[6]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 220, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 6); __PYX_ERR(1, 220, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 6); __PYX_ERR(1, 254, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  7:
@@ -22551,14 +22721,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[7]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 220, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 7); __PYX_ERR(1, 220, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, 7); __PYX_ERR(1, 254, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "solver") < 0)) __PYX_ERR(1, 220, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "solver") < 0)) __PYX_ERR(1, 254, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 8)) {
       goto __pyx_L5_argtuple_error;
@@ -22573,17 +22743,17 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[7] = __Pyx_Arg_FASTCALL(__pyx_args, 7);
     }
     __pyx_v_t_span = ((PyObject*)values[0]);
-    __pyx_v_y0 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_y0.memview)) __PYX_ERR(1, 220, __pyx_L3_error)
-    __pyx_v_coef = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_coef.memview)) __PYX_ERR(1, 220, __pyx_L3_error)
-    __pyx_v_timesteps = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_timesteps.memview)) __PYX_ERR(1, 220, __pyx_L3_error)
-    __pyx_v_field = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field.memview)) __PYX_ERR(1, 221, __pyx_L3_error)
-    __pyx_v_field_a1 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field_a1.memview)) __PYX_ERR(1, 221, __pyx_L3_error)
-    __pyx_v_field_a2 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[6], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field_a2.memview)) __PYX_ERR(1, 221, __pyx_L3_error)
-    __pyx_v_field_a0 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[7], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field_a0.memview)) __PYX_ERR(1, 221, __pyx_L3_error)
+    __pyx_v_y0 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_y0.memview)) __PYX_ERR(1, 254, __pyx_L3_error)
+    __pyx_v_coef = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_coef.memview)) __PYX_ERR(1, 254, __pyx_L3_error)
+    __pyx_v_timesteps = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_timesteps.memview)) __PYX_ERR(1, 254, __pyx_L3_error)
+    __pyx_v_field = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field.memview)) __PYX_ERR(1, 255, __pyx_L3_error)
+    __pyx_v_field_a1 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field_a1.memview)) __PYX_ERR(1, 255, __pyx_L3_error)
+    __pyx_v_field_a2 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[6], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field_a2.memview)) __PYX_ERR(1, 255, __pyx_L3_error)
+    __pyx_v_field_a0 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[7], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field_a0.memview)) __PYX_ERR(1, 255, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, __pyx_nargs); __PYX_ERR(1, 220, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("solver", 1, 8, 8, __pyx_nargs); __PYX_ERR(1, 254, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -22604,7 +22774,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t_span), (&PyTuple_Type), 1, "t_span", 1))) __PYX_ERR(1, 220, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t_span), (&PyTuple_Type), 1, "t_span", 1))) __PYX_ERR(1, 254, __pyx_L1_error)
   __pyx_r = __pyx_pf_15cy_solver_field_solver(__pyx_self, __pyx_v_t_span, __pyx_v_y0, __pyx_v_coef, __pyx_v_timesteps, __pyx_v_field, __pyx_v_field_a1, __pyx_v_field_a2, __pyx_v_field_a0);
 
   /* function exit code */
@@ -22669,7 +22839,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("solver", 1);
 
-  /* "cy_solver_field.pyx":223
+  /* "cy_solver_field.pyx":257
  *            double[:] field, double[:] field_a1, double[:] field_a2, double[:] field_a0):
  * 
  *     cdef DiffeqFuncType diffeq = cython_diffeq             # <<<<<<<<<<<<<<
@@ -22678,7 +22848,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_diffeq = __pyx_f_15cy_solver_field_cython_diffeq;
 
-  /* "cy_solver_field.pyx":225
+  /* "cy_solver_field.pyx":259
  *     cdef DiffeqFuncType diffeq = cython_diffeq
  * 
  *     cdef double* y0_ptr       = &y0[0]             # <<<<<<<<<<<<<<
@@ -22688,7 +22858,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_1 = 0;
   __pyx_v_y0_ptr = (&(*((double *) ( /* dim=0 */ (__pyx_v_y0.data + __pyx_t_1 * __pyx_v_y0.strides[0]) ))));
 
-  /* "cy_solver_field.pyx":226
+  /* "cy_solver_field.pyx":260
  * 
  *     cdef double* y0_ptr       = &y0[0]
  *     cdef unsigned int num_y   = len(y0)             # <<<<<<<<<<<<<<
@@ -22698,7 +22868,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_2 = __Pyx_MemoryView_Len(__pyx_v_y0); 
   __pyx_v_num_y = __pyx_t_2;
 
-  /* "cy_solver_field.pyx":227
+  /* "cy_solver_field.pyx":261
  *     cdef double* y0_ptr       = &y0[0]
  *     cdef unsigned int num_y   = len(y0)
  *     cdef int n_tsteps         = len(timesteps)             # <<<<<<<<<<<<<<
@@ -22708,7 +22878,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_2 = __Pyx_MemoryView_Len(__pyx_v_timesteps); 
   __pyx_v_n_tsteps = __pyx_t_2;
 
-  /* "cy_solver_field.pyx":228
+  /* "cy_solver_field.pyx":262
  *     cdef unsigned int num_y   = len(y0)
  *     cdef int n_tsteps         = len(timesteps)
  *     cdef int n2               = <int>coef[0]             # <<<<<<<<<<<<<<
@@ -22718,7 +22888,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_1 = 0;
   __pyx_v_n2 = ((int)(*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))));
 
-  /* "cy_solver_field.pyx":229
+  /* "cy_solver_field.pyx":263
  *     cdef int n_tsteps         = len(timesteps)
  *     cdef int n2               = <int>coef[0]
  *     cdef int ntot             = 2*n2             # <<<<<<<<<<<<<<
@@ -22727,7 +22897,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_ntot = (2 * __pyx_v_n2);
 
-  /* "cy_solver_field.pyx":231
+  /* "cy_solver_field.pyx":265
  *     cdef int ntot             = 2*n2
  * 
  *     cdef double[2] t_span_arr = [t_span[0], t_span[1]]             # <<<<<<<<<<<<<<
@@ -22736,19 +22906,19 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   if (unlikely(__pyx_v_t_span == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(1, 231, __pyx_L1_error)
+    __PYX_ERR(1, 265, __pyx_L1_error)
   }
-  __pyx_t_3 = __pyx_PyFloat_AsDouble(PyTuple_GET_ITEM(__pyx_v_t_span, 0)); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 231, __pyx_L1_error)
+  __pyx_t_3 = __pyx_PyFloat_AsDouble(PyTuple_GET_ITEM(__pyx_v_t_span, 0)); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 265, __pyx_L1_error)
   if (unlikely(__pyx_v_t_span == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(1, 231, __pyx_L1_error)
+    __PYX_ERR(1, 265, __pyx_L1_error)
   }
-  __pyx_t_4 = __pyx_PyFloat_AsDouble(PyTuple_GET_ITEM(__pyx_v_t_span, 1)); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 231, __pyx_L1_error)
+  __pyx_t_4 = __pyx_PyFloat_AsDouble(PyTuple_GET_ITEM(__pyx_v_t_span, 1)); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 265, __pyx_L1_error)
   __pyx_t_5[0] = __pyx_t_3;
   __pyx_t_5[1] = __pyx_t_4;
   memcpy(&(__pyx_v_t_span_arr[0]), __pyx_t_5, sizeof(__pyx_v_t_span_arr[0]) * (2));
 
-  /* "cy_solver_field.pyx":232
+  /* "cy_solver_field.pyx":266
  * 
  *     cdef double[2] t_span_arr = [t_span[0], t_span[1]]
  *     cdef double* t_span_ptr   = &t_span_arr[0]             # <<<<<<<<<<<<<<
@@ -22757,7 +22927,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_t_span_ptr = (&(__pyx_v_t_span_arr[0]));
 
-  /* "cy_solver_field.pyx":238
+  /* "cy_solver_field.pyx":272
  * 
  *     cdef double[1000] c_timesteps
  *     cdef int i = 0             # <<<<<<<<<<<<<<
@@ -22766,7 +22936,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_i = 0;
 
-  /* "cy_solver_field.pyx":239
+  /* "cy_solver_field.pyx":273
  *     cdef double[1000] c_timesteps
  *     cdef int i = 0
  *     cdef int j = 0             # <<<<<<<<<<<<<<
@@ -22775,7 +22945,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_j = 0;
 
-  /* "cy_solver_field.pyx":240
+  /* "cy_solver_field.pyx":274
  *     cdef int i = 0
  *     cdef int j = 0
  *     while i < n_tsteps:             # <<<<<<<<<<<<<<
@@ -22786,7 +22956,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_t_6 = (__pyx_v_i < __pyx_v_n_tsteps);
     if (!__pyx_t_6) break;
 
-    /* "cy_solver_field.pyx":241
+    /* "cy_solver_field.pyx":275
  *     cdef int j = 0
  *     while i < n_tsteps:
  *         c_timesteps[i] = timesteps[i]             # <<<<<<<<<<<<<<
@@ -22796,7 +22966,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_t_1 = __pyx_v_i;
     (__pyx_v_c_timesteps[__pyx_v_i]) = (*((double *) ( /* dim=0 */ (__pyx_v_timesteps.data + __pyx_t_1 * __pyx_v_timesteps.strides[0]) )));
 
-    /* "cy_solver_field.pyx":242
+    /* "cy_solver_field.pyx":276
  *     while i < n_tsteps:
  *         c_timesteps[i] = timesteps[i]
  *         i += 1             # <<<<<<<<<<<<<<
@@ -22806,7 +22976,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_v_i = (__pyx_v_i + 1);
   }
 
-  /* "cy_solver_field.pyx":243
+  /* "cy_solver_field.pyx":277
  *         c_timesteps[i] = timesteps[i]
  *         i += 1
  *     cdef double* timesteps_ptr = &c_timesteps[0]             # <<<<<<<<<<<<<<
@@ -22815,7 +22985,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_timesteps_ptr = (&(__pyx_v_c_timesteps[0]));
 
-  /* "cy_solver_field.pyx":247
+  /* "cy_solver_field.pyx":281
  *     #    Prepare parameters
  * 
  *     cdef double complex* potential_c = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -22824,7 +22994,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_potential_c = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":248
+  /* "cy_solver_field.pyx":282
  * 
  *     cdef double complex* potential_c = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* potential_ca1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -22833,7 +23003,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_potential_ca1 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":249
+  /* "cy_solver_field.pyx":283
  *     cdef double complex* potential_c = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* potential_ca1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* potential_ca2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -22842,7 +23012,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_potential_ca2 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":250
+  /* "cy_solver_field.pyx":284
  *     cdef double complex* potential_ca1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* potential_ca2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
  *     cdef double complex* potential_ca0 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
@@ -22851,7 +23021,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_potential_ca0 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
 
-  /* "cy_solver_field.pyx":253
+  /* "cy_solver_field.pyx":287
  * 
  *     cdef ft.fft_data data
  *     ft.setup(&data, ntot, ntot)             # <<<<<<<<<<<<<<
@@ -22860,7 +23030,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   setup((&__pyx_v_data), __pyx_v_ntot, __pyx_v_ntot);
 
-  /* "cy_solver_field.pyx":256
+  /* "cy_solver_field.pyx":290
  * 
  *     cdef parameters args
  *     cdef parameters* args_param_ptr = &args             # <<<<<<<<<<<<<<
@@ -22869,7 +23039,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_args_param_ptr = (&__pyx_v_args);
 
-  /* "cy_solver_field.pyx":257
+  /* "cy_solver_field.pyx":291
  *     cdef parameters args
  *     cdef parameters* args_param_ptr = &args
  *     args.n2 = n2             # <<<<<<<<<<<<<<
@@ -22878,7 +23048,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_args.n2 = __pyx_v_n2;
 
-  /* "cy_solver_field.pyx":258
+  /* "cy_solver_field.pyx":292
  *     cdef parameters* args_param_ptr = &args
  *     args.n2 = n2
  *     args.pdata = &data             # <<<<<<<<<<<<<<
@@ -22887,7 +23057,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_args.pdata = (&__pyx_v_data);
 
-  /* "cy_solver_field.pyx":259
+  /* "cy_solver_field.pyx":293
  *     args.n2 = n2
  *     args.pdata = &data
  *     args.m = coef[1]             # <<<<<<<<<<<<<<
@@ -22897,7 +23067,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_1 = 1;
   __pyx_v_args.m = (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) )));
 
-  /* "cy_solver_field.pyx":260
+  /* "cy_solver_field.pyx":294
  *     args.pdata = &data
  *     args.m = coef[1]
  *     args.l = coef[2]             # <<<<<<<<<<<<<<
@@ -22907,7 +23077,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_1 = 2;
   __pyx_v_args.l = (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) )));
 
-  /* "cy_solver_field.pyx":263
+  /* "cy_solver_field.pyx":297
  * 
  * 
  *     i = 0             # <<<<<<<<<<<<<<
@@ -22916,7 +23086,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_i = 0;
 
-  /* "cy_solver_field.pyx":264
+  /* "cy_solver_field.pyx":298
  * 
  *     i = 0
  *     while i<ntot:             # <<<<<<<<<<<<<<
@@ -22927,7 +23097,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_t_6 = (__pyx_v_i < __pyx_v_ntot);
     if (!__pyx_t_6) break;
 
-    /* "cy_solver_field.pyx":265
+    /* "cy_solver_field.pyx":299
  *     i = 0
  *     while i<ntot:
  *         j = 0             # <<<<<<<<<<<<<<
@@ -22936,7 +23106,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
     __pyx_v_j = 0;
 
-    /* "cy_solver_field.pyx":266
+    /* "cy_solver_field.pyx":300
  *     while i<ntot:
  *         j = 0
  *         while j<ntot:             # <<<<<<<<<<<<<<
@@ -22947,7 +23117,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_t_6 = (__pyx_v_j < __pyx_v_ntot);
       if (!__pyx_t_6) break;
 
-      /* "cy_solver_field.pyx":267
+      /* "cy_solver_field.pyx":301
  *         j = 0
  *         while j<ntot:
  *             potential_c[i*ntot + j] = field[i*ntot*2 + j*2] + 1j*field[i*ntot*2 + j*2 +1]             # <<<<<<<<<<<<<<
@@ -22958,7 +23128,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_t_7 = ((((__pyx_v_i * __pyx_v_ntot) * 2) + (__pyx_v_j * 2)) + 1);
       (__pyx_v_potential_c[((__pyx_v_i * __pyx_v_ntot) + __pyx_v_j)]) = __Pyx_c_sum_double(__pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field.data + __pyx_t_1 * __pyx_v_field.strides[0]) ))), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field.data + __pyx_t_7 * __pyx_v_field.strides[0]) ))), 0)));
 
-      /* "cy_solver_field.pyx":268
+      /* "cy_solver_field.pyx":302
  *         while j<ntot:
  *             potential_c[i*ntot + j] = field[i*ntot*2 + j*2] + 1j*field[i*ntot*2 + j*2 +1]
  *             j+=1             # <<<<<<<<<<<<<<
@@ -22968,7 +23138,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_v_j = (__pyx_v_j + 1);
     }
 
-    /* "cy_solver_field.pyx":269
+    /* "cy_solver_field.pyx":303
  *             potential_c[i*ntot + j] = field[i*ntot*2 + j*2] + 1j*field[i*ntot*2 + j*2 +1]
  *             j+=1
  *         i+=1             # <<<<<<<<<<<<<<
@@ -22978,7 +23148,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_v_i = (__pyx_v_i + 1);
   }
 
-  /* "cy_solver_field.pyx":271
+  /* "cy_solver_field.pyx":305
  *         i+=1
  * 
  *     i = 0             # <<<<<<<<<<<<<<
@@ -22987,7 +23157,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_i = 0;
 
-  /* "cy_solver_field.pyx":272
+  /* "cy_solver_field.pyx":306
  * 
  *     i = 0
  *     while i<ntot:             # <<<<<<<<<<<<<<
@@ -22998,7 +23168,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_t_6 = (__pyx_v_i < __pyx_v_ntot);
     if (!__pyx_t_6) break;
 
-    /* "cy_solver_field.pyx":273
+    /* "cy_solver_field.pyx":307
  *     i = 0
  *     while i<ntot:
  *         j = 0             # <<<<<<<<<<<<<<
@@ -23007,7 +23177,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
     __pyx_v_j = 0;
 
-    /* "cy_solver_field.pyx":274
+    /* "cy_solver_field.pyx":308
  *     while i<ntot:
  *         j = 0
  *         while j<ntot:             # <<<<<<<<<<<<<<
@@ -23018,7 +23188,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_t_6 = (__pyx_v_j < __pyx_v_ntot);
       if (!__pyx_t_6) break;
 
-      /* "cy_solver_field.pyx":275
+      /* "cy_solver_field.pyx":309
  *         j = 0
  *         while j<ntot:
  *             potential_ca1[i*ntot + j] = field_a1[i*ntot*2 + j*2] + 1j*field_a1[i*ntot*2 + j*2 +1]             # <<<<<<<<<<<<<<
@@ -23029,7 +23199,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_t_1 = ((((__pyx_v_i * __pyx_v_ntot) * 2) + (__pyx_v_j * 2)) + 1);
       (__pyx_v_potential_ca1[((__pyx_v_i * __pyx_v_ntot) + __pyx_v_j)]) = __Pyx_c_sum_double(__pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a1.data + __pyx_t_7 * __pyx_v_field_a1.strides[0]) ))), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a1.data + __pyx_t_1 * __pyx_v_field_a1.strides[0]) ))), 0)));
 
-      /* "cy_solver_field.pyx":276
+      /* "cy_solver_field.pyx":310
  *         while j<ntot:
  *             potential_ca1[i*ntot + j] = field_a1[i*ntot*2 + j*2] + 1j*field_a1[i*ntot*2 + j*2 +1]
  *             j+=1             # <<<<<<<<<<<<<<
@@ -23039,7 +23209,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_v_j = (__pyx_v_j + 1);
     }
 
-    /* "cy_solver_field.pyx":277
+    /* "cy_solver_field.pyx":311
  *             potential_ca1[i*ntot + j] = field_a1[i*ntot*2 + j*2] + 1j*field_a1[i*ntot*2 + j*2 +1]
  *             j+=1
  *         i+=1             # <<<<<<<<<<<<<<
@@ -23049,7 +23219,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_v_i = (__pyx_v_i + 1);
   }
 
-  /* "cy_solver_field.pyx":279
+  /* "cy_solver_field.pyx":313
  *         i+=1
  * 
  *     i = 0             # <<<<<<<<<<<<<<
@@ -23058,7 +23228,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_i = 0;
 
-  /* "cy_solver_field.pyx":280
+  /* "cy_solver_field.pyx":314
  * 
  *     i = 0
  *     while i<ntot:             # <<<<<<<<<<<<<<
@@ -23069,7 +23239,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_t_6 = (__pyx_v_i < __pyx_v_ntot);
     if (!__pyx_t_6) break;
 
-    /* "cy_solver_field.pyx":281
+    /* "cy_solver_field.pyx":315
  *     i = 0
  *     while i<ntot:
  *         j = 0             # <<<<<<<<<<<<<<
@@ -23078,7 +23248,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
     __pyx_v_j = 0;
 
-    /* "cy_solver_field.pyx":282
+    /* "cy_solver_field.pyx":316
  *     while i<ntot:
  *         j = 0
  *         while j<ntot:             # <<<<<<<<<<<<<<
@@ -23089,7 +23259,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_t_6 = (__pyx_v_j < __pyx_v_ntot);
       if (!__pyx_t_6) break;
 
-      /* "cy_solver_field.pyx":283
+      /* "cy_solver_field.pyx":317
  *         j = 0
  *         while j<ntot:
  *             potential_ca2[i*ntot + j] = field_a2[i*ntot*2 + j*2] + 1j*field_a2[i*ntot*2 + j*2 +1]             # <<<<<<<<<<<<<<
@@ -23100,7 +23270,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_t_7 = ((((__pyx_v_i * __pyx_v_ntot) * 2) + (__pyx_v_j * 2)) + 1);
       (__pyx_v_potential_ca2[((__pyx_v_i * __pyx_v_ntot) + __pyx_v_j)]) = __Pyx_c_sum_double(__pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a2.data + __pyx_t_1 * __pyx_v_field_a2.strides[0]) ))), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a2.data + __pyx_t_7 * __pyx_v_field_a2.strides[0]) ))), 0)));
 
-      /* "cy_solver_field.pyx":284
+      /* "cy_solver_field.pyx":318
  *         while j<ntot:
  *             potential_ca2[i*ntot + j] = field_a2[i*ntot*2 + j*2] + 1j*field_a2[i*ntot*2 + j*2 +1]
  *             j+=1             # <<<<<<<<<<<<<<
@@ -23110,7 +23280,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_v_j = (__pyx_v_j + 1);
     }
 
-    /* "cy_solver_field.pyx":285
+    /* "cy_solver_field.pyx":319
  *             potential_ca2[i*ntot + j] = field_a2[i*ntot*2 + j*2] + 1j*field_a2[i*ntot*2 + j*2 +1]
  *             j+=1
  *         i+=1             # <<<<<<<<<<<<<<
@@ -23120,7 +23290,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_v_i = (__pyx_v_i + 1);
   }
 
-  /* "cy_solver_field.pyx":287
+  /* "cy_solver_field.pyx":321
  *         i+=1
  * 
  *     i = 0             # <<<<<<<<<<<<<<
@@ -23129,7 +23299,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_i = 0;
 
-  /* "cy_solver_field.pyx":288
+  /* "cy_solver_field.pyx":322
  * 
  *     i = 0
  *     while i<ntot:             # <<<<<<<<<<<<<<
@@ -23140,7 +23310,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_t_6 = (__pyx_v_i < __pyx_v_ntot);
     if (!__pyx_t_6) break;
 
-    /* "cy_solver_field.pyx":289
+    /* "cy_solver_field.pyx":323
  *     i = 0
  *     while i<ntot:
  *         j = 0             # <<<<<<<<<<<<<<
@@ -23149,7 +23319,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
     __pyx_v_j = 0;
 
-    /* "cy_solver_field.pyx":290
+    /* "cy_solver_field.pyx":324
  *     while i<ntot:
  *         j = 0
  *         while j<ntot:             # <<<<<<<<<<<<<<
@@ -23160,7 +23330,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_t_6 = (__pyx_v_j < __pyx_v_ntot);
       if (!__pyx_t_6) break;
 
-      /* "cy_solver_field.pyx":291
+      /* "cy_solver_field.pyx":325
  *         j = 0
  *         while j<ntot:
  *             potential_ca0[i*ntot + j] = field_a0[i*ntot*2 + j*2] + 1j*field_a0[i*ntot*2 + j*2 +1]             # <<<<<<<<<<<<<<
@@ -23171,7 +23341,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_t_1 = ((((__pyx_v_i * __pyx_v_ntot) * 2) + (__pyx_v_j * 2)) + 1);
       (__pyx_v_potential_ca0[((__pyx_v_i * __pyx_v_ntot) + __pyx_v_j)]) = __Pyx_c_sum_double(__pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a0.data + __pyx_t_7 * __pyx_v_field_a0.strides[0]) ))), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a0.data + __pyx_t_1 * __pyx_v_field_a0.strides[0]) ))), 0)));
 
-      /* "cy_solver_field.pyx":292
+      /* "cy_solver_field.pyx":326
  *         while j<ntot:
  *             potential_ca0[i*ntot + j] = field_a0[i*ntot*2 + j*2] + 1j*field_a0[i*ntot*2 + j*2 +1]
  *             j+=1             # <<<<<<<<<<<<<<
@@ -23181,7 +23351,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
       __pyx_v_j = (__pyx_v_j + 1);
     }
 
-    /* "cy_solver_field.pyx":293
+    /* "cy_solver_field.pyx":327
  *             potential_ca0[i*ntot + j] = field_a0[i*ntot*2 + j*2] + 1j*field_a0[i*ntot*2 + j*2 +1]
  *             j+=1
  *         i+=1             # <<<<<<<<<<<<<<
@@ -23191,7 +23361,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
     __pyx_v_i = (__pyx_v_i + 1);
   }
 
-  /* "cy_solver_field.pyx":295
+  /* "cy_solver_field.pyx":329
  *         i+=1
  * 
  *     args.field = potential_c             # <<<<<<<<<<<<<<
@@ -23200,7 +23370,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_args.field = __pyx_v_potential_c;
 
-  /* "cy_solver_field.pyx":296
+  /* "cy_solver_field.pyx":330
  * 
  *     args.field = potential_c
  *     args.field_a1 = potential_ca1             # <<<<<<<<<<<<<<
@@ -23209,7 +23379,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_args.field_a1 = __pyx_v_potential_ca1;
 
-  /* "cy_solver_field.pyx":297
+  /* "cy_solver_field.pyx":331
  *     args.field = potential_c
  *     args.field_a1 = potential_ca1
  *     args.field_a2 = potential_ca2             # <<<<<<<<<<<<<<
@@ -23218,7 +23388,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_args.field_a2 = __pyx_v_potential_ca2;
 
-  /* "cy_solver_field.pyx":298
+  /* "cy_solver_field.pyx":332
  *     args.field_a1 = potential_ca1
  *     args.field_a2 = potential_ca2
  *     args.field_a0 = potential_ca0             # <<<<<<<<<<<<<<
@@ -23227,7 +23397,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_args.field_a0 = __pyx_v_potential_ca0;
 
-  /* "cy_solver_field.pyx":300
+  /* "cy_solver_field.pyx":334
  *     args.field_a0 = potential_ca0
  * 
  *     args.ene1_ptr = create_ene1(n2,coef[1],coef[2])             # <<<<<<<<<<<<<<
@@ -23238,7 +23408,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_7 = 2;
   __pyx_v_args.ene1_ptr = __pyx_f_15cy_solver_field_create_ene1(__pyx_v_n2, (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))), (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_7 * __pyx_v_coef.strides[0]) ))));
 
-  /* "cy_solver_field.pyx":301
+  /* "cy_solver_field.pyx":335
  * 
  *     args.ene1_ptr = create_ene1(n2,coef[1],coef[2])
  *     args.ene2_ptr = create_ene2(n2,coef[1],coef[2])             # <<<<<<<<<<<<<<
@@ -23249,7 +23419,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_1 = 2;
   __pyx_v_args.ene2_ptr = __pyx_f_15cy_solver_field_create_ene2(__pyx_v_n2, (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_7 * __pyx_v_coef.strides[0]) ))), (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))));
 
-  /* "cy_solver_field.pyx":304
+  /* "cy_solver_field.pyx":338
  * 
  *     # Need to cast the arg double pointer to void
  *     cdef void* args_ptr = <void*>args_param_ptr             # <<<<<<<<<<<<<<
@@ -23258,7 +23428,7 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
  */
   __pyx_v_args_ptr = ((void *)__pyx_v_args_param_ptr);
 
-  /* "cy_solver_field.pyx":306
+  /* "cy_solver_field.pyx":340
  *     cdef void* args_ptr = <void*>args_param_ptr
  * 
  *     cdef CySolveOutput result = cysolve_ivp(             # <<<<<<<<<<<<<<
@@ -23285,38 +23455,40 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_8 = __pyx_f_6mycyrk_2cy_11cysolverNew_cysolve_ivp(__pyx_v_diffeq, __pyx_v_t_span_ptr, __pyx_v_y0_ptr, __pyx_v_num_y, &__pyx_t_9); 
   __pyx_v_result = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_8);
 
-  /* "cy_solver_field.pyx":329
+  /* "cy_solver_field.pyx":363
  *     )
  * 
  *     cdef WrapCySolverResult pysafe_result = WrapCySolverResult()             # <<<<<<<<<<<<<<
  *     pysafe_result.set_cyresult_pointer(result)
  * 
  */
-  __pyx_t_10 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6mycyrk_2cy_11cysolverNew_WrapCySolverResult)); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 329, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6mycyrk_2cy_11cysolverNew_WrapCySolverResult)); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 363, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __pyx_v_pysafe_result = ((struct __pyx_obj_6mycyrk_2cy_11cysolverNew_WrapCySolverResult *)__pyx_t_10);
   __pyx_t_10 = 0;
 
-  /* "cy_solver_field.pyx":330
+  /* "cy_solver_field.pyx":364
  * 
  *     cdef WrapCySolverResult pysafe_result = WrapCySolverResult()
  *     pysafe_result.set_cyresult_pointer(result)             # <<<<<<<<<<<<<<
  * 
  *     return pysafe_result
  */
-  ((struct __pyx_vtabstruct_6mycyrk_2cy_11cysolverNew_WrapCySolverResult *)__pyx_v_pysafe_result->__pyx_vtab)->set_cyresult_pointer(__pyx_v_pysafe_result, __pyx_v_result); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 330, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_6mycyrk_2cy_11cysolverNew_WrapCySolverResult *)__pyx_v_pysafe_result->__pyx_vtab)->set_cyresult_pointer(__pyx_v_pysafe_result, __pyx_v_result); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 364, __pyx_L1_error)
 
-  /* "cy_solver_field.pyx":332
+  /* "cy_solver_field.pyx":366
  *     pysafe_result.set_cyresult_pointer(result)
  * 
  *     return pysafe_result             # <<<<<<<<<<<<<<
+ * 
+ * ###
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF((PyObject *)__pyx_v_pysafe_result);
   __pyx_r = ((PyObject *)__pyx_v_pysafe_result);
   goto __pyx_L0;
 
-  /* "cy_solver_field.pyx":220
+  /* "cy_solver_field.pyx":254
  * 
  * 
  * def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps,             # <<<<<<<<<<<<<<
@@ -23328,6 +23500,3145 @@ static PyObject *__pyx_pf_15cy_solver_field_solver(CYTHON_UNUSED PyObject *__pyx
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_AddTraceback("cy_solver_field.solver", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_pysafe_result);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cy_solver_field.pyx":372
+ * ###
+ * 
+ * cdef void cython_diffeq_t(double* dy, double t, double* y, const void* args, PreEvalFunc pre_eval_func) noexcept nogil:             # <<<<<<<<<<<<<<
+ * 
+ *     cdef parameters_t* args_ptr = <parameters_t*>args
+ */
+
+static void __pyx_f_15cy_solver_field_cython_diffeq_t(double *__pyx_v_dy, double __pyx_v_t, double *__pyx_v_y, void const *__pyx_v_args, CYTHON_UNUSED PreEvalFunc __pyx_v_pre_eval_func) {
+  struct __pyx_t_15cy_solver_field_parameters_t *__pyx_v_args_ptr;
+  int __pyx_v_n2;
+  int __pyx_v_n_t;
+  double __pyx_v_m;
+  double __pyx_v_l;
+  double *__pyx_v_t_knots;
+  struct fft_data *__pyx_v_pdata;
+  CYTHON_UNUSED __pyx_t_double_complex *__pyx_v_potential_c_interp;
+  __pyx_t_double_complex *__pyx_v_potential_ca1_interp;
+  __pyx_t_double_complex *__pyx_v_potential_ca2_interp;
+  __pyx_t_double_complex *__pyx_v_potential_ca0_interp;
+  double *__pyx_v_ene1_ptr;
+  double *__pyx_v_ene2_ptr;
+  int __pyx_v_i_knot;
+  int __pyx_v_ntot;
+  double __pyx_v_px;
+  double __pyx_v_py;
+  int __pyx_v_ix;
+  int __pyx_v_iy;
+  double __pyx_v_ene_val;
+  int __pyx_v_nx;
+  int __pyx_v_ny;
+  int __pyx_v_point;
+  int __pyx_v_point_ene;
+  __pyx_t_double_complex *__pyx_v_potential_c;
+  __pyx_t_double_complex *__pyx_v_potential_ca1;
+  __pyx_t_double_complex *__pyx_v_potential_ca2;
+  __pyx_t_double_complex *__pyx_v_potential_ca0;
+  int __pyx_v_p;
+  __pyx_t_double_complex __pyx_v_conv1;
+  __pyx_t_double_complex __pyx_v_conv2;
+  __pyx_t_double_complex __pyx_v_temp1c;
+  __pyx_t_double_complex __pyx_v_temp2c;
+  __pyx_t_double_complex __pyx_v_conv_a0;
+  __pyx_t_double_complex __pyx_v_conv_a1;
+  __pyx_t_double_complex __pyx_v_conv_a2;
+  __pyx_t_double_complex __pyx_v_tempa0c;
+  __pyx_t_double_complex __pyx_v_tempa1c;
+  CYTHON_UNUSED __pyx_t_double_complex __pyx_v_tempa2c;
+  CYTHON_UNUSED __pyx_t_double_complex __pyx_v_kgfieldc;
+  __pyx_t_double_complex *__pyx_v_kernel1;
+  __pyx_t_double_complex *__pyx_v_kernel2;
+  __pyx_t_double_complex *__pyx_v_result1;
+  __pyx_t_double_complex *__pyx_v_result2;
+  __pyx_t_double_complex *__pyx_v_kernel0_a;
+  __pyx_t_double_complex *__pyx_v_kernel1_a;
+  __pyx_t_double_complex *__pyx_v_kernel2_a;
+  __pyx_t_double_complex *__pyx_v_result0_a;
+  __pyx_t_double_complex *__pyx_v_result1_a;
+  __pyx_t_double_complex *__pyx_v_result2_a;
+  int __pyx_v_point_q;
+  int __pyx_v_point_q_y;
+  int __pyx_v_aix;
+  int __pyx_v_aiy;
+  CYTHON_UNUSED double __pyx_v_px_aix;
+  CYTHON_UNUSED double __pyx_v_py_aiy;
+  __pyx_t_double_complex *__pyx_v_temp;
+  int __pyx_t_1;
+  double __pyx_t_2;
+  double *__pyx_t_3;
+  struct fft_data *__pyx_t_4;
+  __pyx_t_double_complex *__pyx_t_5;
+  int __pyx_t_6;
+  int __pyx_t_7;
+  long __pyx_t_8;
+
+  /* "cy_solver_field.pyx":374
+ * cdef void cython_diffeq_t(double* dy, double t, double* y, const void* args, PreEvalFunc pre_eval_func) noexcept nogil:
+ * 
+ *     cdef parameters_t* args_ptr = <parameters_t*>args             # <<<<<<<<<<<<<<
+ *     cdef int n2 = args_ptr.n2
+ *     cdef int n_t = args_ptr.n_t
+ */
+  __pyx_v_args_ptr = ((struct __pyx_t_15cy_solver_field_parameters_t *)__pyx_v_args);
+
+  /* "cy_solver_field.pyx":375
+ * 
+ *     cdef parameters_t* args_ptr = <parameters_t*>args
+ *     cdef int n2 = args_ptr.n2             # <<<<<<<<<<<<<<
+ *     cdef int n_t = args_ptr.n_t
+ *     cdef double m = args_ptr.m
+ */
+  __pyx_t_1 = __pyx_v_args_ptr->n2;
+  __pyx_v_n2 = __pyx_t_1;
+
+  /* "cy_solver_field.pyx":376
+ *     cdef parameters_t* args_ptr = <parameters_t*>args
+ *     cdef int n2 = args_ptr.n2
+ *     cdef int n_t = args_ptr.n_t             # <<<<<<<<<<<<<<
+ *     cdef double m = args_ptr.m
+ *     cdef double l = args_ptr.l
+ */
+  __pyx_t_1 = __pyx_v_args_ptr->n_t;
+  __pyx_v_n_t = __pyx_t_1;
+
+  /* "cy_solver_field.pyx":377
+ *     cdef int n2 = args_ptr.n2
+ *     cdef int n_t = args_ptr.n_t
+ *     cdef double m = args_ptr.m             # <<<<<<<<<<<<<<
+ *     cdef double l = args_ptr.l
+ *     cdef double* t_knots = args_ptr.t_knots
+ */
+  __pyx_t_2 = __pyx_v_args_ptr->m;
+  __pyx_v_m = __pyx_t_2;
+
+  /* "cy_solver_field.pyx":378
+ *     cdef int n_t = args_ptr.n_t
+ *     cdef double m = args_ptr.m
+ *     cdef double l = args_ptr.l             # <<<<<<<<<<<<<<
+ *     cdef double* t_knots = args_ptr.t_knots
+ *     cdef ft.fft_data* pdata = args_ptr.pdata
+ */
+  __pyx_t_2 = __pyx_v_args_ptr->l;
+  __pyx_v_l = __pyx_t_2;
+
+  /* "cy_solver_field.pyx":379
+ *     cdef double m = args_ptr.m
+ *     cdef double l = args_ptr.l
+ *     cdef double* t_knots = args_ptr.t_knots             # <<<<<<<<<<<<<<
+ *     cdef ft.fft_data* pdata = args_ptr.pdata
+ *     cdef double complex* potential_c_interp = args_ptr.field_interp
+ */
+  __pyx_t_3 = __pyx_v_args_ptr->t_knots;
+  __pyx_v_t_knots = __pyx_t_3;
+
+  /* "cy_solver_field.pyx":380
+ *     cdef double l = args_ptr.l
+ *     cdef double* t_knots = args_ptr.t_knots
+ *     cdef ft.fft_data* pdata = args_ptr.pdata             # <<<<<<<<<<<<<<
+ *     cdef double complex* potential_c_interp = args_ptr.field_interp
+ *     cdef double complex* potential_ca1_interp = args_ptr.field_a1_interp
+ */
+  __pyx_t_4 = __pyx_v_args_ptr->pdata;
+  __pyx_v_pdata = __pyx_t_4;
+
+  /* "cy_solver_field.pyx":381
+ *     cdef double* t_knots = args_ptr.t_knots
+ *     cdef ft.fft_data* pdata = args_ptr.pdata
+ *     cdef double complex* potential_c_interp = args_ptr.field_interp             # <<<<<<<<<<<<<<
+ *     cdef double complex* potential_ca1_interp = args_ptr.field_a1_interp
+ *     cdef double complex* potential_ca2_interp = args_ptr.field_a2_interp
+ */
+  __pyx_t_5 = __pyx_v_args_ptr->field_interp;
+  __pyx_v_potential_c_interp = __pyx_t_5;
+
+  /* "cy_solver_field.pyx":382
+ *     cdef ft.fft_data* pdata = args_ptr.pdata
+ *     cdef double complex* potential_c_interp = args_ptr.field_interp
+ *     cdef double complex* potential_ca1_interp = args_ptr.field_a1_interp             # <<<<<<<<<<<<<<
+ *     cdef double complex* potential_ca2_interp = args_ptr.field_a2_interp
+ *     cdef double complex* potential_ca0_interp = args_ptr.field_a0_interp
+ */
+  __pyx_t_5 = __pyx_v_args_ptr->field_a1_interp;
+  __pyx_v_potential_ca1_interp = __pyx_t_5;
+
+  /* "cy_solver_field.pyx":383
+ *     cdef double complex* potential_c_interp = args_ptr.field_interp
+ *     cdef double complex* potential_ca1_interp = args_ptr.field_a1_interp
+ *     cdef double complex* potential_ca2_interp = args_ptr.field_a2_interp             # <<<<<<<<<<<<<<
+ *     cdef double complex* potential_ca0_interp = args_ptr.field_a0_interp
+ *     cdef double* ene1_ptr = args_ptr.ene1_ptr
+ */
+  __pyx_t_5 = __pyx_v_args_ptr->field_a2_interp;
+  __pyx_v_potential_ca2_interp = __pyx_t_5;
+
+  /* "cy_solver_field.pyx":384
+ *     cdef double complex* potential_ca1_interp = args_ptr.field_a1_interp
+ *     cdef double complex* potential_ca2_interp = args_ptr.field_a2_interp
+ *     cdef double complex* potential_ca0_interp = args_ptr.field_a0_interp             # <<<<<<<<<<<<<<
+ *     cdef double* ene1_ptr = args_ptr.ene1_ptr
+ *     cdef double* ene2_ptr = args_ptr.ene2_ptr
+ */
+  __pyx_t_5 = __pyx_v_args_ptr->field_a0_interp;
+  __pyx_v_potential_ca0_interp = __pyx_t_5;
+
+  /* "cy_solver_field.pyx":385
+ *     cdef double complex* potential_ca2_interp = args_ptr.field_a2_interp
+ *     cdef double complex* potential_ca0_interp = args_ptr.field_a0_interp
+ *     cdef double* ene1_ptr = args_ptr.ene1_ptr             # <<<<<<<<<<<<<<
+ *     cdef double* ene2_ptr = args_ptr.ene2_ptr
+ * 
+ */
+  __pyx_t_3 = __pyx_v_args_ptr->ene1_ptr;
+  __pyx_v_ene1_ptr = __pyx_t_3;
+
+  /* "cy_solver_field.pyx":386
+ *     cdef double complex* potential_ca0_interp = args_ptr.field_a0_interp
+ *     cdef double* ene1_ptr = args_ptr.ene1_ptr
+ *     cdef double* ene2_ptr = args_ptr.ene2_ptr             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int i_knot = 0
+ */
+  __pyx_t_3 = __pyx_v_args_ptr->ene2_ptr;
+  __pyx_v_ene2_ptr = __pyx_t_3;
+
+  /* "cy_solver_field.pyx":388
+ *     cdef double* ene2_ptr = args_ptr.ene2_ptr
+ * 
+ *     cdef int i_knot = 0             # <<<<<<<<<<<<<<
+ * 
+ *     while not (t_knots[i_knot] <= t < t_knots[i_knot +1] or i_knot == n_t-2):
+ */
+  __pyx_v_i_knot = 0;
+
+  /* "cy_solver_field.pyx":390
+ *     cdef int i_knot = 0
+ * 
+ *     while not (t_knots[i_knot] <= t < t_knots[i_knot +1] or i_knot == n_t-2):             # <<<<<<<<<<<<<<
+ *         i_knot += 1
+ * 
+ */
+  while (1) {
+    __pyx_t_7 = ((__pyx_v_t_knots[__pyx_v_i_knot]) <= __pyx_v_t);
+    if (__pyx_t_7) {
+      __pyx_t_7 = (__pyx_v_t < (__pyx_v_t_knots[(__pyx_v_i_knot + 1)]));
+    }
+    if (!__pyx_t_7) {
+    } else {
+      __pyx_t_6 = __pyx_t_7;
+      goto __pyx_L5_bool_binop_done;
+    }
+    __pyx_t_7 = (__pyx_v_i_knot == (__pyx_v_n_t - 2));
+    __pyx_t_6 = __pyx_t_7;
+    __pyx_L5_bool_binop_done:;
+    __pyx_t_7 = (!__pyx_t_6);
+    if (!__pyx_t_7) break;
+
+    /* "cy_solver_field.pyx":391
+ * 
+ *     while not (t_knots[i_knot] <= t < t_knots[i_knot +1] or i_knot == n_t-2):
+ *         i_knot += 1             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int ntot = 2*n2
+ */
+    __pyx_v_i_knot = (__pyx_v_i_knot + 1);
+  }
+
+  /* "cy_solver_field.pyx":393
+ *         i_knot += 1
+ * 
+ *     cdef int ntot = 2*n2             # <<<<<<<<<<<<<<
+ *     cdef double px = 0
+ *     cdef double py = 0
+ */
+  __pyx_v_ntot = (2 * __pyx_v_n2);
+
+  /* "cy_solver_field.pyx":394
+ * 
+ *     cdef int ntot = 2*n2
+ *     cdef double px = 0             # <<<<<<<<<<<<<<
+ *     cdef double py = 0
+ *     cdef int ix = 0
+ */
+  __pyx_v_px = 0.0;
+
+  /* "cy_solver_field.pyx":395
+ *     cdef int ntot = 2*n2
+ *     cdef double px = 0
+ *     cdef double py = 0             # <<<<<<<<<<<<<<
+ *     cdef int ix = 0
+ *     cdef int iy = 0
+ */
+  __pyx_v_py = 0.0;
+
+  /* "cy_solver_field.pyx":396
+ *     cdef double px = 0
+ *     cdef double py = 0
+ *     cdef int ix = 0             # <<<<<<<<<<<<<<
+ *     cdef int iy = 0
+ *     cdef double ene_val = 0.
+ */
+  __pyx_v_ix = 0;
+
+  /* "cy_solver_field.pyx":397
+ *     cdef double py = 0
+ *     cdef int ix = 0
+ *     cdef int iy = 0             # <<<<<<<<<<<<<<
+ *     cdef double ene_val = 0.
+ *     cdef int nx = 0
+ */
+  __pyx_v_iy = 0;
+
+  /* "cy_solver_field.pyx":398
+ *     cdef int ix = 0
+ *     cdef int iy = 0
+ *     cdef double ene_val = 0.             # <<<<<<<<<<<<<<
+ *     cdef int nx = 0
+ *     cdef int ny = 0
+ */
+  __pyx_v_ene_val = 0.;
+
+  /* "cy_solver_field.pyx":399
+ *     cdef int iy = 0
+ *     cdef double ene_val = 0.
+ *     cdef int nx = 0             # <<<<<<<<<<<<<<
+ *     cdef int ny = 0
+ *     cdef int point = 0
+ */
+  __pyx_v_nx = 0;
+
+  /* "cy_solver_field.pyx":400
+ *     cdef double ene_val = 0.
+ *     cdef int nx = 0
+ *     cdef int ny = 0             # <<<<<<<<<<<<<<
+ *     cdef int point = 0
+ *     cdef int point_ene = 0
+ */
+  __pyx_v_ny = 0;
+
+  /* "cy_solver_field.pyx":401
+ *     cdef int nx = 0
+ *     cdef int ny = 0
+ *     cdef int point = 0             # <<<<<<<<<<<<<<
+ *     cdef int point_ene = 0
+ * 
+ */
+  __pyx_v_point = 0;
+
+  /* "cy_solver_field.pyx":402
+ *     cdef int ny = 0
+ *     cdef int point = 0
+ *     cdef int point_ene = 0             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double complex* potential_c = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_point_ene = 0;
+
+  /* "cy_solver_field.pyx":404
+ *     cdef int point_ene = 0
+ * 
+ *     cdef double complex* potential_c = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* potential_ca1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_potential_c = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":405
+ * 
+ *     cdef double complex* potential_c = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* potential_ca2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca0 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_potential_ca1 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":406
+ *     cdef double complex* potential_c = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* potential_ca0 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ * 
+ */
+  __pyx_v_potential_ca2 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":407
+ *     cdef double complex* potential_ca1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca0 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ * 
+ *     ix = 0
+ */
+  __pyx_v_potential_ca0 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":409
+ *     cdef double complex* potential_ca0 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ * 
+ *     ix = 0             # <<<<<<<<<<<<<<
+ *     while ix < ntot:
+ *         iy = 0
+ */
+  __pyx_v_ix = 0;
+
+  /* "cy_solver_field.pyx":410
+ * 
+ *     ix = 0
+ *     while ix < ntot:             # <<<<<<<<<<<<<<
+ *         iy = 0
+ *         while iy < ntot:
+ */
+  while (1) {
+    __pyx_t_7 = (__pyx_v_ix < __pyx_v_ntot);
+    if (!__pyx_t_7) break;
+
+    /* "cy_solver_field.pyx":411
+ *     ix = 0
+ *     while ix < ntot:
+ *         iy = 0             # <<<<<<<<<<<<<<
+ *         while iy < ntot:
+ *             potential_c[ix*ntot+iy] = 0
+ */
+    __pyx_v_iy = 0;
+
+    /* "cy_solver_field.pyx":412
+ *     while ix < ntot:
+ *         iy = 0
+ *         while iy < ntot:             # <<<<<<<<<<<<<<
+ *             potential_c[ix*ntot+iy] = 0
+ *             potential_ca1[ix*ntot+iy] = 0
+ */
+    while (1) {
+      __pyx_t_7 = (__pyx_v_iy < __pyx_v_ntot);
+      if (!__pyx_t_7) break;
+
+      /* "cy_solver_field.pyx":413
+ *         iy = 0
+ *         while iy < ntot:
+ *             potential_c[ix*ntot+iy] = 0             # <<<<<<<<<<<<<<
+ *             potential_ca1[ix*ntot+iy] = 0
+ *             potential_ca2[ix*ntot+iy] = 0
+ */
+      (__pyx_v_potential_c[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]) = __pyx_t_double_complex_from_parts(0, 0);
+
+      /* "cy_solver_field.pyx":414
+ *         while iy < ntot:
+ *             potential_c[ix*ntot+iy] = 0
+ *             potential_ca1[ix*ntot+iy] = 0             # <<<<<<<<<<<<<<
+ *             potential_ca2[ix*ntot+iy] = 0
+ *             potential_ca0[ix*ntot+iy] = 0
+ */
+      (__pyx_v_potential_ca1[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]) = __pyx_t_double_complex_from_parts(0, 0);
+
+      /* "cy_solver_field.pyx":415
+ *             potential_c[ix*ntot+iy] = 0
+ *             potential_ca1[ix*ntot+iy] = 0
+ *             potential_ca2[ix*ntot+iy] = 0             # <<<<<<<<<<<<<<
+ *             potential_ca0[ix*ntot+iy] = 0
+ *             iy += 1
+ */
+      (__pyx_v_potential_ca2[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]) = __pyx_t_double_complex_from_parts(0, 0);
+
+      /* "cy_solver_field.pyx":416
+ *             potential_ca1[ix*ntot+iy] = 0
+ *             potential_ca2[ix*ntot+iy] = 0
+ *             potential_ca0[ix*ntot+iy] = 0             # <<<<<<<<<<<<<<
+ *             iy += 1
+ *         ix += 1
+ */
+      (__pyx_v_potential_ca0[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]) = __pyx_t_double_complex_from_parts(0, 0);
+
+      /* "cy_solver_field.pyx":417
+ *             potential_ca2[ix*ntot+iy] = 0
+ *             potential_ca0[ix*ntot+iy] = 0
+ *             iy += 1             # <<<<<<<<<<<<<<
+ *         ix += 1
+ * 
+ */
+      __pyx_v_iy = (__pyx_v_iy + 1);
+    }
+
+    /* "cy_solver_field.pyx":418
+ *             potential_ca0[ix*ntot+iy] = 0
+ *             iy += 1
+ *         ix += 1             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int p = 0
+ */
+    __pyx_v_ix = (__pyx_v_ix + 1);
+  }
+
+  /* "cy_solver_field.pyx":420
+ *         ix += 1
+ * 
+ *     cdef int p = 0             # <<<<<<<<<<<<<<
+ * 
+ *     ix = 0
+ */
+  __pyx_v_p = 0;
+
+  /* "cy_solver_field.pyx":422
+ *     cdef int p = 0
+ * 
+ *     ix = 0             # <<<<<<<<<<<<<<
+ *     while ix < ntot:
+ *         iy = 0
+ */
+  __pyx_v_ix = 0;
+
+  /* "cy_solver_field.pyx":423
+ * 
+ *     ix = 0
+ *     while ix < ntot:             # <<<<<<<<<<<<<<
+ *         iy = 0
+ *         while iy < ntot:
+ */
+  while (1) {
+    __pyx_t_7 = (__pyx_v_ix < __pyx_v_ntot);
+    if (!__pyx_t_7) break;
+
+    /* "cy_solver_field.pyx":424
+ *     ix = 0
+ *     while ix < ntot:
+ *         iy = 0             # <<<<<<<<<<<<<<
+ *         while iy < ntot:
+ *             p = 0
+ */
+    __pyx_v_iy = 0;
+
+    /* "cy_solver_field.pyx":425
+ *     while ix < ntot:
+ *         iy = 0
+ *         while iy < ntot:             # <<<<<<<<<<<<<<
+ *             p = 0
+ *             while p < 4:
+ */
+    while (1) {
+      __pyx_t_7 = (__pyx_v_iy < __pyx_v_ntot);
+      if (!__pyx_t_7) break;
+
+      /* "cy_solver_field.pyx":426
+ *         iy = 0
+ *         while iy < ntot:
+ *             p = 0             # <<<<<<<<<<<<<<
+ *             while p < 4:
+ *                 potential_ca1[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca1_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ */
+      __pyx_v_p = 0;
+
+      /* "cy_solver_field.pyx":427
+ *         while iy < ntot:
+ *             p = 0
+ *             while p < 4:             # <<<<<<<<<<<<<<
+ *                 potential_ca1[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca1_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ *                 p += 1
+ */
+      while (1) {
+        __pyx_t_7 = (__pyx_v_p < 4);
+        if (!__pyx_t_7) break;
+
+        /* "cy_solver_field.pyx":428
+ *             p = 0
+ *             while p < 4:
+ *                 potential_ca1[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca1_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]             # <<<<<<<<<<<<<<
+ *                 p += 1
+ *             iy += 1
+ */
+        __pyx_t_1 = ((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy);
+        (__pyx_v_potential_ca1[__pyx_t_1]) = __Pyx_c_sum_double((__pyx_v_potential_ca1[__pyx_t_1]), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(pow((__pyx_v_t - (__pyx_v_t_knots[__pyx_v_i_knot])), ((double)(3 - __pyx_v_p))), 0), (__pyx_v_potential_ca1_interp[((((((__pyx_v_p * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) + ((__pyx_v_i_knot * __pyx_v_ntot) * __pyx_v_ntot)) + (__pyx_v_ix * __pyx_v_ntot)) + __pyx_v_iy)])));
+
+        /* "cy_solver_field.pyx":429
+ *             while p < 4:
+ *                 potential_ca1[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca1_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ *                 p += 1             # <<<<<<<<<<<<<<
+ *             iy += 1
+ *         ix += 1
+ */
+        __pyx_v_p = (__pyx_v_p + 1);
+      }
+
+      /* "cy_solver_field.pyx":430
+ *                 potential_ca1[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca1_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ *                 p += 1
+ *             iy += 1             # <<<<<<<<<<<<<<
+ *         ix += 1
+ * 
+ */
+      __pyx_v_iy = (__pyx_v_iy + 1);
+    }
+
+    /* "cy_solver_field.pyx":431
+ *                 p += 1
+ *             iy += 1
+ *         ix += 1             # <<<<<<<<<<<<<<
+ * 
+ *     ix = 0
+ */
+    __pyx_v_ix = (__pyx_v_ix + 1);
+  }
+
+  /* "cy_solver_field.pyx":433
+ *         ix += 1
+ * 
+ *     ix = 0             # <<<<<<<<<<<<<<
+ *     while ix < ntot:
+ *         iy = 0
+ */
+  __pyx_v_ix = 0;
+
+  /* "cy_solver_field.pyx":434
+ * 
+ *     ix = 0
+ *     while ix < ntot:             # <<<<<<<<<<<<<<
+ *         iy = 0
+ *         while iy < ntot:
+ */
+  while (1) {
+    __pyx_t_7 = (__pyx_v_ix < __pyx_v_ntot);
+    if (!__pyx_t_7) break;
+
+    /* "cy_solver_field.pyx":435
+ *     ix = 0
+ *     while ix < ntot:
+ *         iy = 0             # <<<<<<<<<<<<<<
+ *         while iy < ntot:
+ *             p = 0
+ */
+    __pyx_v_iy = 0;
+
+    /* "cy_solver_field.pyx":436
+ *     while ix < ntot:
+ *         iy = 0
+ *         while iy < ntot:             # <<<<<<<<<<<<<<
+ *             p = 0
+ *             while p < 4:
+ */
+    while (1) {
+      __pyx_t_7 = (__pyx_v_iy < __pyx_v_ntot);
+      if (!__pyx_t_7) break;
+
+      /* "cy_solver_field.pyx":437
+ *         iy = 0
+ *         while iy < ntot:
+ *             p = 0             # <<<<<<<<<<<<<<
+ *             while p < 4:
+ *                 potential_ca2[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca2_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ */
+      __pyx_v_p = 0;
+
+      /* "cy_solver_field.pyx":438
+ *         while iy < ntot:
+ *             p = 0
+ *             while p < 4:             # <<<<<<<<<<<<<<
+ *                 potential_ca2[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca2_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ *                 p += 1
+ */
+      while (1) {
+        __pyx_t_7 = (__pyx_v_p < 4);
+        if (!__pyx_t_7) break;
+
+        /* "cy_solver_field.pyx":439
+ *             p = 0
+ *             while p < 4:
+ *                 potential_ca2[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca2_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]             # <<<<<<<<<<<<<<
+ *                 p += 1
+ *             # if fabs(potential_ca2[ix*ntot+iy].imag) > 0.5:
+ */
+        __pyx_t_1 = ((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy);
+        (__pyx_v_potential_ca2[__pyx_t_1]) = __Pyx_c_sum_double((__pyx_v_potential_ca2[__pyx_t_1]), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(pow((__pyx_v_t - (__pyx_v_t_knots[__pyx_v_i_knot])), ((double)(3 - __pyx_v_p))), 0), (__pyx_v_potential_ca2_interp[((((((__pyx_v_p * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) + ((__pyx_v_i_knot * __pyx_v_ntot) * __pyx_v_ntot)) + (__pyx_v_ix * __pyx_v_ntot)) + __pyx_v_iy)])));
+
+        /* "cy_solver_field.pyx":440
+ *             while p < 4:
+ *                 potential_ca2[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca2_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ *                 p += 1             # <<<<<<<<<<<<<<
+ *             # if fabs(potential_ca2[ix*ntot+iy].imag) > 0.5:
+ *             #     printf('%.3f %i %i\n',fabs(potential_ca2[ix*ntot+iy].imag),ix,iy)
+ */
+        __pyx_v_p = (__pyx_v_p + 1);
+      }
+
+      /* "cy_solver_field.pyx":443
+ *             # if fabs(potential_ca2[ix*ntot+iy].imag) > 0.5:
+ *             #     printf('%.3f %i %i\n',fabs(potential_ca2[ix*ntot+iy].imag),ix,iy)
+ *             iy += 1             # <<<<<<<<<<<<<<
+ *         ix += 1
+ * 
+ */
+      __pyx_v_iy = (__pyx_v_iy + 1);
+    }
+
+    /* "cy_solver_field.pyx":444
+ *             #     printf('%.3f %i %i\n',fabs(potential_ca2[ix*ntot+iy].imag),ix,iy)
+ *             iy += 1
+ *         ix += 1             # <<<<<<<<<<<<<<
+ * 
+ *     ix = 0
+ */
+    __pyx_v_ix = (__pyx_v_ix + 1);
+  }
+
+  /* "cy_solver_field.pyx":446
+ *         ix += 1
+ * 
+ *     ix = 0             # <<<<<<<<<<<<<<
+ *     while ix < ntot:
+ *         iy = 0
+ */
+  __pyx_v_ix = 0;
+
+  /* "cy_solver_field.pyx":447
+ * 
+ *     ix = 0
+ *     while ix < ntot:             # <<<<<<<<<<<<<<
+ *         iy = 0
+ *         while iy < ntot:
+ */
+  while (1) {
+    __pyx_t_7 = (__pyx_v_ix < __pyx_v_ntot);
+    if (!__pyx_t_7) break;
+
+    /* "cy_solver_field.pyx":448
+ *     ix = 0
+ *     while ix < ntot:
+ *         iy = 0             # <<<<<<<<<<<<<<
+ *         while iy < ntot:
+ *             p = 0
+ */
+    __pyx_v_iy = 0;
+
+    /* "cy_solver_field.pyx":449
+ *     while ix < ntot:
+ *         iy = 0
+ *         while iy < ntot:             # <<<<<<<<<<<<<<
+ *             p = 0
+ *             while p < 4:
+ */
+    while (1) {
+      __pyx_t_7 = (__pyx_v_iy < __pyx_v_ntot);
+      if (!__pyx_t_7) break;
+
+      /* "cy_solver_field.pyx":450
+ *         iy = 0
+ *         while iy < ntot:
+ *             p = 0             # <<<<<<<<<<<<<<
+ *             while p < 4:
+ *                 potential_ca0[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca0_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ */
+      __pyx_v_p = 0;
+
+      /* "cy_solver_field.pyx":451
+ *         while iy < ntot:
+ *             p = 0
+ *             while p < 4:             # <<<<<<<<<<<<<<
+ *                 potential_ca0[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca0_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ *                 p += 1
+ */
+      while (1) {
+        __pyx_t_7 = (__pyx_v_p < 4);
+        if (!__pyx_t_7) break;
+
+        /* "cy_solver_field.pyx":452
+ *             p = 0
+ *             while p < 4:
+ *                 potential_ca0[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca0_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]             # <<<<<<<<<<<<<<
+ *                 p += 1
+ *             iy += 1
+ */
+        __pyx_t_1 = ((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy);
+        (__pyx_v_potential_ca0[__pyx_t_1]) = __Pyx_c_sum_double((__pyx_v_potential_ca0[__pyx_t_1]), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(pow((__pyx_v_t - (__pyx_v_t_knots[__pyx_v_i_knot])), ((double)(3 - __pyx_v_p))), 0), (__pyx_v_potential_ca0_interp[((((((__pyx_v_p * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) + ((__pyx_v_i_knot * __pyx_v_ntot) * __pyx_v_ntot)) + (__pyx_v_ix * __pyx_v_ntot)) + __pyx_v_iy)])));
+
+        /* "cy_solver_field.pyx":453
+ *             while p < 4:
+ *                 potential_ca0[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca0_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ *                 p += 1             # <<<<<<<<<<<<<<
+ *             iy += 1
+ *         ix += 1
+ */
+        __pyx_v_p = (__pyx_v_p + 1);
+      }
+
+      /* "cy_solver_field.pyx":454
+ *                 potential_ca0[ix*ntot+iy] += (t-t_knots[i_knot])**(3-p)*potential_ca0_interp[p*n_t*ntot*ntot+i_knot*ntot*ntot+ix*ntot+iy]
+ *                 p += 1
+ *             iy += 1             # <<<<<<<<<<<<<<
+ *         ix += 1
+ * 
+ */
+      __pyx_v_iy = (__pyx_v_iy + 1);
+    }
+
+    /* "cy_solver_field.pyx":455
+ *                 p += 1
+ *             iy += 1
+ *         ix += 1             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double complex conv1 = 0
+ */
+    __pyx_v_ix = (__pyx_v_ix + 1);
+  }
+
+  /* "cy_solver_field.pyx":457
+ *         ix += 1
+ * 
+ *     cdef double complex conv1 = 0             # <<<<<<<<<<<<<<
+ *     cdef double complex conv2 = 0
+ *     cdef double complex temp1c = 0
+ */
+  __pyx_v_conv1 = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":458
+ * 
+ *     cdef double complex conv1 = 0
+ *     cdef double complex conv2 = 0             # <<<<<<<<<<<<<<
+ *     cdef double complex temp1c = 0
+ *     cdef double complex temp2c = 0
+ */
+  __pyx_v_conv2 = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":459
+ *     cdef double complex conv1 = 0
+ *     cdef double complex conv2 = 0
+ *     cdef double complex temp1c = 0             # <<<<<<<<<<<<<<
+ *     cdef double complex temp2c = 0
+ * 
+ */
+  __pyx_v_temp1c = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":460
+ *     cdef double complex conv2 = 0
+ *     cdef double complex temp1c = 0
+ *     cdef double complex temp2c = 0             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double complex conv_a0 = 0
+ */
+  __pyx_v_temp2c = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":462
+ *     cdef double complex temp2c = 0
+ * 
+ *     cdef double complex conv_a0 = 0             # <<<<<<<<<<<<<<
+ *     cdef double complex conv_a1 = 0
+ *     cdef double complex conv_a2 = 0
+ */
+  __pyx_v_conv_a0 = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":463
+ * 
+ *     cdef double complex conv_a0 = 0
+ *     cdef double complex conv_a1 = 0             # <<<<<<<<<<<<<<
+ *     cdef double complex conv_a2 = 0
+ *     cdef double complex tempa0c = 0
+ */
+  __pyx_v_conv_a1 = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":464
+ *     cdef double complex conv_a0 = 0
+ *     cdef double complex conv_a1 = 0
+ *     cdef double complex conv_a2 = 0             # <<<<<<<<<<<<<<
+ *     cdef double complex tempa0c = 0
+ *     cdef double complex tempa1c = 0
+ */
+  __pyx_v_conv_a2 = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":465
+ *     cdef double complex conv_a1 = 0
+ *     cdef double complex conv_a2 = 0
+ *     cdef double complex tempa0c = 0             # <<<<<<<<<<<<<<
+ *     cdef double complex tempa1c = 0
+ *     cdef double complex tempa2c = 0
+ */
+  __pyx_v_tempa0c = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":466
+ *     cdef double complex conv_a2 = 0
+ *     cdef double complex tempa0c = 0
+ *     cdef double complex tempa1c = 0             # <<<<<<<<<<<<<<
+ *     cdef double complex tempa2c = 0
+ *     cdef double complex kgfieldc = 0
+ */
+  __pyx_v_tempa1c = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":467
+ *     cdef double complex tempa0c = 0
+ *     cdef double complex tempa1c = 0
+ *     cdef double complex tempa2c = 0             # <<<<<<<<<<<<<<
+ *     cdef double complex kgfieldc = 0
+ * 
+ */
+  __pyx_v_tempa2c = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":468
+ *     cdef double complex tempa1c = 0
+ *     cdef double complex tempa2c = 0
+ *     cdef double complex kgfieldc = 0             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double complex* kernel1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_kgfieldc = __pyx_t_double_complex_from_parts(0, 0);
+
+  /* "cy_solver_field.pyx":470
+ *     cdef double complex kgfieldc = 0
+ * 
+ *     cdef double complex* kernel1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* kernel2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_kernel1 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":471
+ * 
+ *     cdef double complex* kernel1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* kernel2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* result1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_kernel2 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":472
+ *     cdef double complex* kernel1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* kernel2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* result2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ * 
+ */
+  __pyx_v_result1 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":473
+ *     cdef double complex* kernel2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result1 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double complex* kernel0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_result2 = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":475
+ *     cdef double complex* result2 = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ * 
+ *     cdef double complex* kernel0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* kernel1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* kernel2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_kernel0_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":476
+ * 
+ *     cdef double complex* kernel0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* kernel1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* kernel2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_kernel1_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":477
+ *     cdef double complex* kernel0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* kernel1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* kernel2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* result0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_kernel2_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":478
+ *     cdef double complex* kernel1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* kernel2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* result1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_result0_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":479
+ *     cdef double complex* kernel2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* result2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ * 
+ */
+  __pyx_v_result1_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":480
+ *     cdef double complex* result0_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result1_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ *     cdef double complex* result2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int point_q = 0
+ */
+  __pyx_v_result2_a = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":482
+ *     cdef double complex* result2_a = <double complex*>malloc(ntot*ntot*sizeof(double complex))
+ * 
+ *     cdef int point_q = 0             # <<<<<<<<<<<<<<
+ *     cdef int point_q_y = 0
+ *     cdef int aix = 0
+ */
+  __pyx_v_point_q = 0;
+
+  /* "cy_solver_field.pyx":483
+ * 
+ *     cdef int point_q = 0
+ *     cdef int point_q_y = 0             # <<<<<<<<<<<<<<
+ *     cdef int aix = 0
+ *     cdef int aiy = 0
+ */
+  __pyx_v_point_q_y = 0;
+
+  /* "cy_solver_field.pyx":484
+ *     cdef int point_q = 0
+ *     cdef int point_q_y = 0
+ *     cdef int aix = 0             # <<<<<<<<<<<<<<
+ *     cdef int aiy = 0
+ *     cdef double px_aix = 0
+ */
+  __pyx_v_aix = 0;
+
+  /* "cy_solver_field.pyx":485
+ *     cdef int point_q_y = 0
+ *     cdef int aix = 0
+ *     cdef int aiy = 0             # <<<<<<<<<<<<<<
+ *     cdef double px_aix = 0
+ *     cdef double py_aiy = 0
+ */
+  __pyx_v_aiy = 0;
+
+  /* "cy_solver_field.pyx":486
+ *     cdef int aix = 0
+ *     cdef int aiy = 0
+ *     cdef double px_aix = 0             # <<<<<<<<<<<<<<
+ *     cdef double py_aiy = 0
+ *     while aix<ntot:
+ */
+  __pyx_v_px_aix = 0.0;
+
+  /* "cy_solver_field.pyx":487
+ *     cdef int aiy = 0
+ *     cdef double px_aix = 0
+ *     cdef double py_aiy = 0             # <<<<<<<<<<<<<<
+ *     while aix<ntot:
+ *         aiy=0
+ */
+  __pyx_v_py_aiy = 0.0;
+
+  /* "cy_solver_field.pyx":488
+ *     cdef double px_aix = 0
+ *     cdef double py_aiy = 0
+ *     while aix<ntot:             # <<<<<<<<<<<<<<
+ *         aiy=0
+ *         while aiy<ntot:
+ */
+  while (1) {
+    __pyx_t_7 = (__pyx_v_aix < __pyx_v_ntot);
+    if (!__pyx_t_7) break;
+
+    /* "cy_solver_field.pyx":489
+ *     cdef double py_aiy = 0
+ *     while aix<ntot:
+ *         aiy=0             # <<<<<<<<<<<<<<
+ *         while aiy<ntot:
+ *             point_q_y = (aix)*ntot*2*2 + (aiy)*2*2
+ */
+    __pyx_v_aiy = 0;
+
+    /* "cy_solver_field.pyx":490
+ *     while aix<ntot:
+ *         aiy=0
+ *         while aiy<ntot:             # <<<<<<<<<<<<<<
+ *             point_q_y = (aix)*ntot*2*2 + (aiy)*2*2
+ *             point_q = (aix)*ntot + (aiy)
+ */
+    while (1) {
+      __pyx_t_7 = (__pyx_v_aiy < __pyx_v_ntot);
+      if (!__pyx_t_7) break;
+
+      /* "cy_solver_field.pyx":491
+ *         aiy=0
+ *         while aiy<ntot:
+ *             point_q_y = (aix)*ntot*2*2 + (aiy)*2*2             # <<<<<<<<<<<<<<
+ *             point_q = (aix)*ntot + (aiy)
+ *             px_aix = 2*M_PI/l*(aix-n2)
+ */
+      __pyx_v_point_q_y = ((((__pyx_v_aix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_aiy * 2) * 2));
+
+      /* "cy_solver_field.pyx":492
+ *         while aiy<ntot:
+ *             point_q_y = (aix)*ntot*2*2 + (aiy)*2*2
+ *             point_q = (aix)*ntot + (aiy)             # <<<<<<<<<<<<<<
+ *             px_aix = 2*M_PI/l*(aix-n2)
+ *             py_aiy = 2*M_PI/l*(aiy-n2)
+ */
+      __pyx_v_point_q = ((__pyx_v_aix * __pyx_v_ntot) + __pyx_v_aiy);
+
+      /* "cy_solver_field.pyx":493
+ *             point_q_y = (aix)*ntot*2*2 + (aiy)*2*2
+ *             point_q = (aix)*ntot + (aiy)
+ *             px_aix = 2*M_PI/l*(aix-n2)             # <<<<<<<<<<<<<<
+ *             py_aiy = 2*M_PI/l*(aiy-n2)
+ * 
+ */
+      __pyx_v_px_aix = (((2.0 * M_PI) / __pyx_v_l) * (__pyx_v_aix - __pyx_v_n2));
+
+      /* "cy_solver_field.pyx":494
+ *             point_q = (aix)*ntot + (aiy)
+ *             px_aix = 2*M_PI/l*(aix-n2)
+ *             py_aiy = 2*M_PI/l*(aiy-n2)             # <<<<<<<<<<<<<<
+ * 
+ *             kernel1[point_q] = ene2_ptr[point_q]*(y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
+ */
+      __pyx_v_py_aiy = (((2.0 * M_PI) / __pyx_v_l) * (__pyx_v_aiy - __pyx_v_n2));
+
+      /* "cy_solver_field.pyx":496
+ *             py_aiy = 2*M_PI/l*(aiy-n2)
+ * 
+ *             kernel1[point_q] = ene2_ptr[point_q]*(y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])             # <<<<<<<<<<<<<<
+ *             kernel2[point_q] = ene1_ptr[point_q]*(y[point_q_y] + 1j*y[point_q_y+1] - y[point_q_y+2] - 1j*y[point_q_y+3])
+ * 
+ */
+      (__pyx_v_kernel1[__pyx_v_point_q]) = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene2_ptr[__pyx_v_point_q]), 0), __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[__pyx_v_point_q_y]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 2)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 3)]), 0))));
+
+      /* "cy_solver_field.pyx":497
+ * 
+ *             kernel1[point_q] = ene2_ptr[point_q]*(y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
+ *             kernel2[point_q] = ene1_ptr[point_q]*(y[point_q_y] + 1j*y[point_q_y+1] - y[point_q_y+2] - 1j*y[point_q_y+3])             # <<<<<<<<<<<<<<
+ * 
+ *             kernel0_a[point_q] = ene2_ptr[point_q] * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
+ */
+      (__pyx_v_kernel2[__pyx_v_point_q]) = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene1_ptr[__pyx_v_point_q]), 0), __Pyx_c_diff_double(__Pyx_c_diff_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[__pyx_v_point_q_y]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 2)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 3)]), 0))));
+
+      /* "cy_solver_field.pyx":499
+ *             kernel2[point_q] = ene1_ptr[point_q]*(y[point_q_y] + 1j*y[point_q_y+1] - y[point_q_y+2] - 1j*y[point_q_y+3])
+ * 
+ *             kernel0_a[point_q] = ene2_ptr[point_q] * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])             # <<<<<<<<<<<<<<
+ *             kernel1_a[point_q] = ene2_ptr[point_q] * px * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
+ *             kernel2_a[point_q] = ene2_ptr[point_q] * py * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
+ */
+      (__pyx_v_kernel0_a[__pyx_v_point_q]) = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene2_ptr[__pyx_v_point_q]), 0), __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[__pyx_v_point_q_y]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 2)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 3)]), 0))));
+
+      /* "cy_solver_field.pyx":500
+ * 
+ *             kernel0_a[point_q] = ene2_ptr[point_q] * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
+ *             kernel1_a[point_q] = ene2_ptr[point_q] * px * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])             # <<<<<<<<<<<<<<
+ *             kernel2_a[point_q] = ene2_ptr[point_q] * py * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
+ * 
+ */
+      (__pyx_v_kernel1_a[__pyx_v_point_q]) = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(((__pyx_v_ene2_ptr[__pyx_v_point_q]) * __pyx_v_px), 0), __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[__pyx_v_point_q_y]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 2)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 3)]), 0))));
+
+      /* "cy_solver_field.pyx":501
+ *             kernel0_a[point_q] = ene2_ptr[point_q] * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
+ *             kernel1_a[point_q] = ene2_ptr[point_q] * px * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
+ *             kernel2_a[point_q] = ene2_ptr[point_q] * py * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])             # <<<<<<<<<<<<<<
+ * 
+ *             aiy+=1
+ */
+      (__pyx_v_kernel2_a[__pyx_v_point_q]) = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(((__pyx_v_ene2_ptr[__pyx_v_point_q]) * __pyx_v_py), 0), __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[__pyx_v_point_q_y]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 2)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[(__pyx_v_point_q_y + 3)]), 0))));
+
+      /* "cy_solver_field.pyx":503
+ *             kernel2_a[point_q] = ene2_ptr[point_q] * py * (y[point_q_y] + 1j*y[point_q_y+1] + y[point_q_y+2] + 1j*y[point_q_y+3])
+ * 
+ *             aiy+=1             # <<<<<<<<<<<<<<
+ *         aix+=1
+ * 
+ */
+      __pyx_v_aiy = (__pyx_v_aiy + 1);
+    }
+
+    /* "cy_solver_field.pyx":504
+ * 
+ *             aiy+=1
+ *         aix+=1             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double complex* temp = <double complex*> malloc(ntot*ntot*sizeof(double complex))
+ */
+    __pyx_v_aix = (__pyx_v_aix + 1);
+  }
+
+  /* "cy_solver_field.pyx":506
+ *         aix+=1
+ * 
+ *     cdef double complex* temp = <double complex*> malloc(ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ * 
+ *     ft.convolved(pdata, result1, temp, potential_c, kernel1, n2)
+ */
+  __pyx_v_temp = ((__pyx_t_double_complex *)malloc(((__pyx_v_ntot * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":508
+ *     cdef double complex* temp = <double complex*> malloc(ntot*ntot*sizeof(double complex))
+ * 
+ *     ft.convolved(pdata, result1, temp, potential_c, kernel1, n2)             # <<<<<<<<<<<<<<
+ *     ft.convolved(pdata, result2, temp, potential_c, kernel2, n2)
+ * 
+ */
+  __pyx_f_8fft_conv_3src_6fftlib_convolved(__pyx_v_pdata, __pyx_v_result1, __pyx_v_temp, __pyx_v_potential_c, __pyx_v_kernel1, __pyx_v_n2);
+
+  /* "cy_solver_field.pyx":509
+ * 
+ *     ft.convolved(pdata, result1, temp, potential_c, kernel1, n2)
+ *     ft.convolved(pdata, result2, temp, potential_c, kernel2, n2)             # <<<<<<<<<<<<<<
+ * 
+ *     ft.convolved(pdata, result1_a, temp, potential_ca1, kernel1_a, n2)
+ */
+  __pyx_f_8fft_conv_3src_6fftlib_convolved(__pyx_v_pdata, __pyx_v_result2, __pyx_v_temp, __pyx_v_potential_c, __pyx_v_kernel2, __pyx_v_n2);
+
+  /* "cy_solver_field.pyx":511
+ *     ft.convolved(pdata, result2, temp, potential_c, kernel2, n2)
+ * 
+ *     ft.convolved(pdata, result1_a, temp, potential_ca1, kernel1_a, n2)             # <<<<<<<<<<<<<<
+ *     ft.convolved(pdata, result2_a, temp, potential_ca2, kernel2_a, n2)
+ *     ft.convolved(pdata, result0_a, temp, potential_ca0, kernel0_a, n2)
+ */
+  __pyx_f_8fft_conv_3src_6fftlib_convolved(__pyx_v_pdata, __pyx_v_result1_a, __pyx_v_temp, __pyx_v_potential_ca1, __pyx_v_kernel1_a, __pyx_v_n2);
+
+  /* "cy_solver_field.pyx":512
+ * 
+ *     ft.convolved(pdata, result1_a, temp, potential_ca1, kernel1_a, n2)
+ *     ft.convolved(pdata, result2_a, temp, potential_ca2, kernel2_a, n2)             # <<<<<<<<<<<<<<
+ *     ft.convolved(pdata, result0_a, temp, potential_ca0, kernel0_a, n2)
+ * 
+ */
+  __pyx_f_8fft_conv_3src_6fftlib_convolved(__pyx_v_pdata, __pyx_v_result2_a, __pyx_v_temp, __pyx_v_potential_ca2, __pyx_v_kernel2_a, __pyx_v_n2);
+
+  /* "cy_solver_field.pyx":513
+ *     ft.convolved(pdata, result1_a, temp, potential_ca1, kernel1_a, n2)
+ *     ft.convolved(pdata, result2_a, temp, potential_ca2, kernel2_a, n2)
+ *     ft.convolved(pdata, result0_a, temp, potential_ca0, kernel0_a, n2)             # <<<<<<<<<<<<<<
+ * 
+ *     ix = 0
+ */
+  __pyx_f_8fft_conv_3src_6fftlib_convolved(__pyx_v_pdata, __pyx_v_result0_a, __pyx_v_temp, __pyx_v_potential_ca0, __pyx_v_kernel0_a, __pyx_v_n2);
+
+  /* "cy_solver_field.pyx":515
+ *     ft.convolved(pdata, result0_a, temp, potential_ca0, kernel0_a, n2)
+ * 
+ *     ix = 0             # <<<<<<<<<<<<<<
+ *     while ix < ntot:
+ *         iy = 0
+ */
+  __pyx_v_ix = 0;
+
+  /* "cy_solver_field.pyx":516
+ * 
+ *     ix = 0
+ *     while ix < ntot:             # <<<<<<<<<<<<<<
+ *         iy = 0
+ *         while iy < ntot:
+ */
+  while (1) {
+    __pyx_t_7 = (__pyx_v_ix < __pyx_v_ntot);
+    if (!__pyx_t_7) break;
+
+    /* "cy_solver_field.pyx":517
+ *     ix = 0
+ *     while ix < ntot:
+ *         iy = 0             # <<<<<<<<<<<<<<
+ *         while iy < ntot:
+ *             nx = (ix - n2)
+ */
+    __pyx_v_iy = 0;
+
+    /* "cy_solver_field.pyx":518
+ *     while ix < ntot:
+ *         iy = 0
+ *         while iy < ntot:             # <<<<<<<<<<<<<<
+ *             nx = (ix - n2)
+ *             ny = (iy - n2)
+ */
+    while (1) {
+      __pyx_t_7 = (__pyx_v_iy < __pyx_v_ntot);
+      if (!__pyx_t_7) break;
+
+      /* "cy_solver_field.pyx":519
+ *         iy = 0
+ *         while iy < ntot:
+ *             nx = (ix - n2)             # <<<<<<<<<<<<<<
+ *             ny = (iy - n2)
+ *             px = M_PI/l*nx
+ */
+      __pyx_v_nx = (__pyx_v_ix - __pyx_v_n2);
+
+      /* "cy_solver_field.pyx":520
+ *         while iy < ntot:
+ *             nx = (ix - n2)
+ *             ny = (iy - n2)             # <<<<<<<<<<<<<<
+ *             px = M_PI/l*nx
+ *             py = M_PI/l*ny
+ */
+      __pyx_v_ny = (__pyx_v_iy - __pyx_v_n2);
+
+      /* "cy_solver_field.pyx":521
+ *             nx = (ix - n2)
+ *             ny = (iy - n2)
+ *             px = M_PI/l*nx             # <<<<<<<<<<<<<<
+ *             py = M_PI/l*ny
+ * 
+ */
+      __pyx_v_px = ((((double)M_PI) / __pyx_v_l) * __pyx_v_nx);
+
+      /* "cy_solver_field.pyx":522
+ *             ny = (iy - n2)
+ *             px = M_PI/l*nx
+ *             py = M_PI/l*ny             # <<<<<<<<<<<<<<
+ * 
+ *             ene_val = ene(m,px,py)
+ */
+      __pyx_v_py = ((((double)M_PI) / __pyx_v_l) * __pyx_v_ny);
+
+      /* "cy_solver_field.pyx":524
+ *             py = M_PI/l*ny
+ * 
+ *             ene_val = ene(m,px,py)             # <<<<<<<<<<<<<<
+ * 
+ *             point = ix*ntot*2*2 + iy*2*2
+ */
+      __pyx_v_ene_val = __pyx_f_15cy_solver_field_ene(__pyx_v_m, __pyx_v_px, __pyx_v_py);
+
+      /* "cy_solver_field.pyx":526
+ *             ene_val = ene(m,px,py)
+ * 
+ *             point = ix*ntot*2*2 + iy*2*2             # <<<<<<<<<<<<<<
+ * 
+ *             dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1]
+ */
+      __pyx_v_point = ((((__pyx_v_ix * __pyx_v_ntot) * 2) * 2) + ((__pyx_v_iy * 2) * 2));
+
+      /* "cy_solver_field.pyx":528
+ *             point = ix*ntot*2*2 + iy*2*2
+ * 
+ *             dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1]             # <<<<<<<<<<<<<<
+ *             dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0]
+ *             dy[point + 1*2 + 0] =  ene_val * (-1.) * y[point + 1*2 + 1]
+ */
+      (__pyx_v_dy[((__pyx_v_point + 0x0) + 0)]) = ((__pyx_v_ene_val * 1.) * (__pyx_v_y[((__pyx_v_point + 0x0) + 1)]));
+
+      /* "cy_solver_field.pyx":529
+ * 
+ *             dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1]
+ *             dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0]             # <<<<<<<<<<<<<<
+ *             dy[point + 1*2 + 0] =  ene_val * (-1.) * y[point + 1*2 + 1]
+ *             dy[point + 1*2 + 1] = -ene_val * (-1.) * y[point + 1*2 + 0]
+ */
+      (__pyx_v_dy[((__pyx_v_point + 0x0) + 1)]) = (((-__pyx_v_ene_val) * 1.) * (__pyx_v_y[((__pyx_v_point + 0x0) + 0)]));
+
+      /* "cy_solver_field.pyx":530
+ *             dy[point + 0*2 + 0] =  ene_val *   1.  * y[point + 0*2 + 1]
+ *             dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0]
+ *             dy[point + 1*2 + 0] =  ene_val * (-1.) * y[point + 1*2 + 1]             # <<<<<<<<<<<<<<
+ *             dy[point + 1*2 + 1] = -ene_val * (-1.) * y[point + 1*2 + 0]
+ * 
+ */
+      (__pyx_v_dy[((__pyx_v_point + 0x2) + 0)]) = ((__pyx_v_ene_val * -1.) * (__pyx_v_y[((__pyx_v_point + 0x2) + 1)]));
+
+      /* "cy_solver_field.pyx":531
+ *             dy[point + 0*2 + 1] = -ene_val *   1.  * y[point + 0*2 + 0]
+ *             dy[point + 1*2 + 0] =  ene_val * (-1.) * y[point + 1*2 + 1]
+ *             dy[point + 1*2 + 1] = -ene_val * (-1.) * y[point + 1*2 + 0]             # <<<<<<<<<<<<<<
+ * 
+ *             point_ene = (ix)*ntot + (iy)
+ */
+      (__pyx_v_dy[((__pyx_v_point + 0x2) + 1)]) = (((-__pyx_v_ene_val) * -1.) * (__pyx_v_y[((__pyx_v_point + 0x2) + 0)]));
+
+      /* "cy_solver_field.pyx":533
+ *             dy[point + 1*2 + 1] = -ene_val * (-1.) * y[point + 1*2 + 0]
+ * 
+ *             point_ene = (ix)*ntot + (iy)             # <<<<<<<<<<<<<<
+ * 
+ *             conv1 = result1[ix*ntot+iy]
+ */
+      __pyx_v_point_ene = ((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy);
+
+      /* "cy_solver_field.pyx":535
+ *             point_ene = (ix)*ntot + (iy)
+ * 
+ *             conv1 = result1[ix*ntot+iy]             # <<<<<<<<<<<<<<
+ *             conv2 = result2[ix*ntot+iy]
+ * 
+ */
+      __pyx_v_conv1 = (__pyx_v_result1[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]);
+
+      /* "cy_solver_field.pyx":536
+ * 
+ *             conv1 = result1[ix*ntot+iy]
+ *             conv2 = result2[ix*ntot+iy]             # <<<<<<<<<<<<<<
+ * 
+ *             temp1c = (-1j)*(ene1_ptr[point_ene]*conv1 + ene2_ptr[point_ene]*conv2)
+ */
+      __pyx_v_conv2 = (__pyx_v_result2[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]);
+
+      /* "cy_solver_field.pyx":538
+ *             conv2 = result2[ix*ntot+iy]
+ * 
+ *             temp1c = (-1j)*(ene1_ptr[point_ene]*conv1 + ene2_ptr[point_ene]*conv2)             # <<<<<<<<<<<<<<
+ *             temp2c = (-1j)*(ene1_ptr[point_ene]*conv1 - ene2_ptr[point_ene]*conv2)
+ * 
+ */
+      __pyx_v_temp1c = __Pyx_c_prod_double(__Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0)), __Pyx_c_sum_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene1_ptr[__pyx_v_point_ene]), 0), __pyx_v_conv1), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene2_ptr[__pyx_v_point_ene]), 0), __pyx_v_conv2)));
+
+      /* "cy_solver_field.pyx":539
+ * 
+ *             temp1c = (-1j)*(ene1_ptr[point_ene]*conv1 + ene2_ptr[point_ene]*conv2)
+ *             temp2c = (-1j)*(ene1_ptr[point_ene]*conv1 - ene2_ptr[point_ene]*conv2)             # <<<<<<<<<<<<<<
+ * 
+ *             dy[point + 0*2 + 0] += temp1c.real
+ */
+      __pyx_v_temp2c = __Pyx_c_prod_double(__Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0)), __Pyx_c_diff_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene1_ptr[__pyx_v_point_ene]), 0), __pyx_v_conv1), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene2_ptr[__pyx_v_point_ene]), 0), __pyx_v_conv2)));
+
+      /* "cy_solver_field.pyx":541
+ *             temp2c = (-1j)*(ene1_ptr[point_ene]*conv1 - ene2_ptr[point_ene]*conv2)
+ * 
+ *             dy[point + 0*2 + 0] += temp1c.real             # <<<<<<<<<<<<<<
+ *             dy[point + 0*2 + 1] += temp1c.imag
+ *             dy[point + 1*2 + 0] += temp2c.real
+ */
+      __pyx_t_8 = ((__pyx_v_point + 0x0) + 0);
+      (__pyx_v_dy[__pyx_t_8]) = ((__pyx_v_dy[__pyx_t_8]) + __Pyx_CREAL(__pyx_v_temp1c));
+
+      /* "cy_solver_field.pyx":542
+ * 
+ *             dy[point + 0*2 + 0] += temp1c.real
+ *             dy[point + 0*2 + 1] += temp1c.imag             # <<<<<<<<<<<<<<
+ *             dy[point + 1*2 + 0] += temp2c.real
+ *             dy[point + 1*2 + 1] += temp2c.imag
+ */
+      __pyx_t_8 = ((__pyx_v_point + 0x0) + 1);
+      (__pyx_v_dy[__pyx_t_8]) = ((__pyx_v_dy[__pyx_t_8]) + __Pyx_CIMAG(__pyx_v_temp1c));
+
+      /* "cy_solver_field.pyx":543
+ *             dy[point + 0*2 + 0] += temp1c.real
+ *             dy[point + 0*2 + 1] += temp1c.imag
+ *             dy[point + 1*2 + 0] += temp2c.real             # <<<<<<<<<<<<<<
+ *             dy[point + 1*2 + 1] += temp2c.imag
+ * 
+ */
+      __pyx_t_8 = ((__pyx_v_point + 0x2) + 0);
+      (__pyx_v_dy[__pyx_t_8]) = ((__pyx_v_dy[__pyx_t_8]) + __Pyx_CREAL(__pyx_v_temp2c));
+
+      /* "cy_solver_field.pyx":544
+ *             dy[point + 0*2 + 1] += temp1c.imag
+ *             dy[point + 1*2 + 0] += temp2c.real
+ *             dy[point + 1*2 + 1] += temp2c.imag             # <<<<<<<<<<<<<<
+ * 
+ *             point_ene = (ix)*ntot + (iy)
+ */
+      __pyx_t_8 = ((__pyx_v_point + 0x2) + 1);
+      (__pyx_v_dy[__pyx_t_8]) = ((__pyx_v_dy[__pyx_t_8]) + __Pyx_CIMAG(__pyx_v_temp2c));
+
+      /* "cy_solver_field.pyx":546
+ *             dy[point + 1*2 + 1] += temp2c.imag
+ * 
+ *             point_ene = (ix)*ntot + (iy)             # <<<<<<<<<<<<<<
+ *             kgfieldc = (y[point + 0*2 + 0] + 1j*y[point + 0*2 + 1] + y[point + 1*2 + 0] + 1j*y[point + 0*2 + 1])
+ * 
+ */
+      __pyx_v_point_ene = ((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy);
+
+      /* "cy_solver_field.pyx":547
+ * 
+ *             point_ene = (ix)*ntot + (iy)
+ *             kgfieldc = (y[point + 0*2 + 0] + 1j*y[point + 0*2 + 1] + y[point + 1*2 + 0] + 1j*y[point + 0*2 + 1])             # <<<<<<<<<<<<<<
+ * 
+ *             conv_a0 = ene2_ptr[point_ene]*result0_a[ix*ntot+iy]
+ */
+      __pyx_v_kgfieldc = __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_t_double_complex_from_parts((__pyx_v_y[((__pyx_v_point + 0x0) + 0)]), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[((__pyx_v_point + 0x0) + 1)]), 0))), __pyx_t_double_complex_from_parts((__pyx_v_y[((__pyx_v_point + 0x2) + 0)]), 0)), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((__pyx_v_y[((__pyx_v_point + 0x0) + 1)]), 0)));
+
+      /* "cy_solver_field.pyx":549
+ *             kgfieldc = (y[point + 0*2 + 0] + 1j*y[point + 0*2 + 1] + y[point + 1*2 + 0] + 1j*y[point + 0*2 + 1])
+ * 
+ *             conv_a0 = ene2_ptr[point_ene]*result0_a[ix*ntot+iy]             # <<<<<<<<<<<<<<
+ *             conv_a1 = -2*ene2_ptr[point_ene]*result1_a[ix*ntot+iy]
+ *             conv_a2 = -2*ene2_ptr[point_ene]*result2_a[ix*ntot+iy]
+ */
+      __pyx_v_conv_a0 = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_ene2_ptr[__pyx_v_point_ene]), 0), (__pyx_v_result0_a[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]));
+
+      /* "cy_solver_field.pyx":550
+ * 
+ *             conv_a0 = ene2_ptr[point_ene]*result0_a[ix*ntot+iy]
+ *             conv_a1 = -2*ene2_ptr[point_ene]*result1_a[ix*ntot+iy]             # <<<<<<<<<<<<<<
+ *             conv_a2 = -2*ene2_ptr[point_ene]*result2_a[ix*ntot+iy]
+ * 
+ */
+      __pyx_v_conv_a1 = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((-2.0 * (__pyx_v_ene2_ptr[__pyx_v_point_ene])), 0), (__pyx_v_result1_a[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]));
+
+      /* "cy_solver_field.pyx":551
+ *             conv_a0 = ene2_ptr[point_ene]*result0_a[ix*ntot+iy]
+ *             conv_a1 = -2*ene2_ptr[point_ene]*result1_a[ix*ntot+iy]
+ *             conv_a2 = -2*ene2_ptr[point_ene]*result2_a[ix*ntot+iy]             # <<<<<<<<<<<<<<
+ * 
+ *             tempa0c = (-1j)*(conv_a0+conv_a1+conv_a2)
+ */
+      __pyx_v_conv_a2 = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts((-2.0 * (__pyx_v_ene2_ptr[__pyx_v_point_ene])), 0), (__pyx_v_result2_a[((__pyx_v_ix * __pyx_v_ntot) + __pyx_v_iy)]));
+
+      /* "cy_solver_field.pyx":553
+ *             conv_a2 = -2*ene2_ptr[point_ene]*result2_a[ix*ntot+iy]
+ * 
+ *             tempa0c = (-1j)*(conv_a0+conv_a1+conv_a2)             # <<<<<<<<<<<<<<
+ *             tempa1c = (-1j)*(conv_a0+conv_a1+conv_a2)
+ * 
+ */
+      __pyx_v_tempa0c = __Pyx_c_prod_double(__Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0)), __Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_v_conv_a0, __pyx_v_conv_a1), __pyx_v_conv_a2));
+
+      /* "cy_solver_field.pyx":554
+ * 
+ *             tempa0c = (-1j)*(conv_a0+conv_a1+conv_a2)
+ *             tempa1c = (-1j)*(conv_a0+conv_a1+conv_a2)             # <<<<<<<<<<<<<<
+ * 
+ *             dy[point + 0*2 + 0] += tempa0c.real
+ */
+      __pyx_v_tempa1c = __Pyx_c_prod_double(__Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0)), __Pyx_c_sum_double(__Pyx_c_sum_double(__pyx_v_conv_a0, __pyx_v_conv_a1), __pyx_v_conv_a2));
+
+      /* "cy_solver_field.pyx":556
+ *             tempa1c = (-1j)*(conv_a0+conv_a1+conv_a2)
+ * 
+ *             dy[point + 0*2 + 0] += tempa0c.real             # <<<<<<<<<<<<<<
+ *             dy[point + 0*2 + 1] += tempa0c.imag
+ *             dy[point + 1*2 + 0] += tempa1c.real
+ */
+      __pyx_t_8 = ((__pyx_v_point + 0x0) + 0);
+      (__pyx_v_dy[__pyx_t_8]) = ((__pyx_v_dy[__pyx_t_8]) + __Pyx_CREAL(__pyx_v_tempa0c));
+
+      /* "cy_solver_field.pyx":557
+ * 
+ *             dy[point + 0*2 + 0] += tempa0c.real
+ *             dy[point + 0*2 + 1] += tempa0c.imag             # <<<<<<<<<<<<<<
+ *             dy[point + 1*2 + 0] += tempa1c.real
+ *             dy[point + 1*2 + 1] += tempa1c.imag
+ */
+      __pyx_t_8 = ((__pyx_v_point + 0x0) + 1);
+      (__pyx_v_dy[__pyx_t_8]) = ((__pyx_v_dy[__pyx_t_8]) + __Pyx_CIMAG(__pyx_v_tempa0c));
+
+      /* "cy_solver_field.pyx":558
+ *             dy[point + 0*2 + 0] += tempa0c.real
+ *             dy[point + 0*2 + 1] += tempa0c.imag
+ *             dy[point + 1*2 + 0] += tempa1c.real             # <<<<<<<<<<<<<<
+ *             dy[point + 1*2 + 1] += tempa1c.imag
+ * 
+ */
+      __pyx_t_8 = ((__pyx_v_point + 0x2) + 0);
+      (__pyx_v_dy[__pyx_t_8]) = ((__pyx_v_dy[__pyx_t_8]) + __Pyx_CREAL(__pyx_v_tempa1c));
+
+      /* "cy_solver_field.pyx":559
+ *             dy[point + 0*2 + 1] += tempa0c.imag
+ *             dy[point + 1*2 + 0] += tempa1c.real
+ *             dy[point + 1*2 + 1] += tempa1c.imag             # <<<<<<<<<<<<<<
+ * 
+ *             iy += 1
+ */
+      __pyx_t_8 = ((__pyx_v_point + 0x2) + 1);
+      (__pyx_v_dy[__pyx_t_8]) = ((__pyx_v_dy[__pyx_t_8]) + __Pyx_CIMAG(__pyx_v_tempa1c));
+
+      /* "cy_solver_field.pyx":561
+ *             dy[point + 1*2 + 1] += tempa1c.imag
+ * 
+ *             iy += 1             # <<<<<<<<<<<<<<
+ *         ix += 1
+ * 
+ */
+      __pyx_v_iy = (__pyx_v_iy + 1);
+    }
+
+    /* "cy_solver_field.pyx":562
+ * 
+ *             iy += 1
+ *         ix += 1             # <<<<<<<<<<<<<<
+ * 
+ *     free(kernel1)
+ */
+    __pyx_v_ix = (__pyx_v_ix + 1);
+  }
+
+  /* "cy_solver_field.pyx":564
+ *         ix += 1
+ * 
+ *     free(kernel1)             # <<<<<<<<<<<<<<
+ *     free(kernel2)
+ *     free(result1)
+ */
+  free(__pyx_v_kernel1);
+
+  /* "cy_solver_field.pyx":565
+ * 
+ *     free(kernel1)
+ *     free(kernel2)             # <<<<<<<<<<<<<<
+ *     free(result1)
+ *     free(result2)
+ */
+  free(__pyx_v_kernel2);
+
+  /* "cy_solver_field.pyx":566
+ *     free(kernel1)
+ *     free(kernel2)
+ *     free(result1)             # <<<<<<<<<<<<<<
+ *     free(result2)
+ *     free(kernel0_a)
+ */
+  free(__pyx_v_result1);
+
+  /* "cy_solver_field.pyx":567
+ *     free(kernel2)
+ *     free(result1)
+ *     free(result2)             # <<<<<<<<<<<<<<
+ *     free(kernel0_a)
+ *     free(kernel1_a)
+ */
+  free(__pyx_v_result2);
+
+  /* "cy_solver_field.pyx":568
+ *     free(result1)
+ *     free(result2)
+ *     free(kernel0_a)             # <<<<<<<<<<<<<<
+ *     free(kernel1_a)
+ *     free(kernel2_a)
+ */
+  free(__pyx_v_kernel0_a);
+
+  /* "cy_solver_field.pyx":569
+ *     free(result2)
+ *     free(kernel0_a)
+ *     free(kernel1_a)             # <<<<<<<<<<<<<<
+ *     free(kernel2_a)
+ *     free(result0_a)
+ */
+  free(__pyx_v_kernel1_a);
+
+  /* "cy_solver_field.pyx":570
+ *     free(kernel0_a)
+ *     free(kernel1_a)
+ *     free(kernel2_a)             # <<<<<<<<<<<<<<
+ *     free(result0_a)
+ *     free(result1_a)
+ */
+  free(__pyx_v_kernel2_a);
+
+  /* "cy_solver_field.pyx":571
+ *     free(kernel1_a)
+ *     free(kernel2_a)
+ *     free(result0_a)             # <<<<<<<<<<<<<<
+ *     free(result1_a)
+ *     free(result2_a)
+ */
+  free(__pyx_v_result0_a);
+
+  /* "cy_solver_field.pyx":572
+ *     free(kernel2_a)
+ *     free(result0_a)
+ *     free(result1_a)             # <<<<<<<<<<<<<<
+ *     free(result2_a)
+ *     free(potential_c)
+ */
+  free(__pyx_v_result1_a);
+
+  /* "cy_solver_field.pyx":573
+ *     free(result0_a)
+ *     free(result1_a)
+ *     free(result2_a)             # <<<<<<<<<<<<<<
+ *     free(potential_c)
+ *     free(potential_ca1)
+ */
+  free(__pyx_v_result2_a);
+
+  /* "cy_solver_field.pyx":574
+ *     free(result1_a)
+ *     free(result2_a)
+ *     free(potential_c)             # <<<<<<<<<<<<<<
+ *     free(potential_ca1)
+ *     free(potential_ca2)
+ */
+  free(__pyx_v_potential_c);
+
+  /* "cy_solver_field.pyx":575
+ *     free(result2_a)
+ *     free(potential_c)
+ *     free(potential_ca1)             # <<<<<<<<<<<<<<
+ *     free(potential_ca2)
+ *     free(potential_ca0)
+ */
+  free(__pyx_v_potential_ca1);
+
+  /* "cy_solver_field.pyx":576
+ *     free(potential_c)
+ *     free(potential_ca1)
+ *     free(potential_ca2)             # <<<<<<<<<<<<<<
+ *     free(potential_ca0)
+ *     free(temp)
+ */
+  free(__pyx_v_potential_ca2);
+
+  /* "cy_solver_field.pyx":577
+ *     free(potential_ca1)
+ *     free(potential_ca2)
+ *     free(potential_ca0)             # <<<<<<<<<<<<<<
+ *     free(temp)
+ * 
+ */
+  free(__pyx_v_potential_ca0);
+
+  /* "cy_solver_field.pyx":578
+ *     free(potential_ca2)
+ *     free(potential_ca0)
+ *     free(temp)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  free(__pyx_v_temp);
+
+  /* "cy_solver_field.pyx":372
+ * ###
+ * 
+ * cdef void cython_diffeq_t(double* dy, double t, double* y, const void* args, PreEvalFunc pre_eval_func) noexcept nogil:             # <<<<<<<<<<<<<<
+ * 
+ *     cdef parameters_t* args_ptr = <parameters_t*>args
+ */
+
+  /* function exit code */
+}
+
+/* "cy_solver_field.pyx":581
+ * 
+ * 
+ * def solver_t(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps,             # <<<<<<<<<<<<<<
+ *            double[:] field, double[:] field_a1, double[:] field_a2, double[:] field_a0):
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15cy_solver_field_3solver_t(PyObject *__pyx_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_15cy_solver_field_3solver_t = {"solver_t", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_15cy_solver_field_3solver_t, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_15cy_solver_field_3solver_t(PyObject *__pyx_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  PyObject *__pyx_v_t_span = 0;
+  __Pyx_memviewslice __pyx_v_y0 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_coef = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_timesteps = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_field = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_field_a1 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_field_a2 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_field_a0 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[8] = {0,0,0,0,0,0,0,0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("solver_t (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_t_span,&__pyx_n_s_y0,&__pyx_n_s_coef,&__pyx_n_s_timesteps,&__pyx_n_s_field,&__pyx_n_s_field_a1,&__pyx_n_s_field_a2,&__pyx_n_s_field_a0,0};
+    if (__pyx_kwds) {
+      Py_ssize_t kw_args;
+      switch (__pyx_nargs) {
+        case  8: values[7] = __Pyx_Arg_FASTCALL(__pyx_args, 7);
+        CYTHON_FALLTHROUGH;
+        case  7: values[6] = __Pyx_Arg_FASTCALL(__pyx_args, 6);
+        CYTHON_FALLTHROUGH;
+        case  6: values[5] = __Pyx_Arg_FASTCALL(__pyx_args, 5);
+        CYTHON_FALLTHROUGH;
+        case  5: values[4] = __Pyx_Arg_FASTCALL(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
+        case  4: values[3] = __Pyx_Arg_FASTCALL(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = __Pyx_NumKwargs_FASTCALL(__pyx_kwds);
+      switch (__pyx_nargs) {
+        case  0:
+        if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_t_span)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 581, __pyx_L3_error)
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_y0)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 581, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("solver_t", 1, 8, 8, 1); __PYX_ERR(1, 581, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_coef)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 581, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("solver_t", 1, 8, 8, 2); __PYX_ERR(1, 581, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_timesteps)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[3]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 581, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("solver_t", 1, 8, 8, 3); __PYX_ERR(1, 581, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  4:
+        if (likely((values[4] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_field)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[4]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 581, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("solver_t", 1, 8, 8, 4); __PYX_ERR(1, 581, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  5:
+        if (likely((values[5] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_field_a1)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[5]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 581, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("solver_t", 1, 8, 8, 5); __PYX_ERR(1, 581, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  6:
+        if (likely((values[6] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_field_a2)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[6]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 581, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("solver_t", 1, 8, 8, 6); __PYX_ERR(1, 581, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  7:
+        if (likely((values[7] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_field_a0)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[7]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 581, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("solver_t", 1, 8, 8, 7); __PYX_ERR(1, 581, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        const Py_ssize_t kwd_pos_args = __pyx_nargs;
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "solver_t") < 0)) __PYX_ERR(1, 581, __pyx_L3_error)
+      }
+    } else if (unlikely(__pyx_nargs != 8)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+      values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
+      values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
+      values[3] = __Pyx_Arg_FASTCALL(__pyx_args, 3);
+      values[4] = __Pyx_Arg_FASTCALL(__pyx_args, 4);
+      values[5] = __Pyx_Arg_FASTCALL(__pyx_args, 5);
+      values[6] = __Pyx_Arg_FASTCALL(__pyx_args, 6);
+      values[7] = __Pyx_Arg_FASTCALL(__pyx_args, 7);
+    }
+    __pyx_v_t_span = ((PyObject*)values[0]);
+    __pyx_v_y0 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_y0.memview)) __PYX_ERR(1, 581, __pyx_L3_error)
+    __pyx_v_coef = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_coef.memview)) __PYX_ERR(1, 581, __pyx_L3_error)
+    __pyx_v_timesteps = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_timesteps.memview)) __PYX_ERR(1, 581, __pyx_L3_error)
+    __pyx_v_field = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field.memview)) __PYX_ERR(1, 582, __pyx_L3_error)
+    __pyx_v_field_a1 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field_a1.memview)) __PYX_ERR(1, 582, __pyx_L3_error)
+    __pyx_v_field_a2 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[6], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field_a2.memview)) __PYX_ERR(1, 582, __pyx_L3_error)
+    __pyx_v_field_a0 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[7], PyBUF_WRITABLE); if (unlikely(!__pyx_v_field_a0.memview)) __PYX_ERR(1, 582, __pyx_L3_error)
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("solver_t", 1, 8, 8, __pyx_nargs); __PYX_ERR(1, 581, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_y0, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_coef, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_timesteps, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_field, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_field_a1, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_field_a2, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_field_a0, 1);
+  __Pyx_AddTraceback("cy_solver_field.solver_t", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t_span), (&PyTuple_Type), 1, "t_span", 1))) __PYX_ERR(1, 581, __pyx_L1_error)
+  __pyx_r = __pyx_pf_15cy_solver_field_2solver_t(__pyx_self, __pyx_v_t_span, __pyx_v_y0, __pyx_v_coef, __pyx_v_timesteps, __pyx_v_field, __pyx_v_field_a1, __pyx_v_field_a2, __pyx_v_field_a0);
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_y0, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_coef, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_timesteps, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_field, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_field_a1, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_field_a2, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_field_a0, 1);
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15cy_solver_field_2solver_t(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_t_span, __Pyx_memviewslice __pyx_v_y0, __Pyx_memviewslice __pyx_v_coef, __Pyx_memviewslice __pyx_v_timesteps, __Pyx_memviewslice __pyx_v_field, __Pyx_memviewslice __pyx_v_field_a1, __Pyx_memviewslice __pyx_v_field_a2, __Pyx_memviewslice __pyx_v_field_a0) {
+  DiffeqFuncType __pyx_v_diffeq;
+  double *__pyx_v_y0_ptr;
+  unsigned int __pyx_v_num_y;
+  int __pyx_v_n_tsteps;
+  int __pyx_v_n2;
+  int __pyx_v_n_t;
+  int __pyx_v_is_field;
+  int __pyx_v_is_field_a1;
+  int __pyx_v_is_field_a2;
+  int __pyx_v_is_field_a0;
+  int __pyx_v_ntot;
+  double __pyx_v_t_span_arr[2];
+  double *__pyx_v_t_span_ptr;
+  double __pyx_v_c_timesteps[0x3E8];
+  int __pyx_v_i;
+  CYTHON_UNUSED int __pyx_v_j;
+  double *__pyx_v_timesteps_ptr;
+  __pyx_t_double_complex *__pyx_v_potential_c_interp;
+  __pyx_t_double_complex *__pyx_v_potential_ca1_interp;
+  __pyx_t_double_complex *__pyx_v_potential_ca2_interp;
+  __pyx_t_double_complex *__pyx_v_potential_ca0_interp;
+  struct fft_data __pyx_v_data;
+  struct __pyx_t_15cy_solver_field_parameters_t __pyx_v_args;
+  struct __pyx_t_15cy_solver_field_parameters_t *__pyx_v_args_param_ptr;
+  double *__pyx_v_t_knots;
+  int __pyx_v_n_k;
+  int __pyx_v_ix;
+  int __pyx_v_iy;
+  int __pyx_v_it;
+  int __pyx_v_ip;
+  void *__pyx_v_args_ptr;
+  __pyx_t_6mycyrk_2cy_11cysolverNew_CySolveOutput __pyx_v_result;
+  struct __pyx_obj_6mycyrk_2cy_11cysolverNew_WrapCySolverResult *__pyx_v_pysafe_result = 0;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  Py_ssize_t __pyx_t_1;
+  Py_ssize_t __pyx_t_2;
+  double __pyx_t_3;
+  double __pyx_t_4;
+  double __pyx_t_5[2];
+  int __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  Py_ssize_t __pyx_t_10;
+  __pyx_t_6mycyrk_2cy_11cysolverNew_CySolveOutput __pyx_t_11;
+  struct __pyx_opt_args_6mycyrk_2cy_11cysolverNew_cysolve_ivp __pyx_t_12;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("solver_t", 1);
+
+  /* "cy_solver_field.pyx":584
+ *            double[:] field, double[:] field_a1, double[:] field_a2, double[:] field_a0):
+ * 
+ *     cdef DiffeqFuncType diffeq = cython_diffeq_t             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double* y0_ptr       = &y0[0]
+ */
+  __pyx_v_diffeq = __pyx_f_15cy_solver_field_cython_diffeq_t;
+
+  /* "cy_solver_field.pyx":586
+ *     cdef DiffeqFuncType diffeq = cython_diffeq_t
+ * 
+ *     cdef double* y0_ptr       = &y0[0]             # <<<<<<<<<<<<<<
+ *     cdef unsigned int num_y   = len(y0)
+ *     cdef int n_tsteps         = len(timesteps)
+ */
+  __pyx_t_1 = 0;
+  __pyx_v_y0_ptr = (&(*((double *) ( /* dim=0 */ (__pyx_v_y0.data + __pyx_t_1 * __pyx_v_y0.strides[0]) ))));
+
+  /* "cy_solver_field.pyx":587
+ * 
+ *     cdef double* y0_ptr       = &y0[0]
+ *     cdef unsigned int num_y   = len(y0)             # <<<<<<<<<<<<<<
+ *     cdef int n_tsteps         = len(timesteps)
+ *     cdef int n2               = <int>coef[0]
+ */
+  __pyx_t_2 = __Pyx_MemoryView_Len(__pyx_v_y0); 
+  __pyx_v_num_y = __pyx_t_2;
+
+  /* "cy_solver_field.pyx":588
+ *     cdef double* y0_ptr       = &y0[0]
+ *     cdef unsigned int num_y   = len(y0)
+ *     cdef int n_tsteps         = len(timesteps)             # <<<<<<<<<<<<<<
+ *     cdef int n2               = <int>coef[0]
+ *     cdef int n_t              = <int>coef[1]
+ */
+  __pyx_t_2 = __Pyx_MemoryView_Len(__pyx_v_timesteps); 
+  __pyx_v_n_tsteps = __pyx_t_2;
+
+  /* "cy_solver_field.pyx":589
+ *     cdef unsigned int num_y   = len(y0)
+ *     cdef int n_tsteps         = len(timesteps)
+ *     cdef int n2               = <int>coef[0]             # <<<<<<<<<<<<<<
+ *     cdef int n_t              = <int>coef[1]
+ *     cdef int is_field         = <int>coef[4]
+ */
+  __pyx_t_1 = 0;
+  __pyx_v_n2 = ((int)(*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))));
+
+  /* "cy_solver_field.pyx":590
+ *     cdef int n_tsteps         = len(timesteps)
+ *     cdef int n2               = <int>coef[0]
+ *     cdef int n_t              = <int>coef[1]             # <<<<<<<<<<<<<<
+ *     cdef int is_field         = <int>coef[4]
+ *     cdef int is_field_a1      = <int>coef[5]
+ */
+  __pyx_t_1 = 1;
+  __pyx_v_n_t = ((int)(*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))));
+
+  /* "cy_solver_field.pyx":591
+ *     cdef int n2               = <int>coef[0]
+ *     cdef int n_t              = <int>coef[1]
+ *     cdef int is_field         = <int>coef[4]             # <<<<<<<<<<<<<<
+ *     cdef int is_field_a1      = <int>coef[5]
+ *     cdef int is_field_a2      = <int>coef[6]
+ */
+  __pyx_t_1 = 4;
+  __pyx_v_is_field = ((int)(*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))));
+
+  /* "cy_solver_field.pyx":592
+ *     cdef int n_t              = <int>coef[1]
+ *     cdef int is_field         = <int>coef[4]
+ *     cdef int is_field_a1      = <int>coef[5]             # <<<<<<<<<<<<<<
+ *     cdef int is_field_a2      = <int>coef[6]
+ *     cdef int is_field_a0      = <int>coef[7]
+ */
+  __pyx_t_1 = 5;
+  __pyx_v_is_field_a1 = ((int)(*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))));
+
+  /* "cy_solver_field.pyx":593
+ *     cdef int is_field         = <int>coef[4]
+ *     cdef int is_field_a1      = <int>coef[5]
+ *     cdef int is_field_a2      = <int>coef[6]             # <<<<<<<<<<<<<<
+ *     cdef int is_field_a0      = <int>coef[7]
+ *     cdef int ntot             = 2*n2
+ */
+  __pyx_t_1 = 6;
+  __pyx_v_is_field_a2 = ((int)(*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))));
+
+  /* "cy_solver_field.pyx":594
+ *     cdef int is_field_a1      = <int>coef[5]
+ *     cdef int is_field_a2      = <int>coef[6]
+ *     cdef int is_field_a0      = <int>coef[7]             # <<<<<<<<<<<<<<
+ *     cdef int ntot             = 2*n2
+ * 
+ */
+  __pyx_t_1 = 7;
+  __pyx_v_is_field_a0 = ((int)(*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))));
+
+  /* "cy_solver_field.pyx":595
+ *     cdef int is_field_a2      = <int>coef[6]
+ *     cdef int is_field_a0      = <int>coef[7]
+ *     cdef int ntot             = 2*n2             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double[2] t_span_arr = [t_span[0], t_span[1]]
+ */
+  __pyx_v_ntot = (2 * __pyx_v_n2);
+
+  /* "cy_solver_field.pyx":597
+ *     cdef int ntot             = 2*n2
+ * 
+ *     cdef double[2] t_span_arr = [t_span[0], t_span[1]]             # <<<<<<<<<<<<<<
+ *     cdef double* t_span_ptr   = &t_span_arr[0]
+ * 
+ */
+  if (unlikely(__pyx_v_t_span == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 597, __pyx_L1_error)
+  }
+  __pyx_t_3 = __pyx_PyFloat_AsDouble(PyTuple_GET_ITEM(__pyx_v_t_span, 0)); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 597, __pyx_L1_error)
+  if (unlikely(__pyx_v_t_span == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 597, __pyx_L1_error)
+  }
+  __pyx_t_4 = __pyx_PyFloat_AsDouble(PyTuple_GET_ITEM(__pyx_v_t_span, 1)); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 597, __pyx_L1_error)
+  __pyx_t_5[0] = __pyx_t_3;
+  __pyx_t_5[1] = __pyx_t_4;
+  memcpy(&(__pyx_v_t_span_arr[0]), __pyx_t_5, sizeof(__pyx_v_t_span_arr[0]) * (2));
+
+  /* "cy_solver_field.pyx":598
+ * 
+ *     cdef double[2] t_span_arr = [t_span[0], t_span[1]]
+ *     cdef double* t_span_ptr   = &t_span_arr[0]             # <<<<<<<<<<<<<<
+ * 
+ *     #    Timesteps
+ */
+  __pyx_v_t_span_ptr = (&(__pyx_v_t_span_arr[0]));
+
+  /* "cy_solver_field.pyx":604
+ * 
+ *     cdef double[1000] c_timesteps
+ *     cdef int i = 0             # <<<<<<<<<<<<<<
+ *     cdef int j = 0
+ *     while i < n_tsteps:
+ */
+  __pyx_v_i = 0;
+
+  /* "cy_solver_field.pyx":605
+ *     cdef double[1000] c_timesteps
+ *     cdef int i = 0
+ *     cdef int j = 0             # <<<<<<<<<<<<<<
+ *     while i < n_tsteps:
+ *         c_timesteps[i] = timesteps[i]
+ */
+  __pyx_v_j = 0;
+
+  /* "cy_solver_field.pyx":606
+ *     cdef int i = 0
+ *     cdef int j = 0
+ *     while i < n_tsteps:             # <<<<<<<<<<<<<<
+ *         c_timesteps[i] = timesteps[i]
+ *         i += 1
+ */
+  while (1) {
+    __pyx_t_6 = (__pyx_v_i < __pyx_v_n_tsteps);
+    if (!__pyx_t_6) break;
+
+    /* "cy_solver_field.pyx":607
+ *     cdef int j = 0
+ *     while i < n_tsteps:
+ *         c_timesteps[i] = timesteps[i]             # <<<<<<<<<<<<<<
+ *         i += 1
+ *     cdef double* timesteps_ptr = &c_timesteps[0]
+ */
+    __pyx_t_1 = __pyx_v_i;
+    (__pyx_v_c_timesteps[__pyx_v_i]) = (*((double *) ( /* dim=0 */ (__pyx_v_timesteps.data + __pyx_t_1 * __pyx_v_timesteps.strides[0]) )));
+
+    /* "cy_solver_field.pyx":608
+ *     while i < n_tsteps:
+ *         c_timesteps[i] = timesteps[i]
+ *         i += 1             # <<<<<<<<<<<<<<
+ *     cdef double* timesteps_ptr = &c_timesteps[0]
+ * 
+ */
+    __pyx_v_i = (__pyx_v_i + 1);
+  }
+
+  /* "cy_solver_field.pyx":609
+ *         c_timesteps[i] = timesteps[i]
+ *         i += 1
+ *     cdef double* timesteps_ptr = &c_timesteps[0]             # <<<<<<<<<<<<<<
+ * 
+ *     #    Prepare parameters
+ */
+  __pyx_v_timesteps_ptr = (&(__pyx_v_c_timesteps[0]));
+
+  /* "cy_solver_field.pyx":613
+ *     #    Prepare parameters
+ * 
+ *     cdef double complex* potential_c_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* potential_ca1_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca2_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_potential_c_interp = ((__pyx_t_double_complex *)malloc(((((4 * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":614
+ * 
+ *     cdef double complex* potential_c_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca1_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* potential_ca2_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca0_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))
+ */
+  __pyx_v_potential_ca1_interp = ((__pyx_t_double_complex *)malloc(((((4 * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":615
+ *     cdef double complex* potential_c_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca1_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca2_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ *     cdef double complex* potential_ca0_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))
+ * 
+ */
+  __pyx_v_potential_ca2_interp = ((__pyx_t_double_complex *)malloc(((((4 * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":616
+ *     cdef double complex* potential_ca1_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca2_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))
+ *     cdef double complex* potential_ca0_interp = <double complex*>malloc(4*n_t*ntot*ntot*sizeof(double complex))             # <<<<<<<<<<<<<<
+ * 
+ *     cdef ft.fft_data data
+ */
+  __pyx_v_potential_ca0_interp = ((__pyx_t_double_complex *)malloc(((((4 * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * (sizeof(__pyx_t_double_complex)))));
+
+  /* "cy_solver_field.pyx":619
+ * 
+ *     cdef ft.fft_data data
+ *     ft.setup(&data, ntot, ntot)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef parameters_t args
+ */
+  setup((&__pyx_v_data), __pyx_v_ntot, __pyx_v_ntot);
+
+  /* "cy_solver_field.pyx":622
+ * 
+ *     cdef parameters_t args
+ *     cdef parameters_t* args_param_ptr = &args             # <<<<<<<<<<<<<<
+ *     args.n2 = n2
+ *     args.n_t = n_t
+ */
+  __pyx_v_args_param_ptr = (&__pyx_v_args);
+
+  /* "cy_solver_field.pyx":623
+ *     cdef parameters_t args
+ *     cdef parameters_t* args_param_ptr = &args
+ *     args.n2 = n2             # <<<<<<<<<<<<<<
+ *     args.n_t = n_t
+ *     args.pdata = &data
+ */
+  __pyx_v_args.n2 = __pyx_v_n2;
+
+  /* "cy_solver_field.pyx":624
+ *     cdef parameters_t* args_param_ptr = &args
+ *     args.n2 = n2
+ *     args.n_t = n_t             # <<<<<<<<<<<<<<
+ *     args.pdata = &data
+ *     args.m = coef[2]
+ */
+  __pyx_v_args.n_t = __pyx_v_n_t;
+
+  /* "cy_solver_field.pyx":625
+ *     args.n2 = n2
+ *     args.n_t = n_t
+ *     args.pdata = &data             # <<<<<<<<<<<<<<
+ *     args.m = coef[2]
+ *     args.l = coef[3]
+ */
+  __pyx_v_args.pdata = (&__pyx_v_data);
+
+  /* "cy_solver_field.pyx":626
+ *     args.n_t = n_t
+ *     args.pdata = &data
+ *     args.m = coef[2]             # <<<<<<<<<<<<<<
+ *     args.l = coef[3]
+ *     args.is_field    = is_field
+ */
+  __pyx_t_1 = 2;
+  __pyx_v_args.m = (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) )));
+
+  /* "cy_solver_field.pyx":627
+ *     args.pdata = &data
+ *     args.m = coef[2]
+ *     args.l = coef[3]             # <<<<<<<<<<<<<<
+ *     args.is_field    = is_field
+ *     args.is_field_a1 = is_field_a1
+ */
+  __pyx_t_1 = 3;
+  __pyx_v_args.l = (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) )));
+
+  /* "cy_solver_field.pyx":628
+ *     args.m = coef[2]
+ *     args.l = coef[3]
+ *     args.is_field    = is_field             # <<<<<<<<<<<<<<
+ *     args.is_field_a1 = is_field_a1
+ *     args.is_field_a2 = is_field_a2
+ */
+  __pyx_v_args.is_field = __pyx_v_is_field;
+
+  /* "cy_solver_field.pyx":629
+ *     args.l = coef[3]
+ *     args.is_field    = is_field
+ *     args.is_field_a1 = is_field_a1             # <<<<<<<<<<<<<<
+ *     args.is_field_a2 = is_field_a2
+ *     args.is_field_a0 = is_field_a0
+ */
+  __pyx_v_args.is_field_a1 = __pyx_v_is_field_a1;
+
+  /* "cy_solver_field.pyx":630
+ *     args.is_field    = is_field
+ *     args.is_field_a1 = is_field_a1
+ *     args.is_field_a2 = is_field_a2             # <<<<<<<<<<<<<<
+ *     args.is_field_a0 = is_field_a0
+ * 
+ */
+  __pyx_v_args.is_field_a2 = __pyx_v_is_field_a2;
+
+  /* "cy_solver_field.pyx":631
+ *     args.is_field_a1 = is_field_a1
+ *     args.is_field_a2 = is_field_a2
+ *     args.is_field_a0 = is_field_a0             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double* t_knots = <double*>malloc(n_t*sizeof(double))
+ */
+  __pyx_v_args.is_field_a0 = __pyx_v_is_field_a0;
+
+  /* "cy_solver_field.pyx":633
+ *     args.is_field_a0 = is_field_a0
+ * 
+ *     cdef double* t_knots = <double*>malloc(n_t*sizeof(double))             # <<<<<<<<<<<<<<
+ *     cdef int n_k = 0
+ *     while n_k < n_t:
+ */
+  __pyx_v_t_knots = ((double *)malloc((__pyx_v_n_t * (sizeof(double)))));
+
+  /* "cy_solver_field.pyx":634
+ * 
+ *     cdef double* t_knots = <double*>malloc(n_t*sizeof(double))
+ *     cdef int n_k = 0             # <<<<<<<<<<<<<<
+ *     while n_k < n_t:
+ *         t_knots[n_k] = t_span[0] + n_k*(t_span[1]-t_span[0])/(n_t-1)
+ */
+  __pyx_v_n_k = 0;
+
+  /* "cy_solver_field.pyx":635
+ *     cdef double* t_knots = <double*>malloc(n_t*sizeof(double))
+ *     cdef int n_k = 0
+ *     while n_k < n_t:             # <<<<<<<<<<<<<<
+ *         t_knots[n_k] = t_span[0] + n_k*(t_span[1]-t_span[0])/(n_t-1)
+ *         n_k += 1
+ */
+  while (1) {
+    __pyx_t_6 = (__pyx_v_n_k < __pyx_v_n_t);
+    if (!__pyx_t_6) break;
+
+    /* "cy_solver_field.pyx":636
+ *     cdef int n_k = 0
+ *     while n_k < n_t:
+ *         t_knots[n_k] = t_span[0] + n_k*(t_span[1]-t_span[0])/(n_t-1)             # <<<<<<<<<<<<<<
+ *         n_k += 1
+ *     args.t_knots = t_knots
+ */
+    if (unlikely(__pyx_v_t_span == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(1, 636, __pyx_L1_error)
+    }
+    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_n_k); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 636, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    if (unlikely(__pyx_v_t_span == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(1, 636, __pyx_L1_error)
+    }
+    if (unlikely(__pyx_v_t_span == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(1, 636, __pyx_L1_error)
+    }
+    __pyx_t_8 = PyNumber_Subtract(PyTuple_GET_ITEM(__pyx_v_t_span, 1), PyTuple_GET_ITEM(__pyx_v_t_span, 0)); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 636, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_9 = PyNumber_Multiply(__pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 636, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __pyx_t_8 = __Pyx_PyInt_From_long((__pyx_v_n_t - 1)); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 636, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_7 = __Pyx_PyNumber_Divide(__pyx_t_9, __pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 636, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __pyx_t_8 = PyNumber_Add(PyTuple_GET_ITEM(__pyx_v_t_span, 0), __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 636, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_8); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 636, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    (__pyx_v_t_knots[__pyx_v_n_k]) = __pyx_t_4;
+
+    /* "cy_solver_field.pyx":637
+ *     while n_k < n_t:
+ *         t_knots[n_k] = t_span[0] + n_k*(t_span[1]-t_span[0])/(n_t-1)
+ *         n_k += 1             # <<<<<<<<<<<<<<
+ *     args.t_knots = t_knots
+ * 
+ */
+    __pyx_v_n_k = (__pyx_v_n_k + 1);
+  }
+
+  /* "cy_solver_field.pyx":638
+ *         t_knots[n_k] = t_span[0] + n_k*(t_span[1]-t_span[0])/(n_t-1)
+ *         n_k += 1
+ *     args.t_knots = t_knots             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int ix
+ */
+  __pyx_v_args.t_knots = __pyx_v_t_knots;
+
+  /* "cy_solver_field.pyx":645
+ *     cdef int ip
+ * 
+ *     if is_field:             # <<<<<<<<<<<<<<
+ *         ix = 0
+ *         while ix<ntot:
+ */
+  __pyx_t_6 = (__pyx_v_is_field != 0);
+  if (__pyx_t_6) {
+
+    /* "cy_solver_field.pyx":646
+ * 
+ *     if is_field:
+ *         ix = 0             # <<<<<<<<<<<<<<
+ *         while ix<ntot:
+ *             iy = 0
+ */
+    __pyx_v_ix = 0;
+
+    /* "cy_solver_field.pyx":647
+ *     if is_field:
+ *         ix = 0
+ *         while ix<ntot:             # <<<<<<<<<<<<<<
+ *             iy = 0
+ *             while iy<ntot:
+ */
+    while (1) {
+      __pyx_t_6 = (__pyx_v_ix < __pyx_v_ntot);
+      if (!__pyx_t_6) break;
+
+      /* "cy_solver_field.pyx":648
+ *         ix = 0
+ *         while ix<ntot:
+ *             iy = 0             # <<<<<<<<<<<<<<
+ *             while iy<ntot:
+ *                 it = 0
+ */
+      __pyx_v_iy = 0;
+
+      /* "cy_solver_field.pyx":649
+ *         while ix<ntot:
+ *             iy = 0
+ *             while iy<ntot:             # <<<<<<<<<<<<<<
+ *                 it = 0
+ *                 while it<n_t:
+ */
+      while (1) {
+        __pyx_t_6 = (__pyx_v_iy < __pyx_v_ntot);
+        if (!__pyx_t_6) break;
+
+        /* "cy_solver_field.pyx":650
+ *             iy = 0
+ *             while iy<ntot:
+ *                 it = 0             # <<<<<<<<<<<<<<
+ *                 while it<n_t:
+ *                     ip = 0
+ */
+        __pyx_v_it = 0;
+
+        /* "cy_solver_field.pyx":651
+ *             while iy<ntot:
+ *                 it = 0
+ *                 while it<n_t:             # <<<<<<<<<<<<<<
+ *                     ip = 0
+ *                     while ip<4:
+ */
+        while (1) {
+          __pyx_t_6 = (__pyx_v_it < __pyx_v_n_t);
+          if (!__pyx_t_6) break;
+
+          /* "cy_solver_field.pyx":652
+ *                 it = 0
+ *                 while it<n_t:
+ *                     ip = 0             # <<<<<<<<<<<<<<
+ *                     while ip<4:
+ *                         potential_c_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ */
+          __pyx_v_ip = 0;
+
+          /* "cy_solver_field.pyx":653
+ *                 while it<n_t:
+ *                     ip = 0
+ *                     while ip<4:             # <<<<<<<<<<<<<<
+ *                         potential_c_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1
+ */
+          while (1) {
+            __pyx_t_6 = (__pyx_v_ip < 4);
+            if (!__pyx_t_6) break;
+
+            /* "cy_solver_field.pyx":654
+ *                     ip = 0
+ *                     while ip<4:
+ *                         potential_c_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]             # <<<<<<<<<<<<<<
+ *                         ip+=1
+ *                     it+=1
+ */
+            __pyx_t_1 = (((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * 2) + (((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot) * 2)) + ((__pyx_v_ix * __pyx_v_ntot) * 2)) + (__pyx_v_iy * 2));
+            __pyx_t_10 = ((((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * 2) + (((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot) * 2)) + ((__pyx_v_ix * __pyx_v_ntot) * 2)) + (__pyx_v_iy * 2)) + 1);
+            (__pyx_v_potential_c_interp[((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) + ((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot)) + (__pyx_v_ix * __pyx_v_ntot)) + __pyx_v_iy)]) = __Pyx_c_sum_double(__pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field.data + __pyx_t_1 * __pyx_v_field.strides[0]) ))), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field.data + __pyx_t_10 * __pyx_v_field.strides[0]) ))), 0)));
+
+            /* "cy_solver_field.pyx":655
+ *                     while ip<4:
+ *                         potential_c_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1             # <<<<<<<<<<<<<<
+ *                     it+=1
+ *                 iy+=1
+ */
+            __pyx_v_ip = (__pyx_v_ip + 1);
+          }
+
+          /* "cy_solver_field.pyx":656
+ *                         potential_c_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1
+ *                     it+=1             # <<<<<<<<<<<<<<
+ *                 iy+=1
+ *             ix+=1
+ */
+          __pyx_v_it = (__pyx_v_it + 1);
+        }
+
+        /* "cy_solver_field.pyx":657
+ *                         ip+=1
+ *                     it+=1
+ *                 iy+=1             # <<<<<<<<<<<<<<
+ *             ix+=1
+ * 
+ */
+        __pyx_v_iy = (__pyx_v_iy + 1);
+      }
+
+      /* "cy_solver_field.pyx":658
+ *                     it+=1
+ *                 iy+=1
+ *             ix+=1             # <<<<<<<<<<<<<<
+ * 
+ *     if is_field_a1:
+ */
+      __pyx_v_ix = (__pyx_v_ix + 1);
+    }
+
+    /* "cy_solver_field.pyx":645
+ *     cdef int ip
+ * 
+ *     if is_field:             # <<<<<<<<<<<<<<
+ *         ix = 0
+ *         while ix<ntot:
+ */
+  }
+
+  /* "cy_solver_field.pyx":660
+ *             ix+=1
+ * 
+ *     if is_field_a1:             # <<<<<<<<<<<<<<
+ *         ix = 0
+ *         while ix<ntot:
+ */
+  __pyx_t_6 = (__pyx_v_is_field_a1 != 0);
+  if (__pyx_t_6) {
+
+    /* "cy_solver_field.pyx":661
+ * 
+ *     if is_field_a1:
+ *         ix = 0             # <<<<<<<<<<<<<<
+ *         while ix<ntot:
+ *             iy = 0
+ */
+    __pyx_v_ix = 0;
+
+    /* "cy_solver_field.pyx":662
+ *     if is_field_a1:
+ *         ix = 0
+ *         while ix<ntot:             # <<<<<<<<<<<<<<
+ *             iy = 0
+ *             while iy<ntot:
+ */
+    while (1) {
+      __pyx_t_6 = (__pyx_v_ix < __pyx_v_ntot);
+      if (!__pyx_t_6) break;
+
+      /* "cy_solver_field.pyx":663
+ *         ix = 0
+ *         while ix<ntot:
+ *             iy = 0             # <<<<<<<<<<<<<<
+ *             while iy<ntot:
+ *                 it = 0
+ */
+      __pyx_v_iy = 0;
+
+      /* "cy_solver_field.pyx":664
+ *         while ix<ntot:
+ *             iy = 0
+ *             while iy<ntot:             # <<<<<<<<<<<<<<
+ *                 it = 0
+ *                 while it<n_t:
+ */
+      while (1) {
+        __pyx_t_6 = (__pyx_v_iy < __pyx_v_ntot);
+        if (!__pyx_t_6) break;
+
+        /* "cy_solver_field.pyx":665
+ *             iy = 0
+ *             while iy<ntot:
+ *                 it = 0             # <<<<<<<<<<<<<<
+ *                 while it<n_t:
+ *                     ip = 0
+ */
+        __pyx_v_it = 0;
+
+        /* "cy_solver_field.pyx":666
+ *             while iy<ntot:
+ *                 it = 0
+ *                 while it<n_t:             # <<<<<<<<<<<<<<
+ *                     ip = 0
+ *                     while ip<4:
+ */
+        while (1) {
+          __pyx_t_6 = (__pyx_v_it < __pyx_v_n_t);
+          if (!__pyx_t_6) break;
+
+          /* "cy_solver_field.pyx":667
+ *                 it = 0
+ *                 while it<n_t:
+ *                     ip = 0             # <<<<<<<<<<<<<<
+ *                     while ip<4:
+ *                         potential_ca1_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a1[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a1[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ */
+          __pyx_v_ip = 0;
+
+          /* "cy_solver_field.pyx":668
+ *                 while it<n_t:
+ *                     ip = 0
+ *                     while ip<4:             # <<<<<<<<<<<<<<
+ *                         potential_ca1_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a1[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a1[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1
+ */
+          while (1) {
+            __pyx_t_6 = (__pyx_v_ip < 4);
+            if (!__pyx_t_6) break;
+
+            /* "cy_solver_field.pyx":669
+ *                     ip = 0
+ *                     while ip<4:
+ *                         potential_ca1_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a1[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a1[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]             # <<<<<<<<<<<<<<
+ *                         ip+=1
+ *                     it+=1
+ */
+            __pyx_t_10 = (((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * 2) + (((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot) * 2)) + ((__pyx_v_ix * __pyx_v_ntot) * 2)) + (__pyx_v_iy * 2));
+            __pyx_t_1 = ((((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * 2) + (((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot) * 2)) + ((__pyx_v_ix * __pyx_v_ntot) * 2)) + (__pyx_v_iy * 2)) + 1);
+            (__pyx_v_potential_ca1_interp[((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) + ((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot)) + (__pyx_v_ix * __pyx_v_ntot)) + __pyx_v_iy)]) = __Pyx_c_sum_double(__pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a1.data + __pyx_t_10 * __pyx_v_field_a1.strides[0]) ))), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a1.data + __pyx_t_1 * __pyx_v_field_a1.strides[0]) ))), 0)));
+
+            /* "cy_solver_field.pyx":670
+ *                     while ip<4:
+ *                         potential_ca1_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a1[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a1[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1             # <<<<<<<<<<<<<<
+ *                     it+=1
+ *                 iy+=1
+ */
+            __pyx_v_ip = (__pyx_v_ip + 1);
+          }
+
+          /* "cy_solver_field.pyx":671
+ *                         potential_ca1_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a1[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a1[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1
+ *                     it+=1             # <<<<<<<<<<<<<<
+ *                 iy+=1
+ *             ix+=1
+ */
+          __pyx_v_it = (__pyx_v_it + 1);
+        }
+
+        /* "cy_solver_field.pyx":672
+ *                         ip+=1
+ *                     it+=1
+ *                 iy+=1             # <<<<<<<<<<<<<<
+ *             ix+=1
+ * 
+ */
+        __pyx_v_iy = (__pyx_v_iy + 1);
+      }
+
+      /* "cy_solver_field.pyx":673
+ *                     it+=1
+ *                 iy+=1
+ *             ix+=1             # <<<<<<<<<<<<<<
+ * 
+ *     if is_field_a2:
+ */
+      __pyx_v_ix = (__pyx_v_ix + 1);
+    }
+
+    /* "cy_solver_field.pyx":660
+ *             ix+=1
+ * 
+ *     if is_field_a1:             # <<<<<<<<<<<<<<
+ *         ix = 0
+ *         while ix<ntot:
+ */
+  }
+
+  /* "cy_solver_field.pyx":675
+ *             ix+=1
+ * 
+ *     if is_field_a2:             # <<<<<<<<<<<<<<
+ *         ix = 0
+ *         while ix<ntot:
+ */
+  __pyx_t_6 = (__pyx_v_is_field_a2 != 0);
+  if (__pyx_t_6) {
+
+    /* "cy_solver_field.pyx":676
+ * 
+ *     if is_field_a2:
+ *         ix = 0             # <<<<<<<<<<<<<<
+ *         while ix<ntot:
+ *             iy = 0
+ */
+    __pyx_v_ix = 0;
+
+    /* "cy_solver_field.pyx":677
+ *     if is_field_a2:
+ *         ix = 0
+ *         while ix<ntot:             # <<<<<<<<<<<<<<
+ *             iy = 0
+ *             while iy<ntot:
+ */
+    while (1) {
+      __pyx_t_6 = (__pyx_v_ix < __pyx_v_ntot);
+      if (!__pyx_t_6) break;
+
+      /* "cy_solver_field.pyx":678
+ *         ix = 0
+ *         while ix<ntot:
+ *             iy = 0             # <<<<<<<<<<<<<<
+ *             while iy<ntot:
+ *                 it = 0
+ */
+      __pyx_v_iy = 0;
+
+      /* "cy_solver_field.pyx":679
+ *         while ix<ntot:
+ *             iy = 0
+ *             while iy<ntot:             # <<<<<<<<<<<<<<
+ *                 it = 0
+ *                 while it<n_t:
+ */
+      while (1) {
+        __pyx_t_6 = (__pyx_v_iy < __pyx_v_ntot);
+        if (!__pyx_t_6) break;
+
+        /* "cy_solver_field.pyx":680
+ *             iy = 0
+ *             while iy<ntot:
+ *                 it = 0             # <<<<<<<<<<<<<<
+ *                 while it<n_t:
+ *                     ip = 0
+ */
+        __pyx_v_it = 0;
+
+        /* "cy_solver_field.pyx":681
+ *             while iy<ntot:
+ *                 it = 0
+ *                 while it<n_t:             # <<<<<<<<<<<<<<
+ *                     ip = 0
+ *                     while ip<4:
+ */
+        while (1) {
+          __pyx_t_6 = (__pyx_v_it < __pyx_v_n_t);
+          if (!__pyx_t_6) break;
+
+          /* "cy_solver_field.pyx":682
+ *                 it = 0
+ *                 while it<n_t:
+ *                     ip = 0             # <<<<<<<<<<<<<<
+ *                     while ip<4:
+ *                         potential_ca2_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a2[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a2[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ */
+          __pyx_v_ip = 0;
+
+          /* "cy_solver_field.pyx":683
+ *                 while it<n_t:
+ *                     ip = 0
+ *                     while ip<4:             # <<<<<<<<<<<<<<
+ *                         potential_ca2_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a2[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a2[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1
+ */
+          while (1) {
+            __pyx_t_6 = (__pyx_v_ip < 4);
+            if (!__pyx_t_6) break;
+
+            /* "cy_solver_field.pyx":684
+ *                     ip = 0
+ *                     while ip<4:
+ *                         potential_ca2_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a2[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a2[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]             # <<<<<<<<<<<<<<
+ *                         ip+=1
+ *                     it+=1
+ */
+            __pyx_t_1 = (((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * 2) + (((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot) * 2)) + ((__pyx_v_ix * __pyx_v_ntot) * 2)) + (__pyx_v_iy * 2));
+            __pyx_t_10 = ((((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * 2) + (((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot) * 2)) + ((__pyx_v_ix * __pyx_v_ntot) * 2)) + (__pyx_v_iy * 2)) + 1);
+            (__pyx_v_potential_ca2_interp[((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) + ((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot)) + (__pyx_v_ix * __pyx_v_ntot)) + __pyx_v_iy)]) = __Pyx_c_sum_double(__pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a2.data + __pyx_t_1 * __pyx_v_field_a2.strides[0]) ))), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a2.data + __pyx_t_10 * __pyx_v_field_a2.strides[0]) ))), 0)));
+
+            /* "cy_solver_field.pyx":685
+ *                     while ip<4:
+ *                         potential_ca2_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a2[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a2[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1             # <<<<<<<<<<<<<<
+ *                     it+=1
+ *                 iy+=1
+ */
+            __pyx_v_ip = (__pyx_v_ip + 1);
+          }
+
+          /* "cy_solver_field.pyx":686
+ *                         potential_ca2_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a2[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a2[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1
+ *                     it+=1             # <<<<<<<<<<<<<<
+ *                 iy+=1
+ *             ix+=1
+ */
+          __pyx_v_it = (__pyx_v_it + 1);
+        }
+
+        /* "cy_solver_field.pyx":687
+ *                         ip+=1
+ *                     it+=1
+ *                 iy+=1             # <<<<<<<<<<<<<<
+ *             ix+=1
+ * 
+ */
+        __pyx_v_iy = (__pyx_v_iy + 1);
+      }
+
+      /* "cy_solver_field.pyx":688
+ *                     it+=1
+ *                 iy+=1
+ *             ix+=1             # <<<<<<<<<<<<<<
+ * 
+ *     if is_field_a0:
+ */
+      __pyx_v_ix = (__pyx_v_ix + 1);
+    }
+
+    /* "cy_solver_field.pyx":675
+ *             ix+=1
+ * 
+ *     if is_field_a2:             # <<<<<<<<<<<<<<
+ *         ix = 0
+ *         while ix<ntot:
+ */
+  }
+
+  /* "cy_solver_field.pyx":690
+ *             ix+=1
+ * 
+ *     if is_field_a0:             # <<<<<<<<<<<<<<
+ *         ix = 0
+ *         while ix<ntot:
+ */
+  __pyx_t_6 = (__pyx_v_is_field_a0 != 0);
+  if (__pyx_t_6) {
+
+    /* "cy_solver_field.pyx":691
+ * 
+ *     if is_field_a0:
+ *         ix = 0             # <<<<<<<<<<<<<<
+ *         while ix<ntot:
+ *             iy = 0
+ */
+    __pyx_v_ix = 0;
+
+    /* "cy_solver_field.pyx":692
+ *     if is_field_a0:
+ *         ix = 0
+ *         while ix<ntot:             # <<<<<<<<<<<<<<
+ *             iy = 0
+ *             while iy<ntot:
+ */
+    while (1) {
+      __pyx_t_6 = (__pyx_v_ix < __pyx_v_ntot);
+      if (!__pyx_t_6) break;
+
+      /* "cy_solver_field.pyx":693
+ *         ix = 0
+ *         while ix<ntot:
+ *             iy = 0             # <<<<<<<<<<<<<<
+ *             while iy<ntot:
+ *                 it = 0
+ */
+      __pyx_v_iy = 0;
+
+      /* "cy_solver_field.pyx":694
+ *         while ix<ntot:
+ *             iy = 0
+ *             while iy<ntot:             # <<<<<<<<<<<<<<
+ *                 it = 0
+ *                 while it<n_t:
+ */
+      while (1) {
+        __pyx_t_6 = (__pyx_v_iy < __pyx_v_ntot);
+        if (!__pyx_t_6) break;
+
+        /* "cy_solver_field.pyx":695
+ *             iy = 0
+ *             while iy<ntot:
+ *                 it = 0             # <<<<<<<<<<<<<<
+ *                 while it<n_t:
+ *                     ip = 0
+ */
+        __pyx_v_it = 0;
+
+        /* "cy_solver_field.pyx":696
+ *             while iy<ntot:
+ *                 it = 0
+ *                 while it<n_t:             # <<<<<<<<<<<<<<
+ *                     ip = 0
+ *                     while ip<4:
+ */
+        while (1) {
+          __pyx_t_6 = (__pyx_v_it < __pyx_v_n_t);
+          if (!__pyx_t_6) break;
+
+          /* "cy_solver_field.pyx":697
+ *                 it = 0
+ *                 while it<n_t:
+ *                     ip = 0             # <<<<<<<<<<<<<<
+ *                     while ip<4:
+ *                         potential_ca0_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a0[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a0[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ */
+          __pyx_v_ip = 0;
+
+          /* "cy_solver_field.pyx":698
+ *                 while it<n_t:
+ *                     ip = 0
+ *                     while ip<4:             # <<<<<<<<<<<<<<
+ *                         potential_ca0_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a0[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a0[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1
+ */
+          while (1) {
+            __pyx_t_6 = (__pyx_v_ip < 4);
+            if (!__pyx_t_6) break;
+
+            /* "cy_solver_field.pyx":699
+ *                     ip = 0
+ *                     while ip<4:
+ *                         potential_ca0_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a0[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a0[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]             # <<<<<<<<<<<<<<
+ *                         ip+=1
+ *                     it+=1
+ */
+            __pyx_t_10 = (((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * 2) + (((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot) * 2)) + ((__pyx_v_ix * __pyx_v_ntot) * 2)) + (__pyx_v_iy * 2));
+            __pyx_t_1 = ((((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) * 2) + (((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot) * 2)) + ((__pyx_v_ix * __pyx_v_ntot) * 2)) + (__pyx_v_iy * 2)) + 1);
+            (__pyx_v_potential_ca0_interp[((((((__pyx_v_ip * __pyx_v_n_t) * __pyx_v_ntot) * __pyx_v_ntot) + ((__pyx_v_it * __pyx_v_ntot) * __pyx_v_ntot)) + (__pyx_v_ix * __pyx_v_ntot)) + __pyx_v_iy)]) = __Pyx_c_sum_double(__pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a0.data + __pyx_t_10 * __pyx_v_field_a0.strides[0]) ))), 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 1.0), __pyx_t_double_complex_from_parts((*((double *) ( /* dim=0 */ (__pyx_v_field_a0.data + __pyx_t_1 * __pyx_v_field_a0.strides[0]) ))), 0)));
+
+            /* "cy_solver_field.pyx":700
+ *                     while ip<4:
+ *                         potential_ca0_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a0[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a0[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1             # <<<<<<<<<<<<<<
+ *                     it+=1
+ *                 iy+=1
+ */
+            __pyx_v_ip = (__pyx_v_ip + 1);
+          }
+
+          /* "cy_solver_field.pyx":701
+ *                         potential_ca0_interp[ip*n_t*ntot*ntot + it*ntot*ntot + ix*ntot +iy] = field_a0[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2] + 1j*field_a0[ip*n_t*ntot*ntot*2 + it*ntot*ntot*2 + ix*ntot*2 + iy*2 + 1]
+ *                         ip+=1
+ *                     it+=1             # <<<<<<<<<<<<<<
+ *                 iy+=1
+ *             ix+=1
+ */
+          __pyx_v_it = (__pyx_v_it + 1);
+        }
+
+        /* "cy_solver_field.pyx":702
+ *                         ip+=1
+ *                     it+=1
+ *                 iy+=1             # <<<<<<<<<<<<<<
+ *             ix+=1
+ * 
+ */
+        __pyx_v_iy = (__pyx_v_iy + 1);
+      }
+
+      /* "cy_solver_field.pyx":703
+ *                     it+=1
+ *                 iy+=1
+ *             ix+=1             # <<<<<<<<<<<<<<
+ * 
+ *     ### Test
+ */
+      __pyx_v_ix = (__pyx_v_ix + 1);
+    }
+
+    /* "cy_solver_field.pyx":690
+ *             ix+=1
+ * 
+ *     if is_field_a0:             # <<<<<<<<<<<<<<
+ *         ix = 0
+ *         while ix<ntot:
+ */
+  }
+
+  /* "cy_solver_field.pyx":726
+ *     ###
+ * 
+ *     args.field_interp    = potential_c_interp             # <<<<<<<<<<<<<<
+ *     args.field_a1_interp = potential_ca1_interp
+ *     args.field_a2_interp = potential_ca2_interp
+ */
+  __pyx_v_args.field_interp = __pyx_v_potential_c_interp;
+
+  /* "cy_solver_field.pyx":727
+ * 
+ *     args.field_interp    = potential_c_interp
+ *     args.field_a1_interp = potential_ca1_interp             # <<<<<<<<<<<<<<
+ *     args.field_a2_interp = potential_ca2_interp
+ *     args.field_a0_interp = potential_ca0_interp
+ */
+  __pyx_v_args.field_a1_interp = __pyx_v_potential_ca1_interp;
+
+  /* "cy_solver_field.pyx":728
+ *     args.field_interp    = potential_c_interp
+ *     args.field_a1_interp = potential_ca1_interp
+ *     args.field_a2_interp = potential_ca2_interp             # <<<<<<<<<<<<<<
+ *     args.field_a0_interp = potential_ca0_interp
+ * 
+ */
+  __pyx_v_args.field_a2_interp = __pyx_v_potential_ca2_interp;
+
+  /* "cy_solver_field.pyx":729
+ *     args.field_a1_interp = potential_ca1_interp
+ *     args.field_a2_interp = potential_ca2_interp
+ *     args.field_a0_interp = potential_ca0_interp             # <<<<<<<<<<<<<<
+ * 
+ *     args.ene1_ptr = create_ene1(n2,coef[2],coef[3])
+ */
+  __pyx_v_args.field_a0_interp = __pyx_v_potential_ca0_interp;
+
+  /* "cy_solver_field.pyx":731
+ *     args.field_a0_interp = potential_ca0_interp
+ * 
+ *     args.ene1_ptr = create_ene1(n2,coef[2],coef[3])             # <<<<<<<<<<<<<<
+ *     args.ene2_ptr = create_ene2(n2,coef[2],coef[3])
+ * 
+ */
+  __pyx_t_1 = 2;
+  __pyx_t_10 = 3;
+  __pyx_v_args.ene1_ptr = __pyx_f_15cy_solver_field_create_ene1(__pyx_v_n2, (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))), (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_10 * __pyx_v_coef.strides[0]) ))));
+
+  /* "cy_solver_field.pyx":732
+ * 
+ *     args.ene1_ptr = create_ene1(n2,coef[2],coef[3])
+ *     args.ene2_ptr = create_ene2(n2,coef[2],coef[3])             # <<<<<<<<<<<<<<
+ * 
+ *     # Need to cast the arg double pointer to void
+ */
+  __pyx_t_10 = 2;
+  __pyx_t_1 = 3;
+  __pyx_v_args.ene2_ptr = __pyx_f_15cy_solver_field_create_ene2(__pyx_v_n2, (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_10 * __pyx_v_coef.strides[0]) ))), (*((double *) ( /* dim=0 */ (__pyx_v_coef.data + __pyx_t_1 * __pyx_v_coef.strides[0]) ))));
+
+  /* "cy_solver_field.pyx":735
+ * 
+ *     # Need to cast the arg double pointer to void
+ *     cdef void* args_ptr = <void*>args_param_ptr             # <<<<<<<<<<<<<<
+ * 
+ *     cdef CySolveOutput result = cysolve_ivp(
+ */
+  __pyx_v_args_ptr = ((void *)__pyx_v_args_param_ptr);
+
+  /* "cy_solver_field.pyx":737
+ *     cdef void* args_ptr = <void*>args_param_ptr
+ * 
+ *     cdef CySolveOutput result = cysolve_ivp(             # <<<<<<<<<<<<<<
+ *         diffeq,
+ *         t_span_ptr,
+ */
+  __pyx_t_12.__pyx_n = 16;
+  __pyx_t_12.method = RK45_METHOD_INT;
+  __pyx_t_12.rtol = 1.0e-9;
+  __pyx_t_12.atol = 1.0e-9;
+  __pyx_t_12.args_ptr = __pyx_v_args_ptr;
+  __pyx_t_12.num_extra = 0;
+  __pyx_t_12.max_num_steps = 0;
+  __pyx_t_12.max_ram_MB = 0xBB8;
+  __pyx_t_12.dense_output = 0;
+  __pyx_t_12.t_eval = __pyx_v_timesteps_ptr;
+  __pyx_t_12.len_t_eval = __pyx_v_n_tsteps;
+  __pyx_t_12.pre_eval_func = NULL;
+  __pyx_t_12.rtols_ptr = NULL;
+  __pyx_t_12.atols_ptr = NULL;
+  __pyx_t_12.max_step = 10000000000.0;
+  __pyx_t_12.first_step = 0.0;
+  __pyx_t_12.expected_size = 0;
+  __pyx_t_11 = __pyx_f_6mycyrk_2cy_11cysolverNew_cysolve_ivp(__pyx_v_diffeq, __pyx_v_t_span_ptr, __pyx_v_y0_ptr, __pyx_v_num_y, &__pyx_t_12); 
+  __pyx_v_result = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_11);
+
+  /* "cy_solver_field.pyx":760
+ *     )
+ * 
+ *     cdef WrapCySolverResult pysafe_result = WrapCySolverResult()             # <<<<<<<<<<<<<<
+ *     pysafe_result.set_cyresult_pointer(result)
+ * 
+ */
+  __pyx_t_8 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6mycyrk_2cy_11cysolverNew_WrapCySolverResult)); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 760, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_v_pysafe_result = ((struct __pyx_obj_6mycyrk_2cy_11cysolverNew_WrapCySolverResult *)__pyx_t_8);
+  __pyx_t_8 = 0;
+
+  /* "cy_solver_field.pyx":761
+ * 
+ *     cdef WrapCySolverResult pysafe_result = WrapCySolverResult()
+ *     pysafe_result.set_cyresult_pointer(result)             # <<<<<<<<<<<<<<
+ * 
+ *     return pysafe_result
+ */
+  ((struct __pyx_vtabstruct_6mycyrk_2cy_11cysolverNew_WrapCySolverResult *)__pyx_v_pysafe_result->__pyx_vtab)->set_cyresult_pointer(__pyx_v_pysafe_result, __pyx_v_result); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 761, __pyx_L1_error)
+
+  /* "cy_solver_field.pyx":763
+ *     pysafe_result.set_cyresult_pointer(result)
+ * 
+ *     return pysafe_result             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF((PyObject *)__pyx_v_pysafe_result);
+  __pyx_r = ((PyObject *)__pyx_v_pysafe_result);
+  goto __pyx_L0;
+
+  /* "cy_solver_field.pyx":581
+ * 
+ * 
+ * def solver_t(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps,             # <<<<<<<<<<<<<<
+ *            double[:] field, double[:] field_a1, double[:] field_a2, double[:] field_a0):
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_AddTraceback("cy_solver_field.solver_t", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_pysafe_result);
@@ -24345,7 +27656,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
     {&__pyx_n_s_View_MemoryView, __pyx_k_View_MemoryView, sizeof(__pyx_k_View_MemoryView), 0, 0, 1, 1},
     {&__pyx_kp_u__2, __pyx_k__2, sizeof(__pyx_k__2), 0, 1, 0, 0},
-    {&__pyx_n_s__24, __pyx_k__24, sizeof(__pyx_k__24), 0, 0, 1, 1},
+    {&__pyx_n_s__28, __pyx_k__28, sizeof(__pyx_k__28), 0, 0, 1, 1},
     {&__pyx_n_s__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 0, 1, 1},
     {&__pyx_kp_u__6, __pyx_k__6, sizeof(__pyx_k__6), 0, 1, 0, 0},
     {&__pyx_kp_u__7, __pyx_k__7, sizeof(__pyx_k__7), 0, 1, 0, 0},
@@ -24398,32 +27709,53 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
     {&__pyx_n_s_index, __pyx_k_index, sizeof(__pyx_k_index), 0, 0, 1, 1},
     {&__pyx_n_s_initializing, __pyx_k_initializing, sizeof(__pyx_k_initializing), 0, 0, 1, 1},
+    {&__pyx_n_s_ip, __pyx_k_ip, sizeof(__pyx_k_ip), 0, 0, 1, 1},
     {&__pyx_n_s_is_coroutine, __pyx_k_is_coroutine, sizeof(__pyx_k_is_coroutine), 0, 0, 1, 1},
+    {&__pyx_n_s_is_field, __pyx_k_is_field, sizeof(__pyx_k_is_field), 0, 0, 1, 1},
+    {&__pyx_n_s_is_field_a0, __pyx_k_is_field_a0, sizeof(__pyx_k_is_field_a0), 0, 0, 1, 1},
+    {&__pyx_n_s_is_field_a1, __pyx_k_is_field_a1, sizeof(__pyx_k_is_field_a1), 0, 0, 1, 1},
+    {&__pyx_n_s_is_field_a2, __pyx_k_is_field_a2, sizeof(__pyx_k_is_field_a2), 0, 0, 1, 1},
     {&__pyx_kp_u_isenabled, __pyx_k_isenabled, sizeof(__pyx_k_isenabled), 0, 1, 0, 0},
+    {&__pyx_n_s_it, __pyx_k_it, sizeof(__pyx_k_it), 0, 0, 1, 1},
     {&__pyx_n_s_itemsize, __pyx_k_itemsize, sizeof(__pyx_k_itemsize), 0, 0, 1, 1},
     {&__pyx_kp_s_itemsize_0_for_cython_array, __pyx_k_itemsize_0_for_cython_array, sizeof(__pyx_k_itemsize_0_for_cython_array), 0, 0, 1, 0},
+    {&__pyx_n_s_ix, __pyx_k_ix, sizeof(__pyx_k_ix), 0, 0, 1, 1},
+    {&__pyx_n_s_iy, __pyx_k_iy, sizeof(__pyx_k_iy), 0, 0, 1, 1},
     {&__pyx_n_s_j, __pyx_k_j, sizeof(__pyx_k_j), 0, 0, 1, 1},
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+    {&__pyx_n_s_matplotlib, __pyx_k_matplotlib, sizeof(__pyx_k_matplotlib), 0, 0, 1, 1},
+    {&__pyx_n_s_matplotlib_pyplot, __pyx_k_matplotlib_pyplot, sizeof(__pyx_k_matplotlib_pyplot), 0, 0, 1, 1},
     {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
     {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
+    {&__pyx_n_s_mpl, __pyx_k_mpl, sizeof(__pyx_k_mpl), 0, 0, 1, 1},
     {&__pyx_n_s_n2, __pyx_k_n2, sizeof(__pyx_k_n2), 0, 0, 1, 1},
+    {&__pyx_n_s_n_k, __pyx_k_n_k, sizeof(__pyx_k_n_k), 0, 0, 1, 1},
+    {&__pyx_n_s_n_t, __pyx_k_n_t, sizeof(__pyx_k_n_t), 0, 0, 1, 1},
     {&__pyx_n_s_n_tsteps, __pyx_k_n_tsteps, sizeof(__pyx_k_n_tsteps), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
     {&__pyx_n_s_name_2, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},
     {&__pyx_n_s_ndim, __pyx_k_ndim, sizeof(__pyx_k_ndim), 0, 0, 1, 1},
     {&__pyx_n_s_new, __pyx_k_new, sizeof(__pyx_k_new), 0, 0, 1, 1},
     {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
+    {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
     {&__pyx_n_s_ntot, __pyx_k_ntot, sizeof(__pyx_k_ntot), 0, 0, 1, 1},
     {&__pyx_n_s_num_y, __pyx_k_num_y, sizeof(__pyx_k_num_y), 0, 0, 1, 1},
+    {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
     {&__pyx_kp_u_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 1, 0, 0},
     {&__pyx_kp_u_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 1, 0, 0},
     {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
     {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
     {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
+    {&__pyx_n_s_plt, __pyx_k_plt, sizeof(__pyx_k_plt), 0, 0, 1, 1},
     {&__pyx_n_s_potential_c, __pyx_k_potential_c, sizeof(__pyx_k_potential_c), 0, 0, 1, 1},
+    {&__pyx_n_s_potential_c_interp, __pyx_k_potential_c_interp, sizeof(__pyx_k_potential_c_interp), 0, 0, 1, 1},
     {&__pyx_n_s_potential_ca0, __pyx_k_potential_ca0, sizeof(__pyx_k_potential_ca0), 0, 0, 1, 1},
+    {&__pyx_n_s_potential_ca0_interp, __pyx_k_potential_ca0_interp, sizeof(__pyx_k_potential_ca0_interp), 0, 0, 1, 1},
     {&__pyx_n_s_potential_ca1, __pyx_k_potential_ca1, sizeof(__pyx_k_potential_ca1), 0, 0, 1, 1},
+    {&__pyx_n_s_potential_ca1_interp, __pyx_k_potential_ca1_interp, sizeof(__pyx_k_potential_ca1_interp), 0, 0, 1, 1},
     {&__pyx_n_s_potential_ca2, __pyx_k_potential_ca2, sizeof(__pyx_k_potential_ca2), 0, 0, 1, 1},
+    {&__pyx_n_s_potential_ca2_interp, __pyx_k_potential_ca2_interp, sizeof(__pyx_k_potential_ca2_interp), 0, 0, 1, 1},
+    {&__pyx_n_s_pyplot, __pyx_k_pyplot, sizeof(__pyx_k_pyplot), 0, 0, 1, 1},
     {&__pyx_n_s_pysafe_result, __pyx_k_pysafe_result, sizeof(__pyx_k_pysafe_result), 0, 0, 1, 1},
     {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
     {&__pyx_n_s_pyx_checksum, __pyx_k_pyx_checksum, sizeof(__pyx_k_pyx_checksum), 0, 0, 1, 1},
@@ -24443,6 +27775,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_shape, __pyx_k_shape, sizeof(__pyx_k_shape), 0, 0, 1, 1},
     {&__pyx_n_s_size, __pyx_k_size, sizeof(__pyx_k_size), 0, 0, 1, 1},
     {&__pyx_n_s_solver, __pyx_k_solver, sizeof(__pyx_k_solver), 0, 0, 1, 1},
+    {&__pyx_n_s_solver_t, __pyx_k_solver_t, sizeof(__pyx_k_solver_t), 0, 0, 1, 1},
     {&__pyx_n_s_spec, __pyx_k_spec, sizeof(__pyx_k_spec), 0, 0, 1, 1},
     {&__pyx_n_s_start, __pyx_k_start, sizeof(__pyx_k_start), 0, 0, 1, 1},
     {&__pyx_n_s_step, __pyx_k_step, sizeof(__pyx_k_step), 0, 0, 1, 1},
@@ -24453,16 +27786,19 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_kp_s_stringsource, __pyx_k_stringsource, sizeof(__pyx_k_stringsource), 0, 0, 1, 0},
     {&__pyx_n_s_struct, __pyx_k_struct, sizeof(__pyx_k_struct), 0, 0, 1, 1},
     {&__pyx_n_s_sys, __pyx_k_sys, sizeof(__pyx_k_sys), 0, 0, 1, 1},
+    {&__pyx_n_s_t_knots, __pyx_k_t_knots, sizeof(__pyx_k_t_knots), 0, 0, 1, 1},
     {&__pyx_n_s_t_span, __pyx_k_t_span, sizeof(__pyx_k_t_span), 0, 0, 1, 1},
     {&__pyx_n_s_t_span_arr, __pyx_k_t_span_arr, sizeof(__pyx_k_t_span_arr), 0, 0, 1, 1},
     {&__pyx_n_s_t_span_ptr, __pyx_k_t_span_ptr, sizeof(__pyx_k_t_span_ptr), 0, 0, 1, 1},
     {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
     {&__pyx_n_s_timesteps, __pyx_k_timesteps, sizeof(__pyx_k_timesteps), 0, 0, 1, 1},
     {&__pyx_n_s_timesteps_ptr, __pyx_k_timesteps_ptr, sizeof(__pyx_k_timesteps_ptr), 0, 0, 1, 1},
+    {&__pyx_n_u_tkagg, __pyx_k_tkagg, sizeof(__pyx_k_tkagg), 0, 1, 0, 1},
     {&__pyx_kp_s_unable_to_allocate_array_data, __pyx_k_unable_to_allocate_array_data, sizeof(__pyx_k_unable_to_allocate_array_data), 0, 0, 1, 0},
     {&__pyx_kp_s_unable_to_allocate_shape_and_str, __pyx_k_unable_to_allocate_shape_and_str, sizeof(__pyx_k_unable_to_allocate_shape_and_str), 0, 0, 1, 0},
     {&__pyx_n_s_unpack, __pyx_k_unpack, sizeof(__pyx_k_unpack), 0, 0, 1, 1},
     {&__pyx_n_s_update, __pyx_k_update, sizeof(__pyx_k_update), 0, 0, 1, 1},
+    {&__pyx_n_s_use, __pyx_k_use, sizeof(__pyx_k_use), 0, 0, 1, 1},
     {&__pyx_n_s_version_info, __pyx_k_version_info, sizeof(__pyx_k_version_info), 0, 0, 1, 1},
     {&__pyx_n_s_y0, __pyx_k_y0, sizeof(__pyx_k_y0), 0, 0, 1, 1},
     {&__pyx_n_s_y0_ptr, __pyx_k_y0_ptr, sizeof(__pyx_k_y0_ptr), 0, 0, 1, 1},
@@ -24652,17 +27988,51 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__20);
   __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 1, __pyx_L1_error)
 
-  /* "cy_solver_field.pyx":220
+  /* "cy_solver_field.pyx":14
+ * import numpy as np
+ * import matplotlib as mpl
+ * mpl.use('tkagg')             # <<<<<<<<<<<<<<
+ * import matplotlib.pyplot as plt
+ * 
+ */
+  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_n_u_tkagg); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(1, 14, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__22);
+  __Pyx_GIVEREF(__pyx_tuple__22);
+
+  /* "cy_solver_field.pyx":15
+ * import matplotlib as mpl
+ * mpl.use('tkagg')
+ * import matplotlib.pyplot as plt             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_tuple__23 = PyTuple_Pack(2, __pyx_n_s_matplotlib, __pyx_n_s_pyplot); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(1, 15, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__23);
+  __Pyx_GIVEREF(__pyx_tuple__23);
+
+  /* "cy_solver_field.pyx":254
  * 
  * 
  * def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps,             # <<<<<<<<<<<<<<
  *            double[:] field, double[:] field_a1, double[:] field_a2, double[:] field_a0):
  * 
  */
-  __pyx_tuple__22 = PyTuple_Pack(30, __pyx_n_s_t_span, __pyx_n_s_y0, __pyx_n_s_coef, __pyx_n_s_timesteps, __pyx_n_s_field, __pyx_n_s_field_a1, __pyx_n_s_field_a2, __pyx_n_s_field_a0, __pyx_n_s_diffeq, __pyx_n_s_y0_ptr, __pyx_n_s_num_y, __pyx_n_s_n_tsteps, __pyx_n_s_n2, __pyx_n_s_ntot, __pyx_n_s_t_span_arr, __pyx_n_s_t_span_ptr, __pyx_n_s_c_timesteps, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_timesteps_ptr, __pyx_n_s_potential_c, __pyx_n_s_potential_ca1, __pyx_n_s_potential_ca2, __pyx_n_s_potential_ca0, __pyx_n_s_data, __pyx_n_s_args, __pyx_n_s_args_param_ptr, __pyx_n_s_args_ptr, __pyx_n_s_result, __pyx_n_s_pysafe_result); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(1, 220, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__22);
-  __Pyx_GIVEREF(__pyx_tuple__22);
-  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(8, 0, 0, 30, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cy_solver_field_pyx, __pyx_n_s_solver, 220, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(1, 220, __pyx_L1_error)
+  __pyx_tuple__24 = PyTuple_Pack(30, __pyx_n_s_t_span, __pyx_n_s_y0, __pyx_n_s_coef, __pyx_n_s_timesteps, __pyx_n_s_field, __pyx_n_s_field_a1, __pyx_n_s_field_a2, __pyx_n_s_field_a0, __pyx_n_s_diffeq, __pyx_n_s_y0_ptr, __pyx_n_s_num_y, __pyx_n_s_n_tsteps, __pyx_n_s_n2, __pyx_n_s_ntot, __pyx_n_s_t_span_arr, __pyx_n_s_t_span_ptr, __pyx_n_s_c_timesteps, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_timesteps_ptr, __pyx_n_s_potential_c, __pyx_n_s_potential_ca1, __pyx_n_s_potential_ca2, __pyx_n_s_potential_ca0, __pyx_n_s_data, __pyx_n_s_args, __pyx_n_s_args_param_ptr, __pyx_n_s_args_ptr, __pyx_n_s_result, __pyx_n_s_pysafe_result); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(1, 254, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__24);
+  __Pyx_GIVEREF(__pyx_tuple__24);
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(8, 0, 0, 30, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cy_solver_field_pyx, __pyx_n_s_solver, 254, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(1, 254, __pyx_L1_error)
+
+  /* "cy_solver_field.pyx":581
+ * 
+ * 
+ * def solver_t(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps,             # <<<<<<<<<<<<<<
+ *            double[:] field, double[:] field_a1, double[:] field_a2, double[:] field_a0):
+ * 
+ */
+  __pyx_tuple__26 = PyTuple_Pack(41, __pyx_n_s_t_span, __pyx_n_s_y0, __pyx_n_s_coef, __pyx_n_s_timesteps, __pyx_n_s_field, __pyx_n_s_field_a1, __pyx_n_s_field_a2, __pyx_n_s_field_a0, __pyx_n_s_diffeq, __pyx_n_s_y0_ptr, __pyx_n_s_num_y, __pyx_n_s_n_tsteps, __pyx_n_s_n2, __pyx_n_s_n_t, __pyx_n_s_is_field, __pyx_n_s_is_field_a1, __pyx_n_s_is_field_a2, __pyx_n_s_is_field_a0, __pyx_n_s_ntot, __pyx_n_s_t_span_arr, __pyx_n_s_t_span_ptr, __pyx_n_s_c_timesteps, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_timesteps_ptr, __pyx_n_s_potential_c_interp, __pyx_n_s_potential_ca1_interp, __pyx_n_s_potential_ca2_interp, __pyx_n_s_potential_ca0_interp, __pyx_n_s_data, __pyx_n_s_args, __pyx_n_s_args_param_ptr, __pyx_n_s_t_knots, __pyx_n_s_n_k, __pyx_n_s_ix, __pyx_n_s_iy, __pyx_n_s_it, __pyx_n_s_ip, __pyx_n_s_args_ptr, __pyx_n_s_result, __pyx_n_s_pysafe_result); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(1, 581, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__26);
+  __Pyx_GIVEREF(__pyx_tuple__26);
+  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(8, 0, 0, 41, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cy_solver_field_pyx, __pyx_n_s_solver_t, 581, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(1, 581, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -25790,7 +29160,7 @@ if (!__Pyx_RefNanny) {
  * 
  * from cpython cimport array
  * import array             # <<<<<<<<<<<<<<
- * from libc.math cimport sqrt, M_PI, sqrt
+ * from libc.math cimport sqrt, M_PI, sqrt, fabs
  * from libc.stdlib cimport malloc, free
  */
   __pyx_t_7 = __Pyx_ImportDottedModule(__pyx_n_s_array, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 5, __pyx_L1_error)
@@ -25798,16 +29168,81 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_array, __pyx_t_7) < 0) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "cy_solver_field.pyx":220
+  /* "cy_solver_field.pyx":12
+ * from mycyrk.cy.cysolverNew cimport cysolve_ivp, DiffeqFuncType, WrapCySolverResult, CySolveOutput, PreEvalFunc, RK45_METHOD_INT, RK23_METHOD_INT
+ * cimport fft_conv.src.fftlib as ft
+ * import numpy as np             # <<<<<<<<<<<<<<
+ * import matplotlib as mpl
+ * mpl.use('tkagg')
+ */
+  __pyx_t_7 = __Pyx_ImportDottedModule(__pyx_n_s_numpy, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_7) < 0) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+  /* "cy_solver_field.pyx":13
+ * cimport fft_conv.src.fftlib as ft
+ * import numpy as np
+ * import matplotlib as mpl             # <<<<<<<<<<<<<<
+ * mpl.use('tkagg')
+ * import matplotlib.pyplot as plt
+ */
+  __pyx_t_7 = __Pyx_ImportDottedModule(__pyx_n_s_matplotlib, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 13, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_mpl, __pyx_t_7) < 0) __PYX_ERR(1, 13, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+  /* "cy_solver_field.pyx":14
+ * import numpy as np
+ * import matplotlib as mpl
+ * mpl.use('tkagg')             # <<<<<<<<<<<<<<
+ * import matplotlib.pyplot as plt
+ * 
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_mpl); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 14, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_use); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 14, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 14, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+  /* "cy_solver_field.pyx":15
+ * import matplotlib as mpl
+ * mpl.use('tkagg')
+ * import matplotlib.pyplot as plt             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_t_7 = __Pyx_ImportDottedModule(__pyx_n_s_matplotlib_pyplot, __pyx_tuple__23); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 15, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_plt, __pyx_t_7) < 0) __PYX_ERR(1, 15, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+  /* "cy_solver_field.pyx":254
  * 
  * 
  * def solver(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps,             # <<<<<<<<<<<<<<
  *            double[:] field, double[:] field_a1, double[:] field_a2, double[:] field_a0):
  * 
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_15cy_solver_field_1solver, 0, __pyx_n_s_solver, NULL, __pyx_n_s_cy_solver_field, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 220, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_15cy_solver_field_1solver, 0, __pyx_n_s_solver, NULL, __pyx_n_s_cy_solver_field, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_solver, __pyx_t_7) < 0) __PYX_ERR(1, 220, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_solver, __pyx_t_7) < 0) __PYX_ERR(1, 254, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+  /* "cy_solver_field.pyx":581
+ * 
+ * 
+ * def solver_t(tuple t_span, double[:] y0, double[:] coef, double[:] timesteps,             # <<<<<<<<<<<<<<
+ *            double[:] field, double[:] field_a1, double[:] field_a2, double[:] field_a0):
+ * 
+ */
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_15cy_solver_field_3solver_t, 0, __pyx_n_s_solver_t, NULL, __pyx_n_s_cy_solver_field, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 581, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_solver_t, __pyx_t_7) < 0) __PYX_ERR(1, 581, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
   /* "cy_solver_field.pyx":1
@@ -31967,6 +35402,77 @@ static CYTHON_INLINE void __Pyx_XCLEAR_MEMVIEW(__Pyx_memviewslice *memslice,
     }
 }
 
+/* CIntToPy */
+  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const int neg_one = (int) -1, const_zero = (int) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(int) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(int) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        unsigned char *bytes = (unsigned char *)&value;
+#if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x030d00A4
+        if (is_unsigned) {
+            return PyLong_FromUnsignedNativeBytes(bytes, sizeof(value), -1);
+        } else {
+            return PyLong_FromNativeBytes(bytes, sizeof(value), -1);
+        }
+#elif !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        return _PyLong_FromByteArray(bytes, sizeof(int),
+                                     little, !is_unsigned);
+#else
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        PyObject *from_bytes, *result = NULL;
+        PyObject *py_bytes = NULL, *arg_tuple = NULL, *kwds = NULL, *order_str = NULL;
+        from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
+        if (!from_bytes) return NULL;
+        py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(int));
+        if (!py_bytes) goto limited_bad;
+        order_str = PyUnicode_FromString(little ? "little" : "big");
+        if (!order_str) goto limited_bad;
+        arg_tuple = PyTuple_Pack(2, py_bytes, order_str);
+        if (!arg_tuple) goto limited_bad;
+        if (!is_unsigned) {
+            kwds = PyDict_New();
+            if (!kwds) goto limited_bad;
+            if (PyDict_SetItemString(kwds, "signed", __Pyx_NewRef(Py_True))) goto limited_bad;
+        }
+        result = PyObject_Call(from_bytes, arg_tuple, kwds);
+        limited_bad:
+        Py_XDECREF(kwds);
+        Py_XDECREF(arg_tuple);
+        Py_XDECREF(order_str);
+        Py_XDECREF(py_bytes);
+        Py_XDECREF(from_bytes);
+        return result;
+#endif
+    }
+}
+
 /* CIntFromPy */
   static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
@@ -32501,77 +36007,6 @@ raise_neg_overflow:
     return (long) -1;
 }
 
-/* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const int neg_one = (int) -1, const_zero = (int) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(int) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        unsigned char *bytes = (unsigned char *)&value;
-#if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x030d00A4
-        if (is_unsigned) {
-            return PyLong_FromUnsignedNativeBytes(bytes, sizeof(value), -1);
-        } else {
-            return PyLong_FromNativeBytes(bytes, sizeof(value), -1);
-        }
-#elif !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
-                                     little, !is_unsigned);
-#else
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        PyObject *from_bytes, *result = NULL;
-        PyObject *py_bytes = NULL, *arg_tuple = NULL, *kwds = NULL, *order_str = NULL;
-        from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
-        if (!from_bytes) return NULL;
-        py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(int));
-        if (!py_bytes) goto limited_bad;
-        order_str = PyUnicode_FromString(little ? "little" : "big");
-        if (!order_str) goto limited_bad;
-        arg_tuple = PyTuple_Pack(2, py_bytes, order_str);
-        if (!arg_tuple) goto limited_bad;
-        if (!is_unsigned) {
-            kwds = PyDict_New();
-            if (!kwds) goto limited_bad;
-            if (PyDict_SetItemString(kwds, "signed", __Pyx_NewRef(Py_True))) goto limited_bad;
-        }
-        result = PyObject_Call(from_bytes, arg_tuple, kwds);
-        limited_bad:
-        Py_XDECREF(kwds);
-        Py_XDECREF(arg_tuple);
-        Py_XDECREF(order_str);
-        Py_XDECREF(py_bytes);
-        Py_XDECREF(from_bytes);
-        return result;
-#endif
-    }
-}
-
 /* CIntFromPy */
   static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *x) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
@@ -32849,7 +36284,7 @@ __Pyx_PyType_GetName(PyTypeObject* tp)
     if (unlikely(name == NULL) || unlikely(!PyUnicode_Check(name))) {
         PyErr_Clear();
         Py_XDECREF(name);
-        name = __Pyx_NewRef(__pyx_n_s__24);
+        name = __Pyx_NewRef(__pyx_n_s__28);
     }
     return name;
 }

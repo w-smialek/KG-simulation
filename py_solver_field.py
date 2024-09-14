@@ -2,10 +2,13 @@ import numpy as np
 from scipy import interpolate
 from fastccolor.colorize import colorize
 from array import array
+import matplotlib as mpl
+mpl.use('tkagg')
 import matplotlib.pyplot as plt
-from cy_solver_field import solver
+from cy_solver_field import solver, solver_t
 from PIL import Image, ImageOps, ImageDraw
 import cv2
+from time import time
 
 class kgsim:
 
@@ -231,12 +234,32 @@ class kgsim:
         phi = np.roll(phi,(self.n2,self.n2),(0,1))
         return phi
     
+    def psi_to_phi_pot_t(self,psi):
+        phi = np.zeros((self.ntot,self.ntot,self.n_t)).astype(complex)
+        for i_t in range(self.n_t_span[0],self.n_t_span[1]):
+            psi_t = np.roll(psi[:,:,i_t],(-self.n2,-self.n2),(0,1))
+            phi[:,:,i_t - self.n_t_span[0]] = 1/self.ntot**2*np.fft.fft2(psi_t)
+            phi[:,:,i_t - self.n_t_span[0]] = np.roll(phi[:,:,i_t - self.n_t_span[0]],(self.n2,self.n2),(0,1))
+        return phi
+    
     def flatten_for_cy_pot(self,c_field):
         potential_lst = 2*self.ntot*self.ntot*[0.]
         for i1 in range(self.ntot):
             for i2 in range(self.ntot):
                 potential_lst[i1*self.ntot*2 + i2*2] = c_field[i1,i2].real
                 potential_lst[i1*self.ntot*2 + i2*2 + 1] = c_field[i1,i2].imag
+
+        potential_arr = array('d', potential_lst)
+        return potential_arr
+
+    def flatten_for_cy_pot_t(self,c_field):
+        potential_lst = 2*self.ntot*self.ntot*self.n_t*4*[0.]
+        for ix in range(self.ntot):
+            for iy in range(self.ntot):
+                for i_t in range(self.n_t-1):
+                    for i_p in range(4):
+                        potential_lst[i_p*self.n_t*self.ntot**2*2 + i_t*self.ntot**2*2 + ix*self.ntot*2 + iy*2] = c_field[i_p,i_t,ix,iy].real
+                        potential_lst[i_p*self.n_t*self.ntot**2*2 + i_t*self.ntot**2*2 + ix*self.ntot*2 + iy*2 + 1] = c_field[i_p,i_t,ix,iy].imag
 
         potential_arr = array('d', potential_lst)
         return potential_arr
@@ -274,6 +297,93 @@ class kgsim:
         self.result = solver(t_span, kgarr, coefs, timesteps, potarr, potarr_a1, potarr_a2, potarr_a0)      # around 15 seconds per 1.0 on N2 = 100
         self.n_timesteps = n_timesteps
         return
+    
+    def solve_t(self, potfield, potfield_a1, potfield_a2, potfield_a0, kgfield, t_span, n_t_span, n_timesteps, kgform = 'phibar'):
+        if kgform == 'phi':
+            kgfield = self.phi_to_phi_bar(kgfield)
+        elif kgform == 'psi':
+            kgfield = self.psi_to_phi(kgfield)
+            kgfield = self.phi_to_phi_bar(kgfield)
+        elif kgform == 'phibar':
+            pass
+        else:
+            print("Incorrect name of the kg field form")
+
+        self.n_t_span = n_t_span
+        self.n_t = n_timesteps
+
+        t_linspace = np.linspace(t_span[0],t_span[1],self.n_t)
+    
+        kgarr = self.flatten_for_cy(kgfield)
+
+        # Default potential form is position space, 
+        # I guess no need to consider other input form
+
+        t0in = time()
+        if potfield.any():
+            potfield = self.psi_to_phi_pot_t(potfield)
+            potfield_interp = interpolate.CubicSpline(t_linspace,potfield,axis=2).c
+            potarr_interp = self.flatten_for_cy_pot_t(potfield_interp)
+            is_field = 1
+        else:
+            potarr_interp = array('d',[0])
+            is_field = 0
+        if potfield_a1.any():
+            potfield_a1 = self.psi_to_phi_pot_t(potfield_a1)
+            potfield_a1_interp = interpolate.CubicSpline(t_linspace,potfield_a1,axis=2).c
+            potarr_a1_interp = self.flatten_for_cy_pot_t(potfield_a1_interp)
+            is_field_a1 = 1
+        else:
+            potarr_a1_interp = array('d',[0])
+            is_field_a1 = 0
+        if potfield_a2.any():
+            potfield_a2 = self.psi_to_phi_pot_t(potfield_a2)
+            potfield_a2_interp = interpolate.CubicSpline(t_linspace,potfield_a2,axis=2).c
+            potarr_a2_interp = self.flatten_for_cy_pot_t(potfield_a2_interp)
+            is_field_a2 = 1
+        else:
+            potarr_a2_interp = array('d',[0])
+            is_field_a2 = 0
+        if potfield_a0.any():
+            potfield_a0 = self.psi_to_phi_pot_t(potfield_a0)
+            potfield_a0_interp = interpolate.CubicSpline(t_linspace,potfield_a0,axis=2).c
+            potarr_a0_interp = self.flatten_for_cy_pot_t(potfield_a0_interp)
+            is_field_a0 = 1
+        else:
+            potarr_a0_interp = array('d',[0])
+            is_field_a0 = 0
+        tfin = time()
+        print("Interpolation time: %.3f s"%(tfin-t0in))
+
+        # t_knots = np.linspace(t_span[0],t_span[1],self.n_t)
+        # tinlin = np.linspace(t_span[0],t_span[1],self.n_t*10)
+        # nar = np.zeros(len(tinlin)).astype(complex)
+
+        # for i_t in range(len(tinlin)):
+        #     for i_k in range(len(t_knots)):
+        #         if t_knots[i_k] <= tinlin[i_t] < t_knots[i_k +1] or i_k == self.n_t-2:
+        #             nar[i_t] = sum([potarr_a1_interp[p*self.n_t*self.ntot**2*2 + i_k*self.ntot**2*2 + self.n2*self.ntot*2 + self.n2*2]*(tinlin[i_t]-t_knots[i_k])**(3-p) for p in range(4)])
+
+        #             print(i_t,i_k)
+        #             break
+
+        # curv = potfield_a1[self.n2,self.n2,:]
+        # plt.plot(t_knots,curv.real)
+        # plt.plot(t_knots,curv.imag)
+        # plt.plot(tinlin,nar.real)
+        # plt.plot(tinlin,nar.imag)
+        # plt.show()
+
+        t_init, t_end = t_span
+        self.time_tot = t_end - t_init
+
+        timesteps = array('d',np.linspace(t_init, t_end, n_timesteps))
+        self.timesteps = np.linspace(t_init, t_end, n_timesteps)
+        coefs = array('d',[self.n2,self.n_t,self.m,self.l,is_field,is_field_a1,is_field_a2,is_field_a0])
+        self.result = solver_t(t_span, kgarr, coefs, timesteps, potarr_interp, potarr_a1_interp, potarr_a2_interp, potarr_a0_interp)      # around 15 seconds per 1.0 on N2 = 100
+        self.n_timesteps = n_timesteps
+        return
+
     
     def save(self,path,destroy_cyrk=False):
         savedarr = np.zeros((2,self.ntot,self.ntot,self.n_timesteps)).astype(complex)
