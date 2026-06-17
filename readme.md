@@ -92,3 +92,9 @@ the klein paradox results in a sort of "vacuum polarization", however for a c-nu
  ![Gaussian potential well with |Vmax| = -23.0](./gifs/anim_pot-23.00_mom0.00_d.gif)
 
  Left: gaussian potential well with |Vmax| = -4.0, right: Gaussian potential well with |Vmax| = -23.0
+
+4. Extras
+
+Extras: a) free evolution of a massive wavepacket and b) evolution of a packet containing both positive and negative charge components in a potential well. Each charge finds its own minimum.
+ ![Free evolution of a massive wavepacket](./gifs/anim5c.gif)
+ ![Evolution in a potential well / bump](./gifs/anim7d.gif)
